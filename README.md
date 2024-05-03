@@ -15,9 +15,13 @@ We believe the financial system should serve everyone. Decentralized Finance fos
 
 ## Quick Links
 - **Website:** [xft.framer.website](https://xft.framer.website/)
-- **Linktree:** [linktr.ee/alexander.reed](https://linktr.ee/alexander.reed)
+- **Documentation:** [XFT Docs](https://xft-docs.gitbook.io/xft-docs)
 - **Email:** [alex@alexandros-securities.com](mailto:alex@alexandros-securities.com)
 
 ### Get Involved
 - **Join Beta:** [Sign up for the Beta program](https://forms.gle/WVjqETCU2rNkadVp8)
 - **Careers:** [Explore career opportunities](https://forms.gle/we2Z4VBqruhF3nvd8)
+- **Follow us:** [LinkedIn](https://www.linkedin.com/company/xfintech/), [YouTube](https://www.youtube.com/@xft-reed), [X](https://twitter.com/amr_080) 
+- **Linktree:** [linktr.ee/alexander.reed](https://linktr.ee/alexander.reed)
+
+
