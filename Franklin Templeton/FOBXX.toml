@@ -1,0 +1,64 @@
+NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+VERSION="2.0.0"
+
+# Pubkeys for issuers of tokenized funds
+ACCOUNTS=[
+    "GBHNGLLIE3KWGKCHIKMHJ5HVZHYIK7WTBE4QF5PLAKL4CJGSEU7HZIW5" # FOCGX
+]
+
+[DOCUMENTATION]
+ORG_NAME="Franklin Templeton"
+ORG_URL="https://www.franklintempleton.com/"
+ORG_LOGO="https://www.franklintempleton.com/assets/images/brand/ft-global-logo-footer.png"
+ORG_DESCRIPTION="Franklin Resources, Inc. [NYSE:BEN] is a global investment management organization with subsidiaries operating as Franklin Templeton and serving clients in over 165 countries. Franklin Templeton’s mission is to help clients achieve better outcomes through investment management expertise, wealth management and technology solutions. Through its specialist investment managers, the company brings extensive capabilities in equity, fixed income, multi-asset solutions and alternatives. With offices in more than 30 countries and approximately 1,300 investment professionals, the California-based company has over 70 years of investment experience."
+ORG_PHYSICAL_ADDRESS="One Franklin Parkway, San Mateo, CA 94403"
+ORG_PHONE_NUMBER="+18006322301"
+ORG_TWITTER="FTI_US"
+ORG_LICENSING_AUTHORITY="SEC Registered"
+
+[[PRINCIPALS]]
+name="Tokenized Asset Development Team"
+email="tokenizedassetdevelopment@franklintempleton.com"
+
+[[CURRENCIES]]
+code="FOCGX"
+issuer="GBHNGLLIE3KWGKCHIKMHJ5HVZHYIK7WTBE4QF5PLAKL4CJGSEU7HZIW5"
+name="Franklin OnChain U.S. Government Money Fund"
+desc="FOCGX has been deprecated and replaced with BENJI."
+is_asset_anchored=true
+anchor_asset_type="other"
+anchor_asset="FOBXX"
+redemption_instructions="FOCGX has been deprecated and replaced with BENJI."
+display_decimals=7
+
+[[CURRENCIES]]
+code="BENJI"
+issuer="GBHNGLLIE3KWGKCHIKMHJ5HVZHYIK7WTBE4QF5PLAKL4CJGSEU7HZIW5"
+name="Franklin OnChain U.S. Government Money Fund"
+desc="1 BENJI token corresponds to 1 share of the fund."
+is_asset_anchored=true
+anchor_asset_type="other"
+anchor_asset="FOBXX"
+redemption_instructions="Use the Benji app to buy and sell BENJI."
+display_decimals=7
+
+[[VALIDATORS]]
+ALIAS="ft-scv-1"
+DISPLAY_NAME="FT SCV 1"
+HOST="stellar1.franklintempleton.com:11625"
+PUBLIC_KEY="GARYGQ5F2IJEBCZJCBNPWNWVDOFK7IBOHLJKKSG2TMHDQKEEC6P4PE4V"
+HISTORY="https://stellar-history-usw.franklintempleton.com/azuswshf401/"
+
+[[VALIDATORS]]
+ALIAS="ft-scv-2"
+DISPLAY_NAME="FT SCV 2"
+HOST="stellar2.franklintempleton.com:11625"
+PUBLIC_KEY="GCMSM2VFZGRPTZKPH5OABHGH4F3AVS6XTNJXDGCZ3MKCOSUBH3FL6DOB"
+HISTORY="https://stellar-history-usc.franklintempleton.com/azuscshf401/"
+
+[[VALIDATORS]]
+ALIAS="ft-scv-3"
+DISPLAY_NAME="FT SCV 3"
+HOST="stellar3.franklintempleton.com:11625"
+PUBLIC_KEY="GA7DV63PBUUWNUFAF4GAZVXU2OZMYRATDLKTC7VTCG7AU4XUPN5VRX4A"
+HISTORY="https://stellar-history-ins.franklintempleton.com/azinsshf401/"

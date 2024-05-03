@@ -1,0 +1,23 @@
+{
+	"optimizer": {
+		"enabled": true,
+		"runs": 200
+	},
+	"outputSelection": {
+		"*": {
+			"*": [
+				"evm.bytecode",
+				"evm.deployedBytecode",
+				"devdoc",
+				"userdoc",
+				"metadata",
+				"abi"
+			]
+		}
+	},
+	"libraries": {
+		"contracts/token/TokenLibrary.sol": {
+			"TokenLibrary": "0xebc72c3a7a8e5c615f200a12528d32b3c5c69ea8"
+		}
+	}
+}
