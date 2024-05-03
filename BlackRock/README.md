@@ -8,3 +8,6 @@ https://etherscan.io/token/0x7712c34205737192402172409a8f7ccef8aa2aec
 Deployer: Securitize
 Address: 0x7712c34205737192402172409a8F7ccef8aA2AEc
 
+- Website: https://xft.framer.website/
+- Linktree: https://linktr.ee/alexander.reed
+- X: https://twitter.com/amr_080
