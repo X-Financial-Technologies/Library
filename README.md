@@ -18,6 +18,7 @@ We believe the financial system should serve everyone. Decentralized Finance fos
 - **Website:** [xft.framer.website](https://xft.framer.website/)
 - **Documentation:** [XFT Docs](https://xft-docs.gitbook.io/xft-docs)
 - **Email:** [alex@alexandros-securities.com](mailto:alex@alexandros-securities.com)
+- **Learn:** [XFT Education](https://xlearn.replit.app/)
 
 ### Get Involved
 - **Join Beta:** [Sign up for the Beta program](https://forms.gle/WVjqETCU2rNkadVp8)
