@@ -12,7 +12,7 @@ We believe the financial system should serve everyone. Decentralized Finance fos
 - **Banking:** [xBank](https://xchains.w3spaces.com/pages/xbank.html)
 - **Payments:** [xPay](https://payment-two-wheat.vercel.app/)
 - **Issuance:** [XFT Issuance Dashboard](https://xissue.replit.app/)
-- **Data:** [Tokenized Fund Filings](https://docs.google.com/spreadsheets/d/e/2PACX-1vRW_x1N9xlrxZFpRMKkCOr9ttLcuL-pxSbc9Dw5SCwZK8PumgvjTNhDrxlRVFt2yA/pubhtml), [Tokenization Landscape](https://docs.google.com/spreadsheets/d/e/2PACX-1vTU3hsClJF_dyYuGKRCEd7BXYjosJe8OQIstpMAvF0AU0eUUDcchRI14xkscPQDuw/pubhtml)
+- **Data:** [Tokenized Fund Filings](https://docs.google.com/spreadsheets/d/e/2PACX-1vRW_x1N9xlrxZFpRMKkCOr9ttLcuL-pxSbc9Dw5SCwZK8PumgvjTNhDrxlRVFt2yA/pubhtml), [Tokenization Landscape](https://docs.google.com/spreadsheets/d/e/2PACX-1vTU3hsClJF_dyYuGKRCEd7BXYjosJe8OQIstpMAvF0AU0eUUDcchRI14xkscPQDuw/pubhtml), [USDY](https://xondo.replit.app/)
 
 ## Quick Links
 - **Website:** [xft.framer.website](https://xft.framer.website/)
