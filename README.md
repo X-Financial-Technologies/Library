@@ -1,6 +1,13 @@
 # XFT Library
 Repo of blockchain-related resources and demos. 
 
+- [Why invest in private credit?](https://why-private-credit.replit.app/)
+- [Why blockchain?](https://why-blockchain.replit.app/)
+- [How to make a mint](https://xcryptography.replit.app/)
+- [Tokenization case studies](https://xchains.w3spaces.com/pages/resources.html)
+- [State of Crypto](https://xchains.w3spaces.com/xfiles/State-of-Crypto.pdf)
+
+
 ## About XFT
 X Financial Technologies (XFT) bridges traditional finance and DeFi, developing essential technologies for a unified, integrated, and universal financial access layer.
 
