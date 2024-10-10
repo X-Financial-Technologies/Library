@@ -1,0 +1,39 @@
+WTGXX
+
+Investment Adviser: WisdomTree Digital Management, Inc. (“Adviser”)
+The Adviser serves as the investment adviser to the Fund. The Adviser is a Delaware corporation registered with the SEC as an investment adviser under the Investment Advisers Act of 1940. The Adviser is responsible for the overall general management and administration of the Fund.
+
+WisdomTree Digital Management provides an investment program for the Fund. The Adviser also provides proactive oversight of the Sub-Adviser, daily monitoring of the Sub-Adviser’s buying and selling of securities for the Fund, and regular review of the Sub-Adviser’s performance. In addition, the Adviser arranges for, and oversees, sub-advisory, transfer agency, custody, fund administration, securities lending, and all other non-distribution-related services necessary for the Fund to operate.
+
+Sub-Adviser: Voya Investment Management Co. LLC (“Voya IM”)
+Voya IM is responsible for the day-to-day management of the Fund. Voya IM manages the Fund’s portfolio investments and places orders to buy and sell the Fund’s portfolio investments.
+
+Voya IM, a registered investment adviser, is the asset management business of Voya Financial (NYSE: VOYA), overseeing approximately $336 billion in assets for institutions, financial intermediaries and individual investors. Voya IM is one of the 50 largest institutional asset managers globally. Drawing on a 50-year investing legacy and the expertise of 300+ investment professionals, Voya IM strategies span public and private fixed income, equities, multi-asset solutions and alternatives.
+
+Administrator and Custodian: State Street Bank and Trust Company (“State Street”)
+State Street provides certain administrative, legal, tax, and financial reporting services for the maintenance and operations of the Fund as well as acts as custodian of the assets of the Fund. State Street is required, upon the order of the Fund, to deliver securities held by State Street and to make payments for securities purchased for the Fund.
+
+Transfer Agent: WisdomTree Transfers, Inc. (“Transfer Agent”)
+WisdomTree Transfers acts as transfer agent for the authorized and issued shares of beneficial interest for the Fund and as dividend disbursing agent of the Trust. The Transfer Agent maintains the official record of share ownership in book-entry form. Under WisdomTree’s integrated recordkeeping system, the onchain record is aligned with book-entry records maintained by WisdomTree Transfers.
+
+Auditor: Ernst & Young LLP (“EY”)
+EY is one of the world’s largest accounting firms, providing global tax, audit, and advisory services to thousands of clients. EY audits WTGXX’s financial statements annually in seeking to ensure accurate and compliant financial reporting.
+
+Distributor in the U.S.: Foreside Fund Services, LLC (the “Distributor”)
+The Distributor has entered into a Distribution Agreement with the Trust pursuant to which it distributes shares of the Fund.
+
+Other Key Entities:
+
+Broker-Dealer: WisdomTree Securities, Inc.
+Facilitates the purchase and sale of Fund shares made through WisdomTree Connect (“Portal”) on an application way basis and is a broker-dealer registered with the SEC, Member Financial Industry Regulatory Authority (“FINRA”).
+
+Money Movement & USDC Stablecoin Conversion Service:
+
+WisdomTree Digital Movement, Inc. (“WDM”)
+WDM makes available the Stablecoin Conversion Service which enables institutions to utilize USDC and have it converted to USD to fund their purchase orders that are entered through the WisdomTree Connect Portal. WDM is a federally registered money services business, state-license money transmitter and financial technology company (NMLS ID: 237500).
+
+Circle Internet Financial, LLC (“Circle”)
+Circle executes mint and burn services of USDC transactions. Circle issues USDC, a digital token, and handles the redemption and issuance of USDC as part of the Stablecoin Conversion Service made available by WDM.
+
+Banking Services: Bank of New York (“BNY”)
+Operates as a banking service provider for WDM.
