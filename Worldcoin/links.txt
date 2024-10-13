@@ -1,0 +1,5 @@
+wallet bridge architecture: https://github.com/worldcoin/wallet-bridge
+
+my repo: https://github.com/worldcoin/wallet-bridge
+
+
