@@ -1,0 +1,183 @@
+Discovered Files:
+- http://www.dbr.ri.gov/
+- http://www.dfs.ny.gov/consumer/fileacomplaint.htm
+- https://*.clm.docusign.mil
+- https://*.clmfed.docusign.com
+- https://*.docusign.net
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/CBDC Factsheet Short Ver. (1).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Impact and Financial Inclusion (1).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Research/1-Pagers/ChainSecurity_Circle_Perimeter_audit_confidential (1).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Research/Whitepapers/Perimeter_Protocol_Circle_Research.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Research/Whitepapers/R-PoolandSettlementMarketsforRecoverableERC-20RTokens.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Research/Whitepapers/Recoverable_Wrapper_Tokens_Circle_Research.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Circle Research/Whitepapers/Threshold_ECDSA_Signatures_Circle_Research.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Euro Coin Attestations/EUROC 2022_Circle Examination Report August 2022.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Euro Coin Attestations/EUROC 2022_Circle Examination Report June 2022.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Euro Coin Attestations/EUROC 2022_Circle Examination Report November 2022.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Euro Coin Attestations/EUROC 2022_Circle Examination Report October 2022.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/HeathTarbert-sq-web_500.zip
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/PDFs/CustomerStories/Circle-CustomerStory-GluwaCapital.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/PDFs/CustomerStories/Circle-CustomerStory-Goldfinch.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/PDFs/CustomerStories/Circle-CustomerStory-LMAXGroup.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Priorities for Payment Stablecoin Legislation Factsheet (1) (2).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/USDC Factsheet Edit Ver. (1).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/USDC Uses Fact Sheet (1).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/USDCAttestationReports/2022 EUROC_Circle Examination Report December 2022.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/USDC_Euro Coin Factsheet Edit Ver. (2).pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/2022 Minnesota - License.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/2022 NMLS - Circle Internet Financial.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/2024 GA Circle License Certificate.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/2024 Massachusetts Circle License.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/2024 NMLS Information.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/GA 2022 License.pdf
+- https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/legal/licenses/MA 2022 License - Circle Internet Financial.pdf
+- https://bitcoin.org/bitcoin.pdf
+- https://ced.cat/wp-content/uploads/2019/03/InternationalMigration__2019_Bayona_Avila.pdf
+- https://circle.com/hubfs/6778953/CCTP/ChainSecurity_Circle_Circle_EVM_Bridge_audit.pdf
+- https://circle.com/hubfs/6778953/CCTP/ChainSecurity_Circle_Circle_EVM_Bridge_audit.pdf'
+- https://circleinternetfinancial.file.force.com
+- https://cts.businesswire.com/ct/CT?id=smartlinkamp;url=https://usa.visa.com/content/dam/VCOM/regional/na/us/Solutions/documents/visa-crypto.com-usdc-case-study.pdfamp;esheet=53548911amp;newsitemid=20230905549860amp;lan=en-USamp;anchor=successful+pilotamp;index=1amp;md5=ed92985bbcd06c6b0c8c2a2b496e4bce
+- https://cts.businesswire.com/ct/CT?id=smartlinkurl=https://usa.visa.com/content/dam/VCOM/regional/na/us/Solutions/documents/visa-crypto.com-usdc-case-study.pdfesheet=53548911newsitemid=20230905549860lan=en-USanchor=successful+pilotindex=1md5=ed92985bbcd06c6b0c8c2a2b496e4bce
+- https://dfi.wa.gov/file-complaint
+- https://drive.google.com/file/d/1JvjFKSxYmKZEBTzba9zppEKkV5Bc3BOU/view
+- https://flofr.gov/sitePages/fileacomplaint.htm
+- https://github.com/circlefin/txt2txn-service/blob/master/qa/test_cases.csv
+- https://go.chainalysis.com/2023-crypto-crime-report.html
+- https://help.circle.com/s/article/What-documents-are-required-to-apply-for-a-Circle-Account?language=en_US
+- https://help.circle.com/s/article/What-documents-are-required-to-apply-for-a-Circle-Account?language=en_US'
+- https://remittanceprices.worldbank.org/sites/default/files/rpw_main_report_and_annex_q221.pdf
+- https://uniswap.org/whitepaper-uniswapx.pdf
+- https://www.brettonwoods.org/sites/default/files/documents/BWC-Brief5-Gov-Issues-Crypto_WebVersion.pdf
+- https://www.bsp.gov.ph/Inclusive Finance/Financial Inclusion Reports and Publications/2021/2021FISToplineReport.pdf
+- https://www.bvnk.com/report/decade-of-digital-dollars
+- https://www.circle.com/en/circle-impact-report
+- https://www.circle.com/en/pressroom/circle-kicks-off-10-year-anniversary-in-2023-and-5-years-of-usdc-with-release-of-first-annual-state-of-the-usdc-economy-report-and-more
+- https://www.circle.com/en/pressroom/circle-launches-2024-state-of-the-usdc-economy-report
+- https://www.circle.com/en/pressroom/circles-global-impact-report-showcases-financial-inclusion-utility-of-usdc
+- https://www.circle.com/en/pressroom/crypto-industry-leaders-champion-free-multi-chain-scam-reporting-tool-chainabuse-to-empower-users-against-crypto-fraud
+- https://www.circle.com/en/reports/state-of-the-usdc-economy
+- https://www.circle.com/en/the-money-movement/ep-72-exporting-economic-freedom
+- https://www.circle.com/en/transparency#eurocoin-reports
+- https://www.circle.com/en/transparency#usdc-reports
+- https://www.circle.com/es-mx/reports/state-of-the-usdc-economy
+- https://www.circle.com/hubfs/6778953/CCTP/Circle_Internet_Financial_EVM_Bridge_Smart_Contract_Security_Audit_Report_Halborn_Final.pdf
+- https://www.circle.com/hubfs/Blog Posts/Circle Stablecoin Access Denial Policy_pdf.pdf
+- https://www.circle.com/hubfs/Circle Developer Credits - Terms and Conditions.pdf
+- https://www.circle.com/hubfs/Circle Developer Credits - Terms and Conditions.pdf'
+- https://www.circle.com/hubfs/Circle Research/Whitepapers/Perimeter_Protocol_Circle_Research.pdf
+- https://www.circle.com/hubfs/Circle Research/Whitepapers/Recoverable_Wrapper_Tokens_Circle_Research.pdf
+- https://www.circle.com/hubfs/CircleBrandUsePolicy.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report April 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report August 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report February 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report January 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report July 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report June 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report March 2024.pdf
+- https://www.circle.com/hubfs/EURC Attestations/2024 EURC_Examination Report May 2024.pdf
+- https://www.circle.com/hubfs/EUROC 2022_Circle Examination Report July 2022.pdf
+- https://www.circle.com/hubfs/EUROC 2022_Circle Examination Report Sept 2022.pdf
+- https://www.circle.com/hubfs/Euro Coin Access Denial Policy.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EURC_Circle Examination Report November 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EURC_Circle Examination Report October 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EURC_Circle Examination Report September 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EURC_Examination Report December 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report April 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report August 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report February 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report January 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report July 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report June 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report March 2023.pdf
+- https://www.circle.com/hubfs/Euro Coin Attestations/2023 EUROC_Circle Examination Report May 2023.pdf
+- https://www.circle.com/hubfs/Pressroom/brandkit/logo-downloads/circle-logo-2024.zip
+- https://www.circle.com/hubfs/Pressroom/brandkit/logo-downloads/eurc.zip
+- https://www.circle.com/hubfs/Pressroom/brandkit/logo-downloads/usdc.zip
+- https://www.circle.com/hubfs/USDCAttestationReports/2018/2018 USDC Circle Grant Thornton Report December.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2018/2018 USDC Circle Grant Thornton Report November.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2018/2018 USDC Circle Grant Thornton Report October.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report April.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report August.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report December.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report February.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report January.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report July.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report June.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report March.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report May.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report November.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report October.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2019/2019 USDC Circle Grant Thornton Report September.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report April.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report August.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report December.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report February.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report January.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report July.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report June.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report March.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report May.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report November.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report October.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2020/2020 USDC Circle Grant Thornton Report September.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report April.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report August.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report December.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report February.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report January.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report July.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report June.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report March.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report May.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report November.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report October.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2021/2021 USDC Circle Grant Thornton Report September.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report April.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report August.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report December.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report February.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report January.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report July.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report June.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report March.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report May.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report November.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report October.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2022/2022 USDC Circle Grant Thornton Report September.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023 USDC_Circle Examination Report February 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023 USDC_Circle Examination Report January 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report April 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report August 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report July 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report June 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report March 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report May 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report November 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report October 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Circle Examination Report September 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2023/2023 USDC_Examination Report December 2023.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report April 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report August 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report February 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report January 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report July 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report June 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report March 2024.pdf
+- https://www.circle.com/hubfs/USDCAttestationReports/2024/2024 USDC_Examination Report May 2024.pdf
+- https://www.circle.com/hubfs/USDC_EURC-MiCA-Sustainability-Indicators-Methodology_June-2024.pdf
+- https://www.circle.com/pt-br/reports/state-of-the-usdc-economy
+- https://www.commerce.alaska.gov/web/portals/3/pub/DBSGeneralComplaintFormupdated.pdf
+- https://www.dbcf.ms.gov/
+- https://www.dbf.georgia.gov/
+- https://www.federalreserve.gov/econres/ifdp/files/ifdp1334.pdf
+- https://www.imf.org/-/media/Files/News/Seminars/2023/11th-stats-forum/session-iv-fernando-lemos.ashx
+
+Failed URLs:
+- https://www.circle.com/en/case-studies/felix'
+- https://www.circle.com/en/circle-mint'
+- https://www.circle.com/en/programmable-wallets'
+- https://www.circle.com/en/solution
+- https://www.circle.com/en/transparency'
+- https://www.circle.com/en/usdc-multichain'
+
+Process finished with exit code 0
