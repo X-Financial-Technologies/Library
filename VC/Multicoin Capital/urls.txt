@@ -1,0 +1,65 @@
+Execution Time: 0:00:12.627388
+Found 54 files from 126 URLs
+Failed URLs: 2
+
+Discovered Files:
+- http://filecoin.io/
+- http://kadena.io/docs/chainweb_calculations_v7.pdf
+- http://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/capex.html
+- http://people.stern.nyu.edu/adamodar/pdfiles/papers/younggrowth.pdf
+- http://securities.stanford.edu/filings-documents/1064/DLSI00_03/201843_r01c_17CV06779.pdf
+- http://www.getbasecoin.com/basecoin_faq.pdf
+- https://api.ctia.org/wp-content/uploads/2021/07/CTIA-2021-Annual-Survey-Highlights_0727Update.pdf
+- https://archive.org/web/web.php
+- https://arxiv.org/pdf/1607.08011.pdf
+- https://assets.ctfassets.net/qtbqvna1l0yq/3lCxavxgZ0aciWvdkKvxL4/b5e38793eea97be308f00b4f84ae1bea/Huobi_Token_Analysis_and_Valuation_-English.pdf
+- https://assets.ctfassets.net/qtbqvna1l0yq/4XdZJHThSHWvk1NV2Tt9ZD/21a23e0d8e2937bb6a4a1f1ba057b5ad/Binance_Analysis.pdf
+- https://assets.ctfassets.net/qtbqvna1l0yq/4iQIxBN7fJk2hk74twmj9s/f71452818f74aca6320cfb70c73e648c/EOS_Analysis_and_Valuation.pdf
+- https://assets.ctfassets.net/qtbqvna1l0yq/5f1FAdRDF71JzD7CG5ZHeL/f0d52e3ae3b8c7bcfc63d8f29d004e76/Crypto_Mega_Theses.pdf
+- https://assets.ctfassets.net/qtbqvna1l0yq/7kGX2rQo4mlNLVz6d97Wl2/a757f968370023fdf1a4572abb7be0b8/Drift___DRIFT__Analysis_and_Valuation.pdf
+- https://assets.ctfassets.net/vyse88cgwfbl/2JwUN6EeDvWi02CyuQd2nJ/d7b3b4c3800ec70abd7282cc79fa2973/ISAE_3000R_-_Opinion_on_Consolidated_Financials_Figures_and_Reserves_Report_31.03.2024_RC134792024BD0043.pdf
+- https://bitcointalk.org/index.php?action=profile;u=7314;sa=showPosts
+- https://bravenewcoin.com/assets/Whitepapers/A-Note-on-Cryptocurrency-Stabilisation-Seigniorage-Shares.pdf
+- https://coinlist.co/assets/index/filecoin_index/Filecoin-Primer-c74e73db1d65598ca171397df9d219de6b7a7ef80a4886bb152c01883aea7e79.pdf
+- https://defirate.com/kyber-research-report/
+- https://dfinity.org/pdf-viewer/pdfs/viewer?file=../library/threshold-relay-blockchain-stanford.pdf
+- https://drive.google.com/file/d/1sbf-jE9FSA0WrPszw8XoP2jooQzCZRuq/view
+- https://dspace.mit.edu/bitstream/handle/1721.1/127476/1193019932-MIT.pdf
+- https://edennetwork.io/EDEN_Network___Whitepaper___2021_07.pdf
+- https://eta-publications.lbl.gov/sites/default/files/price-based_dr_as_a_resource_in_electricity_system_planning_-_final_11082023.pdf
+- https://feld.com/archives/2019/12/bringing-the-helium-network-to-boulder.html
+- https://filecoin.io/
+- https://filecoin.io/blog/posts/introducing-lurk-a-programming-language-for-recursive-zk-snarks/
+- https://github.com/filecoin-project
+- https://github.com/multicoincapital/crypto-archives#classical-consensus
+- https://github.com/multicoincapital/crypto-archives#nakamoto-consensus
+- https://github.com/zama-ai/fhevm/blob/main/fhevm-whitepaper.pdf
+- https://hal.inria.fr/hal-00944019/file/RR-2016-Consensus-optimal-V5.pdf
+- https://home.otoy.com/wp-content/uploads/2021/08/RoddenberryArchive_081221.pdf
+- https://medium.com/@arweave/arweave-ipfs-persistence-for-the-interplanetary-file-system-9f12981c36c3
+- https://niftygateway.com/profile/fvckrender
+- https://pmarchive.com/three_kinds_of_platforms_you_meet_on_the_internet.html
+- https://remittanceprices.worldbank.org/sites/default/files/rpw_main_report_and_annex_q123_final.pdf
+- https://remittanceprices.worldbank.org/sites/default/files/rpw_main_report_and_annex_q223.pdf
+- https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf
+- https://uploads-ssl.webflow.com/5e459e61116466aa9af84140/60afe6a2fd0815456857b1e7_How Glossier Built A Community Led Digital Strategy — Glossier — Food  Beverage — Q2 2021.pdf
+- https://uploads-ssl.webflow.com/5e459e61116466aa9af84140/60afe6a2fd0815456857b1e7_How Glossier Built A Community Led Digital Strategy — Glossier — Food amp; Beverage — Q2 2021.pdf
+- https://wax.io/documents/WAX_White_Paper.pdf?1519171466266
+- https://www.arweave.org/yellow-paper.pdf
+- https://www.businessresearchinsights.com/market-reports/reinsurance-market-109900
+- https://www.cs.utexas.edu/~dwu4/papers/XRDSFHE.pdf
+- https://www.forbes.com/sites/garthfriesen/2024/07/16/swiss-luxury-watch-market-struggles-to-find-a-bottom-report-finds/
+- https://www.forbes.com/sites/michaeldelcastillo/2020/08/25/bitcoin-investor-files-for-giant-350-million-ipo-for-possible-merger/#44829f89757a
+- https://www.futuremarketinsights.com/reports/second-hand-bag-market#:~:text=Second-hand Bag Market Outlook,6.10% during the forecast period
+- https://www.getrevue.co/profile/auroraeos
+- https://www.imf.org/-/media/Files/Publications/WP/2022/English/wpiea2022063-print-pdf.ashx#:~:text=Notwithstanding, the majority of corridors,higher than 5 per cent
+- https://www.nrel.gov/docs/fy15osti/63041.pdf
+- https://www.stellar.org/papers/stellar-consensus-protocol.pdf
+- https://www.tari.com/
+- https://www.theatlantic.com/business/archive/2011/10/how-brands-were-born-a-brief-history-of-modern-marketing/246012/
+
+Failed URLs:
+- https://multicoin.capital/2018/03/15/paths-to-tens-of-trillions/
+- https://multicoin.capital/2020/09/08/trade-offs-in-the-decentralized-bitmex-space/
+
+Process finished with exit code 0

@@ -1,4 +1,0 @@
-        "https://a16z.com/portfolio/",
-        "https://a16z.com/",
-        "https://info.a16z.com/",
-        "https://api.a16zcrypto.com/"

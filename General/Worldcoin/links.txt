@@ -1,0 +1,17 @@
+
+Worldcoin API services: https://status.worldcoin.org/api/services
+
+
+
+wallet bridge architecture: https://github.com/worldcoin/wallet-bridge
+
+my repo: https://github.com/worldcoin/wallet-bridge
+
+
+pictures + flows
+
+https://whitepaper.worldcoin.org/images/whitepaper/notion2/image27.png
+
+https://whitepaper.worldcoin.org/images/whitepaper/notion2/image13.jpg
+
+https://whitepaper.worldcoin.org/images/whitepaper/notion2/image52.jpg
