@@ -1,0 +1,25 @@
+API Access:
+$200/month for up to 1,000,000 API requests/month (higher volume usage available by request)
+
+Order Fees:
+Applied on buy and sell orders against the order value (not inclusive of gas fees)
+Progressive pricing available by buy volume:
+
+Cumulative Volume | Order Fee
+$0-$100,000 | 50 bps (0.50%) - list price
+$100,001-$1,000,000 | 40 bps (0.40%)
+$1,000,001-$10,000,000 | 35 bps (0.35%)
+$10,000,001+ | 25 bps (0.25%)
+
+Buy fees:
+1 USDC/order + Order Fee (Order Fee waived for first 12-months)
+
+Sell fees:
+1 USDC/order + Order Fee
+
+Network fees:
+To be paid by Licensee directly; not covered by this License
+
+Payment Terms:
+- Fixed costs paid annually in advance by invoice
+- Variable costs automatically deducted from every transaction per Dinari TOS, may be reduced due to order volume as described above
