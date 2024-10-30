@@ -1,0 +1,10 @@
+Purchases and redemptions should be made with USDC or USD (fiat). Mountain Protocol does not accept ARB tokens to purchase USDM. We can contact the Arbitrum Treasury with Market Makers that already work USDM, in case needed.
+
+Once onboarded into the Mountain Protocol’s platform, any USDC deposit will be automatically converted into USDM, which can be later withdrawn.
+
+USDC is offramped at least daily into fiat and sent to one of our brokers for the purchase of eligible USDM Reserves assets (e.g., Treasury Bills). Purchase is done by an independent investment manager to ensure compliance with the investment mandate.
+
+All accounts require whitelisting to ensure a secure flow of funds. This includes a non-executive approval from our “3rd party signer”, to avoid collusion.
+
+This process is summarized in the following chart:
+https://global.discourse-cdn.com/flex029/uploads/arbitrum1/original/2X/a/a5e91264d48dd74ae7c8b7c08bc8c8bd5a1776b5.png
