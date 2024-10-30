@@ -1,0 +1,4 @@
+NAV = {Market Value of All
+Securities Held by Fund + Cash and
+Equivalent Holdings – Fund Liabilities}
+÷ Total Fund Shares Outstanding
