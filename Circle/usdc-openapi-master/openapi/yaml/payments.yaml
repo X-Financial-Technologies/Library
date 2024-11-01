@@ -1,0 +1,5184 @@
+openapi: 3.0.2
+servers:
+- url: https://api-sandbox.circle.com
+info:
+  version: 2.13.0
+  title: Payments API
+  description: 'The Circle Payments API allows you to take payments from your end
+    users via traditional methods such as debit & credit cards and receive settlement
+    in USDC.
+
+
+    The Circle Payments API has been designed with any business or internet commerce
+    in mind, not just crypto applications, and it''s based on Circle''s extensive
+    experience processing millions of card payments since 2014.
+
+    '
+tags:
+- name: Payments
+  description: Create, cancel, refund, and get updates on card payments.
+- name: Pull Crypto Payments
+  description: Create pull crypto payments and generate typed messages for signing.
+- name: Crypto Payment Intents
+  description: Create and track intent for end user to pay via crypto.
+- name: Cards
+  description: Link, update, and get information on debit/credit cards.
+- name: Payment Tokens
+  description: Create Apple Pay and Google Pay payment tokens.
+- name: Settlements
+  description: Get information on settlement batches.
+- name: Chargebacks
+  description: Get information on card chargebacks.
+- name: Balances
+  description: Get information on settled and unsettled balances.
+- name: Checkout Sessions
+  description: Create, get, extend a checkout session.
+paths:
+  /v1/payments:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a payment
+      operationId: createPayment
+      tags:
+      - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a payment.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreatePaymentResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DetailedPayment'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: payment
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      source:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: card
+                      description: Payment
+                      status: pending
+                      captured: false
+                      captureAmount:
+                        amount: '3.14'
+                        currency: USD
+                      captureDate: '2020-04-10T02:13:30.000Z'
+                      requiredAction:
+                        type: three_d_secure_required
+                        redirectUrl: https://example.org
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                        threeDSecure: pass
+                        eci: '00'
+                      cancel:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: cancel
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        originalPayment:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      refunds:
+                      - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: refund
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        originalPayment:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        cancel:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: cancel
+                          description: Payment
+                          status: pending
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      trackingRef: '24910599141085313498894'
+                      errorCode: payment_failed
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    get:
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Source'
+      - $ref: '#/components/parameters/SettlementId'
+      - $ref: '#/components/parameters/PaymentIntentId'
+      - $ref: '#/components/parameters/PaymentSourceType'
+      - $ref: '#/components/parameters/PaymentStatus'
+      - $ref: '#/components/parameters/From'
+      - $ref: '#/components/parameters/To'
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      summary: List all payments
+      operationId: listPayments
+      tags:
+      - Payments
+      responses:
+        '200':
+          description: Successfully retrieved a list of payments.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListPaymentsResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      oneOf:
+                      - $ref: '#/components/schemas/FiatPayment'
+                      - $ref: '#/components/schemas/CryptoPayment'
+                      - $ref: '#/components/schemas/FiatCancel'
+                      - $ref: '#/components/schemas/FiatRefund'
+              examples:
+                Fiat Payment:
+                  value:
+                    data:
+                    - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: payment
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      fromAmount:
+                        amount: '3.14'
+                        currency: EUR
+                      source:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: card
+                      description: Payment
+                      status: pending
+                      captured: false
+                      captureAmount:
+                        amount: '3.14'
+                        currency: USD
+                      captureDate: '2020-04-10T02:13:30.000Z'
+                      requiredAction:
+                        type: three_d_secure_required
+                        redirectUrl: https://example.org
+                      cancel:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: cancel
+                        description: Payment
+                        status: pending
+                        createDate: '2020-04-10T02:13:30.000Z'
+                      refunds:
+                      - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: payment
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        description: Payment
+                        status: pending
+                        requiredAction:
+                          type: three_d_secure_required
+                          redirectUrl: https://example.org
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        createDate: '2020-04-10T02:13:30.000Z'
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+                Crypto Payment:
+                  value:
+                    data:
+                    - id: 66c56b6a-fc79-338b-8b94-aacc4f0f18de
+                      type: payment
+                      status: paid
+                      amount:
+                        amount: '1.00'
+                        currency: USD
+                      fees:
+                        amount: '0.01'
+                        currency: USD
+                      networkFees:
+                        amount: '0.01'
+                        currency: USD
+                        feePayer: endUser
+                      merchantId: f1397191-56e6-42fd-be86-0a7b9bd91522
+                      merchantWalletId: '1000999922'
+                      paymentIntentId: 6e4d4047-db14-4c09-b238-1215aee50d03
+                      settlementAmount:
+                        amount: '1.00'
+                        currency: USD
+                      fromAddresses:
+                        chain: ETH
+                        addresses:
+                        - '0x0d4344cFF68F72A5B9Abded37CA5862941a62050'
+                      depositAddress:
+                        chain: ETH
+                        address: '0x97de855690955e0da79ce5c1b6804847e7070c7f'
+                      transactionHash: '0x7351585460bd657f320b9afa02a52c26d89272d0d10cc29913eb8b28e64fd906'
+                      createDate: '2022-07-21T20:16:35.092852Z'
+                      updateDate: '2022-07-21T20:19:24.719313Z'
+                Fiat Cancel:
+                  value:
+                    data:
+                    - id: 2dc266f5-0658-48ec-a81f-9c768279564d
+                      type: cancel
+                      status: confirmed
+                      description: Cancel Payment
+                      amount:
+                        amount: '10.00'
+                        currency: USD
+                      createDate: '2022-04-21T21:50:34.274Z'
+                      updateDate: '2022-04-21T21:50:34.647839Z'
+                      merchantId: b1e4e9fe-0bf1-43ad-86c7-3ab993b0051b
+                      merchantWalletId: '1000174786'
+                      source:
+                        id: bc9157fe-5d73-48fe-9e77-9f6723bdcfeb
+                        type: card
+                      originalPayment:
+                        id: 2812f549-062a-4bdd-8ee5-b521aa48a84d
+                        type: payment
+                        status: failed
+                        createDate: '2022-04-21T21:47:41.501Z'
+                        updateDate: '2022-04-21T21:50:34.669012Z'
+                      reason: requested_by_customer
+                Fiat Refund:
+                  value:
+                    data:
+                    - id: 03fbe7da-096a-4763-af77-e43006cd83be
+                      type: refund
+                      status: paid
+                      description: Refund Payment
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      fees:
+                        amount: '0.00'
+                        currency: USD
+                      createDate: '2022-04-21T12:49:21.146Z'
+                      updateDate: '2022-04-21T12:54:10.596976Z'
+                      merchantId: b1e4e9fe-0bf1-43ad-86c7-3ab993b0051b
+                      merchantWalletId: '1000174786'
+                      source:
+                        id: 45fa5524-41b9-48ca-94cd-f45cb36cce4d
+                        type: card
+                      originalPayment:
+                        id: 895f8db5-1d8c-407d-9533-b5ca3fbcc74e
+                        type: payment
+                        status: paid
+                        createDate: '2022-04-06T19:33:29.690Z'
+                        updateDate: '2022-04-06T19:47:23.681180Z'
+                      reason: requested_by_customer
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/payments/{id}:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      summary: Get a payment
+      operationId: getPayment
+      tags:
+      - Payments
+      responses:
+        '200':
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          description: Successfully retrieved a payment.
+          content:
+            application/json:
+              schema:
+                title: GetPaymentResponse
+                properties:
+                  data:
+                    oneOf:
+                    - $ref: '#/components/schemas/FiatPaymentPolymorphic'
+                    - $ref: '#/components/schemas/CryptoPayment'
+              examples:
+                Fiat Payment:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: payment
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      fromAmount:
+                        amount: '3.14'
+                        currency: EUR
+                      source:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: card
+                      description: Payment
+                      status: pending
+                      requiredAction:
+                        type: three_d_secure_required
+                        redirectUrl: https://example.org
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                        threeDSecure: pass
+                        eci: '00'
+                      originalPayment:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: payment
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        captured: false
+                        captureAmount:
+                          amount: '3.14'
+                          currency: USD
+                        captureDate: '2020-04-10T02:13:30.000Z'
+                        requiredAction:
+                          type: three_d_secure_required
+                          redirectUrl: https://example.org
+                        cancel:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: cancel
+                          description: Payment
+                          status: pending
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        refunds:
+                        - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      cancel:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: cancel
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        originalPayment:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      refunds:
+                      - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: refund
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        originalPayment:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        cancel:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: cancel
+                          description: Payment
+                          status: pending
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      trackingRef: '24910599141085313498894'
+                      externalRef: YYYYMMDDXXXXXXXX012345
+                      errorCode: payment_failed
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+                Crypto Payment:
+                  value:
+                    data:
+                      id: 66c56b6a-fc79-338b-8b94-aacc4f0f18de
+                      type: payment
+                      status: paid
+                      amount:
+                        amount: '1.00'
+                        currency: USD
+                      fees:
+                        amount: '0.01'
+                        currency: USD
+                      networkFees:
+                        amount: '0.01'
+                        currency: USD
+                        feePayer: endUser
+                      merchantId: f1397191-56e6-42fd-be86-0a7b9bd91522
+                      merchantWalletId: '1000999922'
+                      paymentIntentId: 6e4d4047-db14-4c09-b238-1215aee50d03
+                      settlementAmount:
+                        amount: '1.00'
+                        currency: USD
+                      fromAddresses:
+                        chain: ETH
+                        addresses:
+                        - '0x0d4344cFF68F72A5B9Abded37CA5862941a62050'
+                      depositAddress:
+                        chain: ETH
+                        address: '0x97de855690955e0da79ce5c1b6804847e7070c7f'
+                      transactionHash: '0x7351585460bd657f320b9afa02a52c26d89272d0d10cc29913eb8b28e64fd906'
+                      createDate: '2022-07-21T20:16:35.092852Z'
+                      updateDate: '2022-07-21T20:19:24.719313Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/{id}/capture:
+    post:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureCreationRequest'
+      summary: Capture a payment (BETA)
+      description: 'Warning: Please contact Circle support if you are planning on
+        using this feature.
+
+
+        The given amount will be captured for the authorized payment if possible.
+        If no amount is specified, the full amount
+
+        will be captured. You can only capture once per authorization.
+
+
+        A successful response does *not* mean the payment has been captured. It only
+        means the capture request was successfully submitted.
+
+        '
+      operationId: capturePayment
+      tags:
+      - Payments
+      responses:
+        '202':
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          description: Payment capture successfully initiated.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/{id}/cancel:
+    post:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelCreationRequest'
+      summary: Cancel a payment
+      description: 'The payment will be voided if possible meaning the payment source
+        will not be charged & the payment will never settle.
+
+        Otherwise, the payment will be refunded meaning the payment source will be
+        charged & the payment will be refunded from deductions of future settlements.
+
+        Not all payments are eligible to be cancelled.
+
+
+        A successful response does *not* mean the payment has been cancelled; it only
+        means the cancellation request is successfully submitted.
+
+        '
+      operationId: cancelPayment
+      tags:
+      - Payments
+      responses:
+        '200':
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          description: Payment cancellation successfully initiated.
+          content:
+            application/json:
+              schema:
+                title: CancelPaymentResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DetailedCancel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: cancel
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      source:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: card
+                      description: Payment
+                      status: pending
+                      originalPayment:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: payment
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        fromAmount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        captured: false
+                        captureAmount:
+                          amount: '3.14'
+                          currency: USD
+                        captureDate: '2020-04-10T02:13:30.000Z'
+                        requiredAction:
+                          type: three_d_secure_required
+                          redirectUrl: https://example.org
+                        cancel:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: cancel
+                          description: Payment
+                          status: pending
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        refunds:
+                        - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      trackingRef: '24910599141085313498894'
+                      errorCode: payment_failed
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      refund: false
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/{id}/refund:
+    post:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundCreationRequest'
+      summary: Refund a payment
+      description: 'The payment source will be refunded if possible. Not all payments
+        are eligible to be cancelled.
+
+
+        A successful response does *not* mean the payment has been refunded; it only
+        means the refund request is successfully submitted.
+
+        '
+      operationId: refundPayment
+      tags:
+      - Payments
+      responses:
+        '200':
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          description: Payment refund successfully initiated.
+          content:
+            application/json:
+              schema:
+                title: RefundPaymentResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DetailedRefund'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: refund
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      source:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: card
+                      description: Payment
+                      status: pending
+                      originalPayment:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: payment
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        fromAmount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        captured: false
+                        captureAmount:
+                          amount: '3.14'
+                          currency: USD
+                        captureDate: '2020-04-10T02:13:30.000Z'
+                        requiredAction:
+                          type: three_d_secure_required
+                          redirectUrl: https://example.org
+                        cancel:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: cancel
+                          description: Payment
+                          status: pending
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        refunds:
+                        - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      cancel:
+                        id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                        type: cancel
+                        merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        merchantWalletId: '212000'
+                        amount:
+                          amount: '3.14'
+                          currency: USD
+                        source:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: card
+                        description: Payment
+                        status: pending
+                        originalPayment:
+                          id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                          type: payment
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          description: Payment
+                          status: pending
+                          requiredAction:
+                            type: three_d_secure_required
+                            redirectUrl: https://example.org
+                          fees:
+                            amount: '3.14'
+                            currency: USD
+                          createDate: '2020-04-10T02:13:30.000Z'
+                        fees:
+                          amount: '3.14'
+                          currency: USD
+                        channel: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+                        createDate: '2020-04-10T02:13:30.000Z'
+                        updateDate: '2020-04-10T02:13:30.000Z'
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      trackingRef: '24910599141085313498894'
+                      errorCode: payment_failed
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/presign:
+    get:
+      parameters:
+      - name: endUserAddress
+        description: User wallet address
+        in: query
+        required: true
+        schema:
+          type: string
+          example: '0xdB055877e6c13b6A6B25aBcAA29B393777dD0a73'
+      - name: paymentIntentId
+        description: Payment intent id which is from the create payment intent endpoint
+          response
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: b48c8962-8e9f-40c3-9f1d-d9adde2ffe61
+      - name: amount
+        required: false
+        in: query
+        schema:
+          type: string
+          example: '2.3'
+      - name: currency
+        description: Only support USD at the moment
+        required: false
+        in: query
+        schema:
+          type: string
+          enum:
+          - USD
+      security:
+      - bearerAuth: []
+      summary: Get a typed message for signing
+      operationId: presign
+      tags:
+      - Pull Crypto Payments
+      responses:
+        '200':
+          description: Successfully got a typed message for signing
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateCryptoPaymentResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PresignResponse'
+              examples:
+                response:
+                  value:
+                    data:
+                      typedData:
+                        domain:
+                          name: USD Coin
+                          verifyingContract: '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
+                          version: '2'
+                          chainId: 5
+                        message:
+                          from: '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+                          to: '0xdB055877e6c13b6A6B25aBcAA29B393777dD0a73'
+                          value: '5003456'
+                          validAfter: 1675317371
+                          validBefore: 1675107967
+                          nonce: '0x4f716a578b96592599c3ca7b2a46453df87511d4809f608cec982d6e83632604'
+                        totalAmount:
+                          amount: '3.14'
+                          currency: USD
+                        feeChargeModel: endUser
+                        networkFeeQuote:
+                          quoteId: 5d0bb4e7-bd83-44dd-b8f5-53ddd5f35a3a
+                          amount:
+                            amount: '3.14'
+                            currency: USD
+                          expiresAt: '2023-02-02T06:01:21.152737680Z'
+                        types:
+                          EIP712Domain:
+                          - name: name
+                            type: string
+                          - name: version
+                            type: string
+                          - name: chainId
+                            type: uint256
+                          - name: verifyingContract
+                            type: address
+                          TransferWithAuthorization:
+                          - name: from
+                            type: address
+                          - name: to
+                            type: address
+                          - name: validAfter
+                            type: uint256
+                          - name: validBefore
+                            type: uint256
+                          - name: nonce
+                            type: byte32
+                        primaryType: TransferWithAuthorization
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/crypto:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a crypto payment
+      operationId: createCryptoPayment
+      tags:
+      - Pull Crypto Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoPaymentCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a crypto payment.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateCryptoPaymentResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CryptoPayment'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      type: payment
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantWalletId: '212000'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      status: pending
+                      fees:
+                        amount: '3.14'
+                        currency: USD
+                      networkFees:
+                        amount: '3.14'
+                        currency: USD
+                        feePayer: endUser
+                      paymentIntentId: 6e4d4047-db14-4c09-b238-1215aee50d03
+                      settlementAmount:
+                        amount: '3.14'
+                        currency: USD
+                      fromAddresses:
+                        chain: ALGO
+                        addresses:
+                        - '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+                      depositAddress:
+                        chain: ALGO
+                        address: '0x97de855690955e0da79ce5c1b6804847e7070c7f'
+                        addressTag: '123456789'
+                      transactionHash: '0x7351585460bd657f320b9afa02a52c26d89272d0d10cc29913eb8b28e64fd906'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/paymentIntents:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a payment intent
+      description: Create a transient or continuous payment intent
+      operationId: createPaymentIntent
+      tags:
+      - Crypto Payment Intents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/PaymentIntentCreationRequest'
+              - $ref: '#/components/schemas/ContinuousPaymentIntentCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a payment intent.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreatePaymentIntentResponse
+                properties:
+                  data:
+                    oneOf:
+                    - $ref: '#/components/schemas/PaymentIntent'
+                    - $ref: '#/components/schemas/ContinuousPaymentIntent'
+              examples:
+                Transient Payment Intent:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      settlementCurrency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      paymentIds: []
+                      timeline:
+                      - status: created
+                        time: '2022-07-21T20:13:35.579331Z'
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:19:24.859052Z'
+                Continuous Payment Intent:
+                  value:
+                    data:
+                      id: e2e90ba3-9d1f-490d-9460-24ac6eb55a1b
+                      currency: USD
+                      settlementCurrency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      timeline:
+                      - status: created
+                        time: '2023-01-21T20:13:35.579331Z'
+                      type: continuous
+                      createDate: '2023-01-21T20:13:35.578678Z'
+                      updateDate: '2023-01-21T20:13:35.578678Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    get:
+      security:
+      - bearerAuth: []
+      summary: List all payment intents
+      operationId: listPaymentIntents
+      tags:
+      - Crypto Payment Intents
+      parameters:
+      - name: status
+        description: Filters by the most recent `timeline.status` within the payment
+          intent.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - created
+          - pending
+          - complete
+          - expired
+          - failed
+      - name: context
+        description: Filters by the most recent `timeline.context` within the payment
+          intent.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - underpaid
+          - paid
+          - overpaid
+      - $ref: '#/components/parameters/From'
+      - $ref: '#/components/parameters/To'
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Successfully retrieved a list of payment intents.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListPaymentIntentsResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      anyOf:
+                      - $ref: '#/components/schemas/PaymentIntent'
+                      - $ref: '#/components/schemas/ContinuousPaymentIntent'
+              examples:
+                Transient Payment Intent:
+                  value:
+                    data:
+                    - id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      settlementCurrency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      paymentIds: []
+                      timeline:
+                      - status: created
+                        time: '2022-07-21T20:13:35.579331Z'
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:19:24.859052Z'
+                Continuous Payment Intent:
+                  value:
+                    data:
+                    - id: e2e90ba3-9d1f-490d-9460-24ac6eb55a1b
+                      currency: USD
+                      settlementCurrency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      timeline:
+                      - status: created
+                        time: '2023-01-21T20:13:35.579331Z'
+                      type: continuous
+                      createDate: '2023-01-21T20:13:35.578678Z'
+                      updateDate: '2023-01-21T20:13:35.578678Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/paymentIntents/{id}:
+    get:
+      security:
+      - bearerAuth: []
+      summary: Get a payment intent
+      operationId: getPaymentIntent
+      tags:
+      - Crypto Payment Intents
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Successfully retrieved a payment intent.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetPaymentIntentResponse
+                properties:
+                  data:
+                    anyOf:
+                    - $ref: '#/components/schemas/PaymentIntent'
+                    - $ref: '#/components/schemas/ContinuousPaymentIntent'
+              examples:
+                Transient Payment Intent:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      settlementCurrency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      paymentIds: []
+                      timeline:
+                      - status: created
+                        time: '2022-07-21T20:13:35.579331Z'
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:19:24.859052Z'
+                Continuous Payment Intent:
+                  value:
+                    data:
+                      id: e2e90ba3-9d1f-490d-9460-24ac6eb55a1b
+                      currency: USD
+                      settlementCurrency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      timeline:
+                      - status: created
+                        time: '2023-01-21T20:13:35.579331Z'
+                      type: continuous
+                      createDate: '2023-01-21T20:13:35.578678Z'
+                      updateDate: '2023-01-21T20:13:35.578678Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/paymentIntents/{id}/expire:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Expire a payment intent
+      operationId: expirePaymentIntent
+      tags:
+      - Crypto Payment Intents
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Successfully expired a payment intent.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ExpirePaymentIntentResponse
+                properties:
+                  data:
+                    anyOf:
+                    - $ref: '#/components/schemas/PaymentIntent'
+                    - $ref: '#/components/schemas/ContinuousPaymentIntent'
+              examples:
+                Transient Payment Intent:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      settlementCurrency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      paymentIds: []
+                      timeline:
+                      - status: created
+                        time: '2022-07-21T20:13:35.579331Z'
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:19:24.859052Z'
+                Continuous Payment Intent:
+                  value:
+                    data:
+                      id: e2e90ba3-9d1f-490d-9460-24ac6eb55a1b
+                      currency: USD
+                      settlementCurrency: USD
+                      amountPaid:
+                        amount: '0.00'
+                        currency: USD
+                      paymentMethods:
+                      - type: blockchain
+                        chain: ETH
+                      timeline:
+                      - status: created
+                        time: '2023-01-21T20:13:35.579331Z'
+                      type: continuous
+                      createDate: '2023-01-21T20:13:35.578678Z'
+                      updateDate: '2023-01-21T20:13:35.578678Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/paymentIntents/{id}/refund:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Refund a payment intent
+      operationId: refundPaymentIntent
+      tags:
+      - Crypto Payment Intents
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoRefundCreationRequest'
+      responses:
+        '201':
+          description: Crypto refund successfully created for the given payment intent.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateCryptoRefundResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CryptoPayment'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3389f4ba-aafd-4eef-aaa2-3292df8f62e6
+                      type: refund
+                      status: pending
+                      amount:
+                        currency: USD
+                      merchantId: 5ffea093-d210-44b4-a7ca-ad33b9498188
+                      merchantWalletId: '1000999922'
+                      paymentIntentId: 77c91fe9-e603-4e7b-9672-1ef8ac502cf6
+                      settlementAmount:
+                        amount: '1.00'
+                        currency: ETH
+                      fromAddresses:
+                        chain: ETH
+                        addresses:
+                        - '0x0d4344cFF68F72A5B9Abded37CA5862941a62050'
+                      depositAddress:
+                        chain: ETH
+                        address: '0x97de855690955e0da79ce5c1b6804847e7070c7f'
+                      createDate: '2022-07-21T20:16:35.092852Z'
+                      updateDate: '2022-07-21T20:19:24.719313Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/cards:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a card
+      operationId: createCard
+      tags:
+      - Cards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a card.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateCardResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Card'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      status: pending
+                      billingDetails:
+                        name: Satoshi Nakamoto
+                        city: Boston
+                        country: US
+                        line1: 100 Money Street
+                        line2: Suite 1
+                        district: MA
+                        postalCode: '01234'
+                      expMonth: 1
+                      expYear: 2020
+                      network: VISA
+                      last4: '0123'
+                      bin: '401230'
+                      issuerCountry: US
+                      fundingType: credit
+                      fingerprint: eb170539-9e1c-4e92-bf4f-1d09534fdca2
+                      errorCode: verification_failed
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+    get:
+      security:
+      - bearerAuth: []
+      summary: List all cards
+      operationId: listCards
+      tags:
+      - Cards
+      parameters:
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Successfully retrieved a list of cards.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListCardsResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimpleCard'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      status: pending
+                      billingDetails:
+                        country: US
+                        district: MA
+                      expMonth: 1
+                      expYear: 2020
+                      network: VISA
+                      bin: '401230'
+                      issuerCountry: US
+                      fundingType: credit
+                      fingerprint: eb170539-9e1c-4e92-bf4f-1d09534fdca2
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/cards/{id}:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      summary: Get a card
+      operationId: getCard
+      tags:
+      - Cards
+      responses:
+        '200':
+          description: Successfully retrieved a card.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetCardResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Card'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      status: pending
+                      billingDetails:
+                        name: Satoshi Nakamoto
+                        city: Boston
+                        country: US
+                        line1: 100 Money Street
+                        line2: Suite 1
+                        district: MA
+                        postalCode: '01234'
+                      expMonth: 1
+                      expYear: 2020
+                      network: VISA
+                      last4: '0123'
+                      bin: '401230'
+                      issuerCountry: US
+                      fundingType: credit
+                      fingerprint: eb170539-9e1c-4e92-bf4f-1d09534fdca2
+                      errorCode: verification_failed
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      summary: Update a card
+      operationId: updateCard
+      tags:
+      - Cards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardUpdate'
+      responses:
+        '200':
+          description: Succesfully modified a card.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: UpdateCardResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Card'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      status: pending
+                      billingDetails:
+                        name: Satoshi Nakamoto
+                        city: Boston
+                        country: US
+                        line1: 100 Money Street
+                        line2: Suite 1
+                        district: MA
+                        postalCode: '01234'
+                      expMonth: 1
+                      expYear: 2020
+                      network: VISA
+                      last4: '0123'
+                      bin: '401230'
+                      issuerCountry: US
+                      fundingType: credit
+                      fingerprint: eb170539-9e1c-4e92-bf4f-1d09534fdca2
+                      errorCode: verification_failed
+                      verification:
+                        avs: D
+                        cvv: not_requested
+                      riskEvaluation:
+                        decision: approved
+                        reason: '3000'
+                      metadata:
+                        email: satoshi@circle.com
+                        phoneNumber: '+14155555555'
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+  /v1/paymentTokens:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a payment token
+      description: Convert a digital wallet (Apple Pay, Google Pay) token to a single-use
+        payment token.
+      operationId: createPaymentToken
+      tags:
+      - Payment Tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentTokenRequest'
+      responses:
+        '201':
+          description: Successfully converted a digital token to a Circle token account.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreatePaymentTokenResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PaymentToken'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: gc988ed5-c189-4f70-a074-e5beb7eb8e32
+                      type: applepay
+                      expiresOn: '2022-01-18T19:20:00Z'
+                      cardDetails:
+                        expMonth: 1
+                        expYear: 2020
+                        network: VISA
+                        last4: '0123'
+                        bin: '401230'
+                        fundingType: credit
+                        issuerCountry: US
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/settlements:
+    get:
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/From'
+      - $ref: '#/components/parameters/To'
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      summary: List all settlements
+      operationId: listSettlements
+      tags:
+      - Settlements
+      responses:
+        '200':
+          description: Successfully retrieved a list of settlements.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetSettlementsResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Settlement'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      merchantWalletId: '212000'
+                      walletId: '12345'
+                      totalDebits:
+                        amount: '3.14'
+                        currency: USD
+                      totalCredits:
+                        amount: '3.14'
+                        currency: USD
+                      paymentFees:
+                        amount: '3.14'
+                        currency: USD
+                      chargebackFees:
+                        amount: '3.14'
+                        currency: USD
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/settlements/{id}:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      summary: Get a settlement
+      operationId: getSettlement
+      tags:
+      - Settlements
+      responses:
+        '200':
+          description: Successfully retrieved a settlement.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetSettlementResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Settlement'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      merchantWalletId: '212000'
+                      walletId: '12345'
+                      totalDebits:
+                        amount: '3.14'
+                        currency: USD
+                      totalCredits:
+                        amount: '3.14'
+                        currency: USD
+                      paymentFees:
+                        amount: '3.14'
+                        currency: USD
+                      chargebackFees:
+                        amount: '3.14'
+                        currency: USD
+                      createDate: '2020-04-10T02:13:30.000Z'
+                      updateDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/chargebacks:
+    get:
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/PaymentId'
+      - $ref: '#/components/parameters/From'
+      - $ref: '#/components/parameters/To'
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      summary: List all chargebacks
+      description: 'Retrieve list of chargebacks. Results will be sorted by create
+        date descending: more recent chargebacks will be at the beginning of the list.
+
+        '
+      operationId: listChargebacks
+      tags:
+      - Chargebacks
+      responses:
+        '200':
+          description: Successfully retrieved a list of chargebacks.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListChargebacksResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BasicChargeback'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      paymentId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      reasonCode: '10.4'
+                      status: active
+                      category: Canceled Recurring Payment
+                      history:
+                      - type: 1st Chargeback
+                        chargebackAmount:
+                          amount: '3.14'
+                          currency: USD
+                        fee:
+                          amount: '3.14'
+                          currency: USD
+                        description: The cardholder claims an unauthorized transaction
+                          occurred.
+                        settlementId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        createDate: '2020-04-10T02:13:30.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/chargebacks/{id}:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      security:
+      - bearerAuth: []
+      summary: Get a chargeback
+      operationId: getChargeback
+      tags:
+      - Chargebacks
+      responses:
+        '200':
+          description: Successfully retrieved a chargeback.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetChargebackResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BasicChargeback'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: b8627ae8-732b-4d25-b947-1df8f4007a29
+                      paymentId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      merchantId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                      reasonCode: '10.4'
+                      status: active
+                      category: Canceled Recurring Payment
+                      history:
+                      - type: 1st Chargeback
+                        chargebackAmount:
+                          amount: '3.14'
+                          currency: USD
+                        fee:
+                          amount: '3.14'
+                          currency: USD
+                        description: The cardholder claims an unauthorized transaction
+                          occurred.
+                        settlementId: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+                        createDate: '2020-04-10T02:13:30.000Z'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/mocks/cards/chargebacks:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a mock chargeback
+      description: In the sandbox environment, initiate a mock chargeback of a specified
+        payment.  The entire payment will be charged back for its full value.  The
+        payment must be in the `paid` state (otherwise the endpoint will return a
+        `404`), and each payment can only be charged back once (otherwise the endpoint
+        will return a `409`).  This endpoint is only available in the sandbox environment.
+      operationId: createMockChargeback
+      tags:
+      - Chargebacks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MockChargebackCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a mock chargeback.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateMockChargebackResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MockChargeback'
+              examples:
+                response:
+                  value:
+                    data: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/exchange/quotes:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Fetch exchange rate
+      operationId: exchangeRate
+      description: 'Fetches an indicative exchange rate between two currencies. Either
+        the from currency or to currency must be USD.
+
+
+        Note: The current market exchange rate will be applied when Circle receives
+        the deposit.
+
+        '
+      tags:
+      - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeRateRequest'
+            examples:
+              Null amounts:
+                value:
+                  from:
+                    currency: MXN
+                  to:
+                    currency: USD
+              Non-null from amount:
+                value:
+                  from:
+                    amount: 5.05
+                    currency: MXN
+                  to:
+                    currency: USD
+              Non-null to amount:
+                value:
+                  from:
+                    currency: MXN
+                  to:
+                    amount: 5.05
+                    currency: USD
+      responses:
+        '201':
+          description: Successfully fetched exchange rate.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: FetchExchangeRateResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ExchangeRateResponse'
+              examples:
+                Null amounts:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      rate: 17.0531
+                      from:
+                        currency: MXN
+                      to:
+                        currency: USD
+                      timestamp: '2022-07-21T20:13:35.578678Z'
+                Non-null from amount:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      rate: 17.0531
+                      from:
+                        amount: 5.05
+                        currency: MXN
+                      to:
+                        amount: 0.29
+                        currency: USD
+                      timestamp: '2022-07-21T20:13:35.578678Z'
+                Non-null to amount:
+                  value:
+                    data:
+                      id: 8755d0ea-14f9-4259-b092-de23c14b6568
+                      rate: 17.0531
+                      from:
+                        amount: 96.12
+                        currency: MXN
+                      to:
+                        amount: 5.05
+                        currency: USD
+                      timestamp: '2022-07-21T20:13:35.578678Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/balances:
+    get:
+      security:
+      - bearerAuth: []
+      summary: List all balances
+      description: Retrieves the balance of merchant funds that have settled and also
+        of funds that have been sent for processing but have not yet settled.
+      operationId: listBalances
+      tags:
+      - Balances
+      responses:
+        '200':
+          description: Successfully retrieved balances.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListBalancesResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Balances'
+              examples:
+                response:
+                  value:
+                    data:
+                      available:
+                      - amount: '3.14'
+                        currency: USD
+                      unsettled:
+                      - amount: '3.14'
+                        currency: USD
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/checkoutSessions:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Create a checkout session
+      operationId: createCheckoutSession
+      tags:
+      - Checkout Sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutSessionCreationRequest'
+      responses:
+        '201':
+          description: Successfully created a checkout session.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: CreateCheckoutSessionResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CheckoutSession'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3e4f4108-cbb4-4620-bd30-4bcf8c28ca20
+                      type: checkout_session
+                      successUrl: https://www.example.com/success
+                      clientToken: ck_test_19NoQz3jDq3mKgJFEuMkWs4dCk6Eiq1GZShWMF_jY_vL3dOAoT3EiTTgEprqaVcGbzB3pszRZhyU_v0mebyKiQ
+                      status: active
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:13:35.578678Z'
+                      expiresOn: '2022-07-21T20:19:24.859052Z'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '2.20'
+                        currency: USD
+                      paymentIds: []
+                      paymentIntentIds: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+    get:
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/From'
+      - $ref: '#/components/parameters/To'
+      - $ref: '#/components/parameters/PageBefore'
+      - $ref: '#/components/parameters/PageAfter'
+      - $ref: '#/components/parameters/PageSize'
+      summary: List all checkout sessions
+      operationId: listCheckoutSessions
+      tags:
+      - Checkout Sessions
+      responses:
+        '200':
+          description: Successfully retrieved a list of checkout sessions.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ListCheckoutSessionsResponse
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CheckoutSession'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 3e4f4108-cbb4-4620-bd30-4bcf8c28ca20
+                      type: checkout_session
+                      successUrl: https://www.example.com/success
+                      clientToken: ck_test_19NoQz3jDq3mKgJFEuMkWs4dCk6Eiq1GZShWMF_jY_vL3dOAoT3EiTTgEprqaVcGbzB3pszRZhyU_v0mebyKiQ
+                      status: active
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:13:35.578678Z'
+                      expiresOn: '2022-07-21T20:19:24.859052Z'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '2.20'
+                        currency: USD
+                      paymentIds: []
+                      paymentIntentIds: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /v1/checkoutSessions/{id}:
+    get:
+      security:
+      - bearerAuth: []
+      summary: Get a checkout session
+      operationId: getCheckoutSession
+      tags:
+      - Checkout Sessions
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: Successfully retrieved a checkout session.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: GetCheckoutSessionResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CheckoutSession'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3e4f4108-cbb4-4620-bd30-4bcf8c28ca20
+                      type: checkout_session
+                      successUrl: https://www.example.com/success
+                      clientToken: ck_test_19NoQz3jDq3mKgJFEuMkWs4dCk6Eiq1GZShWMF_jY_vL3dOAoT3EiTTgEprqaVcGbzB3pszRZhyU_v0mebyKiQ
+                      status: active
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:13:35.578678Z'
+                      expiresOn: '2022-07-21T20:19:24.859052Z'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '2.20'
+                        currency: USD
+                      paymentIds: []
+                      paymentIntentIds: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/checkoutSessions/{id}/extend:
+    post:
+      security:
+      - bearerAuth: []
+      summary: Extend a checkout session
+      operationId: extendCheckoutSession
+      tags:
+      - Checkout Sessions
+      parameters:
+      - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                extendTime:
+                  type: integer
+                  description: Extend the CheckoutSession by extendTime seconds if
+                    it is active or expired. The field is optional, if not provided,
+                    extend a period that configured by Merchant (default 1 day)
+                  example: 3600
+      responses:
+        '201':
+          description: Successfully extended a payment intent.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                title: ExtendCheckoutSessionResponse
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CheckoutSession'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3e4f4108-cbb4-4620-bd30-4bcf8c28ca20
+                      type: checkout_session
+                      successUrl: https://www.example.com/success
+                      clientToken: ck_test_19NoQz3jDq3mKgJFEuMkWs4dCk6Eiq1GZShWMF_jY_vL3dOAoT3EiTTgEprqaVcGbzB3pszRZhyU_v0mebyKiQ
+                      status: active
+                      createDate: '2022-07-21T20:13:35.578678Z'
+                      updateDate: '2022-07-21T20:13:35.578678Z'
+                      expiresOn: '2022-07-21T20:19:24.859052Z'
+                      amount:
+                        amount: '3.14'
+                        currency: USD
+                      amountPaid:
+                        amount: '2.20'
+                        currency: USD
+                      paymentIds: []
+                      paymentIntentIds: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    Source:
+      name: source
+      description: Universally unique identifier (UUID v4) for the source. Filters
+        results to fetch only payments made from the provdided source.
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: b3d9d2d5-4c12-4946-a09d-953e82fae2b0
+    SettlementId:
+      name: settlementId
+      description: Queries items with the specified settlement id. Matches any settlement
+        id if unspecified.
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: b48c8962-8e9f-40c3-9f1d-d9adde2ffe61
+    PaymentIntentId:
+      name: paymentIntentId
+      description: Queries items with the specified payment intent id.
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: b48c8962-8e9f-40c3-9f1d-d9adde2ffe61
+    PaymentSourceType:
+      name: type
+      description: Source account type. Filters the results to fetch all payments
+        made from a specified account type. Matches any source type if unspecified.
+      in: query
+      required: false
+      schema:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+          enum:
+          - card
+    PaymentStatus:
+      name: status
+      description: Queries items with the specified status. Matches any status if
+        unspecified.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+        - pending
+        - confirmed
+        - paid
+        - failed
+        - action_required
+    From:
+      name: from
+      description: Queries items created since the specified date-time (inclusive).
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+        example: '2020-04-10T02:13:30.000Z'
+    To:
+      name: to
+      description: Queries items created before the specified date-time (inclusive).
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+        example: '2020-04-10T02:13:30.000Z'
+    PageBefore:
+      name: pageBefore
+      description: 'A collection ID value used for pagination.
+
+
+        It marks the exclusive end of a page. When provided, the collection resource
+        will return the next `n` items before
+
+        the id, with `n` being specified by `pageSize`.
+
+
+        The items will be returned in the natural order of the collection.
+
+
+        The resource will return the first page if neither `pageAfter` nor `pageBefore`
+        are specified.
+
+
+        SHOULD NOT be used in conjuction with pageAfter.
+
+        '
+      in: query
+      required: false
+      schema:
+        type: string
+    PageAfter:
+      name: pageAfter
+      description: 'A collection ID value used for pagination.
+
+
+        It marks the exclusive begin of a page. When provided, the collection resource
+        will return the next `n` items after
+
+        the id, with `n` being specified by `pageSize`.
+
+
+        The items will be returned in the natural order of the collection.
+
+
+        The resource will return the first page if neither `pageAfter` nor `pageBefore`
+        are specified.
+
+
+        SHOULD NOT be used in conjuction with pageBefore.
+
+        '
+      in: query
+      required: false
+      schema:
+        type: string
+    PageSize:
+      name: pageSize
+      description: 'Limits the number of items to be returned.
+
+
+        Some collections have a strict upper bound that will disregard this value.
+        In case the specified value is higher
+
+        than the allowed limit, the collection limit will be used.
+
+
+        If avoided, the collection will determine the page size itself.
+
+        '
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 5
+    IdPath:
+      name: id
+      description: Universally unique identifier (UUID v4) of a resource.
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: b3d9d2d5-4c12-4946-a09d-953e82fae2b0
+    PaymentId:
+      name: paymentId
+      description: The payment ID associated with the chargeback.
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+        example: 202ad9ce-974c-49ca-8d34-3afb7d7247ae
+  headers:
+    XRequestId:
+      description: Universally unique identifier (UUID v4) for the request. Helpful
+        for identifying a request when communicating with Circle support.
+      schema:
+        type: string
+        format: uuid
+        example: 2adba88e-9d63-44bc-b975-9b6ae3440dde
+  schemas:
+    Id:
+      type: string
+      description: Unique system generated identifier for the entity.
+      format: uuid
+      example: b8627ae8-732b-4d25-b947-1df8f4007a29
+    IdMerchant:
+      type: string
+      description: Unique system generated identifier for the merchant.
+      format: uuid
+      example: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+    MerchantWalletId:
+      type: string
+      description: Unique system generated identifier for the wallet of the merchant.
+      maxLength: 36
+      example: '212000'
+    FiatMoneyUsd:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          description: Currency code.
+          type: string
+          enum:
+          - USD
+    FiatCurrency:
+      type: string
+      description: Currency code.
+      title: Currency
+      enum:
+      - USD
+      - EUR
+      - MXN
+      - SGD
+      - BRL
+    FiatMoney:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          $ref: '#/components/schemas/FiatCurrency'
+    SourceResponse:
+      type: object
+      description: The payment source.
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: Type of the source.
+          enum:
+          - card
+          - ach
+          - wire
+          - sepa
+    PaymentStatus:
+      type: string
+      description: Enumerated status of the payment. `pending` means the payment is
+        waiting to be processed. `confirmed` means the payment has been approved by
+        the bank and the merchant can treat it as successful, but settlement funds
+        are not yet available to the merchant.  `paid` means settlement funds have
+        been received and are available to the merchant. `failed` means something
+        went wrong (most commonly that the payment was denied). `action_required`
+        means that additional steps are required to process this payment; refer to
+        `requiredAction` for more details. Terminal states are `paid` and `failed`.
+      enum:
+      - pending
+      - confirmed
+      - paid
+      - failed
+      - action_required
+    UtcTimestamp:
+      type: string
+      description: ISO-8601 UTC date/time format.
+      example: '2020-04-10T02:13:30.000Z'
+    RequiredAction:
+      type: object
+      description: When the payment status is `action_required`, this object summarizes
+        the required additional steps.
+      required:
+      - type
+      - redirectUrl
+      properties:
+        type:
+          type: string
+          description: The type of action that is required to proceed with the payment.
+            Currently only one type is supported.
+          enum:
+          - three_d_secure_required
+        redirectUrl:
+          type: string
+          description: The URL to bring the user to in order to complete the payment.
+          example: https://example.org
+    CancelRefundReversalStatus:
+      type: string
+      enum:
+      - pending
+      - confirmed
+      - paid
+      - failed
+      description: Enumerated status of the payment. `pending` means the payment is
+        waiting to be processed. `confirmed` means the payment has been approved by
+        the bank and the merchant can treat it as successful, but settlement funds
+        are not yet available to the merchant.  `paid` means settlement funds have
+        been received and are available to the merchant. `failed` means something
+        went wrong (most commonly that the payment was denied). Terminal states are
+        `paid` and `failed`.
+    PaymentInfoCancel:
+      type: object
+      description: Status information of the related cancel. This property is only
+        present on canceled payment or refund items.
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: Type of the payment object.
+          enum:
+          - cancel
+        description:
+          description: Enumerated description of the payment item.
+          type: string
+          nullable: true
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/CancelRefundReversalStatus'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    PaymentInfoPaymentAndRefund:
+      type: object
+      description: Status information of the related payment. This property is only
+        present on refund or cancel items.
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: Type of the payment object.
+          enum:
+          - payment
+          - refund
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        description:
+          type: string
+          description: Enumerated description of the payment item.
+          nullable: true
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        requiredAction:
+          $ref: '#/components/schemas/RequiredAction'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    Channel:
+      type: string
+      format: uuid
+      description: The channel identifier that can be set for the payment. When not
+        provided, the default channel is used.
+      example: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+    FiatPayment:
+      type: object
+      description: Status information of the related payment. This property is only
+        present on refund or cancel items.
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - payment
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        fromAmount:
+          $ref: '#/components/schemas/FiatMoney'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        captured:
+          description: Determines if a payment has successfully been captured. This
+            property is only present for payments that did not use auto capture.
+          type: boolean
+        captureAmount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        captureDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        requiredAction:
+          $ref: '#/components/schemas/RequiredAction'
+        cancel:
+          $ref: '#/components/schemas/PaymentInfoCancel'
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInfoPaymentAndRefund'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    CryptoPaymentsOptionalAmountMoney:
+      type: object
+      required:
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          description: Currency code.
+          type: string
+          enum:
+          - USD
+          - ETH
+          - BTC
+    CryptoPaymentNetworkFee:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: string
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          example: '3.14'
+        currency:
+          type: string
+          description: Currency code for the amount.
+          enum:
+          - USD
+          - EUR
+          - BTC
+          - ETH
+        feePayer:
+          type: string
+          description: The party that pays the network fee based on merchant configuration.
+          enum:
+          - endUser
+          - merchant
+    Chain:
+      type: string
+      description: A blockchain that a given currency is available on.
+      enum:
+      - ALGO
+      - ARB
+      - AVAX
+      - BASE
+      - BTC
+      - CELO
+      - ETH
+      - FLOW
+      - HBAR
+      - NEAR
+      - NOBLE
+      - OP
+      - PAH
+      - POLY
+      - SOL
+      - TRX
+      - XLM
+    Address:
+      type: string
+      description: An alphanumeric string representing a blockchain address. Will
+        be in different formats for different chains. It is important to preserve
+        the exact formatting and capitalization of the address.
+      example: '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+    AddressTag:
+      type: string
+      description: The secondary identifier for a blockchain address. An example of
+        this is the memo field on the Stellar network, which can be text, id, or hash
+        format.
+      nullable: true
+      example: '123456789'
+    RiskEvaluation:
+      type: object
+      description: Results of risk evaluation. Only present if the payment is denied
+        by Circle's risk service.
+      nullable: true
+      properties:
+        decision:
+          description: Enumerated decision of the account.
+          type: string
+          enum:
+          - approved
+          - denied
+          - review
+        reason:
+          description: Risk reason for the definitive decision outcome.
+          type: string
+          nullable: true
+          example: '3000'
+    CryptoPayment:
+      type: object
+      description: Status information of the related payment.
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - payment
+          - refund
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/CryptoPaymentsOptionalAmountMoney'
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        networkFees:
+          $ref: '#/components/schemas/CryptoPaymentNetworkFee'
+        paymentIntentId:
+          type: string
+          format: uuid
+          example: 6e4d4047-db14-4c09-b238-1215aee50d03
+        settlementAmount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        fromAddresses:
+          type: object
+          properties:
+            chain:
+              $ref: '#/components/schemas/Chain'
+            addresses:
+              type: array
+              items:
+                $ref: '#/components/schemas/Address'
+        depositAddress:
+          type: object
+          properties:
+            chain:
+              $ref: '#/components/schemas/Chain'
+            address:
+              type: string
+              example: '0x97de855690955e0da79ce5c1b6804847e7070c7f'
+            addressTag:
+              $ref: '#/components/schemas/AddressTag'
+        transactionHash:
+          type: string
+          example: '0x7351585460bd657f320b9afa02a52c26d89272d0d10cc29913eb8b28e64fd906'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+    FiatCancel:
+      type: object
+      description: Status information of the related cancel. This property is only
+        present on canceled payment or refund items.
+      nullable: true
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: Type of the payment object.
+          enum:
+          - cancel
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/CancelRefundReversalStatus'
+        originalPayment:
+          $ref: '#/components/schemas/PaymentInfoPaymentAndRefund'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    FiatRefund:
+      type: object
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - refund
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/CancelRefundReversalStatus'
+        originalPayment:
+          $ref: '#/components/schemas/PaymentInfoPaymentAndRefund'
+        cancel:
+          $ref: '#/components/schemas/PaymentInfoCancel'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    IdempotencyKey:
+      type: string
+      description: Universally unique identifier (UUID v4) idempotency key. This key
+        is utilized to ensure exactly-once execution of mutating requests.
+      format: uuid
+      example: ba943ff1-ca16-49b2-ba55-1057e70ca5c7
+    IdKey:
+      type: string
+      description: Universally unique identifier (UUID v4) of the public key used
+        in encryption. NOTE the sandbox environment uses the default value of `key1`.
+        For this reason the example supplied is `key1` rather than a UUID.
+      format: uuid
+      example: key1
+    Email:
+      type: string
+      description: Email of the user.
+      maxLength: 1024
+      example: satoshi@circle.com
+    PhoneNumber:
+      type: string
+      description: Phone number of the user in E.164 format. We recommend using a
+        library such as [libphonenumber](https://github.com/google/libphonenumber)
+        to parse and validate phone numbers.
+      maxLength: 16
+      pattern: /\+?[1-9]\d{1,14}/
+      example: '+14155555555'
+    SessionId:
+      description: 'Hash of the session identifier; typically of the end user. This
+        helps us make risk decisions and prevent fraud. IMPORTANT: Please hash the
+        session identifier to prevent sending us actual session identifiers.
+
+        '
+      type: string
+      maxLength: 50
+      example: DE6FA86F60BB47B379307F851E238617
+    IpAddress:
+      type: string
+      description: Single IPv4 or IPv6 address of user'
+      example: 244.28.239.130
+    MetadataPayment:
+      type: object
+      required:
+      - email
+      - sessionId
+      - ipAddress
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        sessionId:
+          $ref: '#/components/schemas/SessionId'
+        ipAddress:
+          $ref: '#/components/schemas/IpAddress'
+    Source:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: Type of the source.
+          enum:
+          - card
+    PaymentCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - amount
+      - verification
+      - source
+      - metadata
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        keyId:
+          $ref: '#/components/schemas/IdKey'
+        metadata:
+          $ref: '#/components/schemas/MetadataPayment'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        autoCapture:
+          type: boolean
+          description: Triggers the automatic capture of the full payment amount.
+            If set to false the payment will only be authorized but not captured.
+          default: true
+          example: true
+        verification:
+          type: string
+          description: Indicates the verification method for this payment.
+          enum:
+          - none
+          - cvv
+          - three_d_secure
+        verificationSuccessUrl:
+          type: string
+          description: The URL to redirect users to after successful 3DS authentication.
+          format: url
+          example: https://www.example.com/3ds/verificationsuccessful
+        verificationFailureUrl:
+          type: string
+          description: The URL to redirect users to after failed 3DS authentication.
+          format: url
+          example: https://www.example.com/3ds/verificationfailure
+        source:
+          $ref: '#/components/schemas/Source'
+        description:
+          type: string
+          description: Description of the payment with length restriction of 240 characters.
+          example: Payment
+        encryptedData:
+          type: string
+          format: byte
+          description: 'PGP encrypted base64 encoded string. Contains CVV.
+
+            * **CVV (Card Verification Number)**: Three or four digit security code.
+            Only required if `verification` is `cvv`.
+
+            '
+          example: UHVibGljS2V5QmFzZTY0RW5jb2RlZA==
+        channel:
+          $ref: '#/components/schemas/Channel'
+    AvsResults:
+      type: string
+      description: Status of the AVS check. Raw AVS response, expressed as an upper-case
+        letter. `not_requested` indicates check was not made. `pending` is pending/processing.
+      example: D
+    CvvResults:
+      description: Enumerated status of the check. `not_requested` indicates check
+        was not made. `pass` indicates value is correct. `fail` indicates value is
+        incorrect. `unavailable` indicates card issuer did not do the provided check.
+        `pending` indicates check is pending/processing.
+      type: string
+      enum:
+      - not_requested
+      - pass
+      - fail
+      - unavailable
+      - pending
+    ThreeDsResult:
+      type: string
+      description: Enumerated status of the check. `pass` indicates successful 3DS
+        authentication. `fail` indicates failed 3DS authentication.
+      enum:
+      - pass
+      - fail
+    Eci:
+      type: string
+      description: ECI (electronic commerce indicator) value returned by Directory
+        Servers (namely Visa, MasterCard, JCB, and American Express) indicating the
+        outcome of authentication attempted on transactions enforced by 3DS.
+      enum:
+      - '00'
+      - '01'
+      - '02'
+      - '05'
+      - '06'
+      - '07'
+    PaymentVerificationResponse:
+      type: object
+      description: Indicates the status of the payment verification. This property
+        will be present once the payment is confirmed.
+      required:
+      - avs
+      - cvv
+      properties:
+        avs:
+          $ref: '#/components/schemas/AvsResults'
+        cvv:
+          $ref: '#/components/schemas/CvvResults'
+        threeDSecure:
+          $ref: '#/components/schemas/ThreeDsResult'
+        eci:
+          $ref: '#/components/schemas/Eci'
+    PaymentErrorCode:
+      type: string
+      description: Indicates the failure reason of a payment. Only present for payments
+        in failed state. Possible values are [`payment_failed`, `payment_fraud_detected`,
+        `payment_denied`, `payment_not_supported_by_issuer`, `payment_not_funded`,
+        `payment_unprocessable`, `payment_stopped_by_issuer`, `payment_canceled`,
+        `payment_returned`, `payment_failed_balance_check`, `card_failed`, `card_invalid`,
+        `card_address_mismatch`, `card_zip_mismatch`, `card_cvv_invalid`, `card_expired`,
+        `card_limit_violated`, `card_not_honored`, `card_cvv_required`, `credit_card_not_allowed`,
+        `card_account_ineligible`, `card_network_unsupported`, `channel_invalid`,
+        `unauthorized_transaction`, `bank_account_ineligible`, `bank_transaction_error`,
+        `invalid_account_number`, `invalid_wire_rtn`, `invalid_ach_rtn`, `vendor_inactive`]'
+      nullable: true
+      enum:
+      - payment_failed
+      - payment_fraud_detected
+      - payment_denied
+      - payment_not_supported_by_issuer
+      - payment_not_funded
+      - payment_unprocessable
+      - payment_stopped_by_issuer
+      - payment_canceled
+      - payment_returned
+      - payment_failed_balance_check
+      - card_failed
+      - card_invalid
+      - card_address_mismatch
+      - card_zip_mismatch
+      - card_cvv_invalid
+      - card_expired
+      - card_limit_violated
+      - card_not_honored
+      - card_cvv_required
+      - card_restricted,
+      - card_account_ineligible
+      - card_network_unsupported
+      - channel_invalid
+      - unauthorized_transaction
+      - bank_account_ineligible
+      - bank_transaction_error
+      - invalid_account_number
+      - invalid_wire_rtn
+      - invalid_ach_rtn
+      - ref_id_invalid
+      - account_name_mismatch
+      - account_number_mismatch
+      - account_ineligible
+      - wallet_address_mismatch
+      - customer_name_mismatch
+      - institution_name_mismatch
+      - vendor_inactive
+    MetadataPhoneEmail:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+    DetailedPayment:
+      type: object
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - payment
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          type: string
+          description: Enumerated description of the payment.
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        captured:
+          type: boolean
+          description: Determines if a payment has successfully been captured. This
+            property is only present for payments that did not use auto capture.
+        captureAmount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        captureDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        requiredAction:
+          $ref: '#/components/schemas/RequiredAction'
+        verification:
+          $ref: '#/components/schemas/PaymentVerificationResponse'
+        cancel:
+          $ref: '#/components/schemas/FiatCancel'
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/FiatRefund'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        trackingRef:
+          description: Payment tracking reference. Will be present once known.
+          type: string
+          nullable: true
+          example: '24910599141085313498894'
+        errorCode:
+          $ref: '#/components/schemas/PaymentErrorCode'
+          nullable: true
+        metadata:
+          $ref: '#/components/schemas/MetadataPhoneEmail'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    ExternalRef:
+      type: string
+      description: "External network identifier which will be present once provided\
+        \ from the applicable network. \n\nExamples:\n* **Input/Output Message Accountability\
+        \ Data (IMAD/OMAD)**: unique number given to each FedWire payment when using\
+        \ the Federal Reserve Bank Service which can be used to investigate and track\
+        \ wire transfers.\n"
+      example: YYYYMMDDXXXXXXXX012345
+    FiatPaymentPolymorphic:
+      type: object
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - payment
+          - refund
+          - cancel
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        fromAmount:
+          $ref: '#/components/schemas/FiatMoney'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        requiredAction:
+          $ref: '#/components/schemas/RequiredAction'
+        verification:
+          $ref: '#/components/schemas/PaymentVerificationResponse'
+        originalPayment:
+          $ref: '#/components/schemas/FiatPayment'
+        cancel:
+          $ref: '#/components/schemas/FiatCancel'
+        refunds:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/FiatRefund'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        trackingRef:
+          description: Payment tracking reference. Will be present once known.
+          type: string
+          nullable: true
+          example: '24910599141085313498894'
+        externalRef:
+          $ref: '#/components/schemas/ExternalRef'
+        errorCode:
+          $ref: '#/components/schemas/PaymentErrorCode'
+        metadata:
+          $ref: '#/components/schemas/MetadataPhoneEmail'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    CaptureCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+    ReversalReason:
+      type: string
+      description: Enumerated reason for a returned payment. Providing this reason
+        in the request is recommended (to improve risk evaluation) but not required.
+      enum:
+      - duplicate
+      - fraudulent
+      - requested_by_customer
+      - bank_transaction_error
+      - invalid_account_number
+      - insufficient_funds
+      - payment_stopped_by_issuer
+      - payment_returned
+      - bank_account_ineligible
+      - invalid_ach_rtn
+      - unauthorized_transaction
+      - payment_failed
+    CancelCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        reason:
+          $ref: '#/components/schemas/ReversalReason'
+    DetailedCancel:
+      type: object
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - cancel
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/CancelRefundReversalStatus'
+        originalPayment:
+          $ref: '#/components/schemas/FiatPayment'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        trackingRef:
+          description: Payment tracking reference. Will be present once known.
+          type: string
+          nullable: true
+          example: '24910599141085313498894'
+        errorCode:
+          $ref: '#/components/schemas/PaymentErrorCode'
+        metadata:
+          $ref: '#/components/schemas/MetadataPhoneEmail'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        refund:
+          description: If the cancel was made after a cutoff time period, it will
+            be processed as a refund. This flag indicates that the cancel was processed
+            as a refund'
+          type: boolean
+          default: false
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    RefundCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - amount
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        reason:
+          $ref: '#/components/schemas/ReversalReason'
+    DetailedRefund:
+      type: object
+      required:
+      - id
+      - type
+      - merchantId
+      - amount
+      - source
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          description: Type of the payment object.
+          type: string
+          enum:
+          - refund
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        amount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        source:
+          $ref: '#/components/schemas/SourceResponse'
+        description:
+          description: Enumerated description of the payment.
+          type: string
+          enum:
+          - Payment
+        status:
+          $ref: '#/components/schemas/CancelRefundReversalStatus'
+        originalPayment:
+          $ref: '#/components/schemas/FiatPayment'
+        cancel:
+          $ref: '#/components/schemas/FiatCancel'
+        fees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        trackingRef:
+          description: Payment tracking reference. Will be present once known.
+          type: string
+          nullable: true
+          example: '24910599141085313498894'
+        errorCode:
+          $ref: '#/components/schemas/PaymentErrorCode'
+        metadata:
+          $ref: '#/components/schemas/MetadataPhoneEmail'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    PresignDomain:
+      type: object
+      required:
+      - name
+      - verifyingContract
+      - version
+      - chainId
+      properties:
+        name:
+          type: string
+          description: User readable name of signing domain
+          example: USD Coin
+        verifyingContract:
+          type: string
+          description: The address of the contract that will verify the signature
+          example: '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
+        version:
+          type: string
+          description: The current major version of the signing domain. Signatures
+            from different versions are not compatible
+          example: '2'
+        chainId:
+          type: integer
+          description: chain id from https://chainid.network/
+          example: 5
+    PresignMessage:
+      type: object
+      required:
+      - from
+      - to
+      - value
+      - validAfter
+      - validBefore
+      - nonce
+      properties:
+        from:
+          type: string
+          description: A blockchain address representing payer's address
+          example: '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+        to:
+          type: string
+          description: A blockchain address representing payee's address
+          example: '0xdB055877e6c13b6A6B25aBcAA29B393777dD0a73'
+        value:
+          type: string
+          description: Amount to be transferred
+          example: '5003456'
+        validAfter:
+          type: integer
+          format: int64
+          description: the timestamp after which this is valid (unix time)
+          example: 1675317371
+        validBefore:
+          type: integer
+          format: int64
+          description: the timestamp before which this is valid (unix time)
+          example: 1675107967
+        nonce:
+          type: string
+          description: unique nonce
+          example: '0x4f716a578b96592599c3ca7b2a46453df87511d4809f608cec982d6e83632604'
+    CryptoPaymentsMoney:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          description: Currency code.
+          type: string
+          enum:
+          - USD
+          - ETH
+          - BTC
+    NetworkFeeQuote:
+      type: object
+      required:
+      - quoteId
+      - amount
+      - expiresAt
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          description: UUID of network fee quote
+          example: 5d0bb4e7-bd83-44dd-b8f5-53ddd5f35a3a
+        amount:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        expiresAt:
+          description: The timestamp when the quote will expire at, in ISO-8601 UTC
+            date/time format.
+          type: string
+          example: '2023-02-02T06:01:21.152737680Z'
+    PresignMessageTypesItems:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          description: The name of the field
+          type: string
+          example: name
+        type:
+          description: The type of the field
+          type: string
+          example: string
+    PresignMessageTypes:
+      type: object
+      description: The data schema of the message
+      properties:
+        EIP712Domain:
+          description: Data schema of the domain field in typedData. It's a list of
+            (name, type) pair
+          type: array
+          items:
+            $ref: '#/components/schemas/PresignMessageTypesItems'
+          example:
+          - name: name
+            type: string
+          - name: version
+            type: string
+          - name: chainId
+            type: uint256
+          - name: verifyingContract
+            type: address
+        TransferWithAuthorization:
+          description: Data schema of the message in typedData. It's a list of (name,
+            type) pair
+          type: array
+          items:
+            $ref: '#/components/schemas/PresignMessageTypesItems'
+          example:
+          - name: from
+            type: address
+          - name: to
+            type: address
+          - name: validAfter
+            type: uint256
+          - name: validBefore
+            type: uint256
+          - name: nonce
+            type: byte32
+    PresignResponse:
+      type: object
+      description: Response of the GET /presign endpoint
+      required:
+      - typedData
+      properties:
+        typedData:
+          type: object
+          description: The typed data
+          required:
+          - domain
+          - message
+          - totalAmount
+          - feeChargeModel
+          - types
+          - primaryType
+          properties:
+            domain:
+              $ref: '#/components/schemas/PresignDomain'
+            message:
+              $ref: '#/components/schemas/PresignMessage'
+            totalAmount:
+              $ref: '#/components/schemas/FiatMoneyUsd'
+            feeChargeModel:
+              type: string
+              description: Who pays for network fee. Can only be endUser or merchant.
+                If it's the endUser, totalAmount includes the network fee and networkFeeQuote
+                isn't null; If it's the merchant, totalAmount doesn't include network
+                fee and networkFeeQuote is null.
+              enum:
+              - endUser
+              - merchant
+            networkFeeQuote:
+              $ref: '#/components/schemas/NetworkFeeQuote'
+            types:
+              $ref: '#/components/schemas/PresignMessageTypes'
+            primaryType:
+              type: string
+              description: Type of the message
+              enum:
+              - TransferWithAuthorization
+              - EIP712Domain
+    MetadataCryptoPayment:
+      type: object
+      required:
+      - type
+      - metaTxNonce
+      - signatureValidAfter
+      - signatureValidBefore
+      - rawSignature
+      properties:
+        type:
+          type: string
+          description: The protocol type. so far we only support "TransferWithAuthorization".
+            find more details in EIP-3009
+          enum:
+          - TransferWithAuthorization
+          example: TransferWithAuthorization
+        metaTxNonce:
+          type: string
+          description: meta transaction nonce
+          example: '0xfdb476566b75311fdd14444e6a77630c36e653a3e255adcaa7c34f3babc1de76'
+        signatureValidAfter:
+          type: string
+          description: This comes from the /presign response
+          example: '1675104393'
+        signatureValidBefore:
+          type: string
+          description: This comes from the /presign response
+          example: '1675107967'
+        rawSignature:
+          type: string
+          description: Raw signature coming from the wallet response
+          example: '0xcff7ef7a24b88d83fa3d6e81b41c9cef19cc0119c085a6ef98cb1b6bc9436a9f18dcb2d46b9cb4d31a7031466b450bbe1e6c0230c5503c7a68e04055b4be0cbc1b'
+    CryptoPaymentSource:
+      type: object
+      required:
+      - address
+      - type
+      properties:
+        address:
+          type: string
+          description: The source address
+          example: '0xdB055877e6c13b6A6B25aBcAA29B393777dD0a73'
+        type:
+          type: string
+          description: The source type
+          enum:
+          - blockchain
+    CryptoPaymentDestination:
+      type: object
+      required:
+      - address
+      - chain
+      properties:
+        address:
+          type: string
+          description: The destination address
+          example: '0xda1ab716f7f7b3cb036a7fd74e5ca852126834c1'
+        chain:
+          type: string
+          enum:
+          - ETH
+    CryptoPaymentCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - paymentIntentId
+      - amount
+      - destination
+      - source
+      - protocolMetadata
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        paymentIntentId:
+          type: string
+          description: Payment intent uuid which is generated by the create payment
+            intent call
+          example: 4e9fa5b1-3964-4f02-a7ba-811cc5d94be1
+        protocolMetadata:
+          $ref: '#/components/schemas/MetadataCryptoPayment'
+        amount:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        source:
+          $ref: '#/components/schemas/CryptoPaymentSource'
+        destination:
+          $ref: '#/components/schemas/CryptoPaymentDestination'
+        quoteId:
+          type: string
+          format: uuid
+          description: Network fee quote uuid which is returned from the /presign
+            response. Only required when end user pays for gas fee
+          example: c6ac001e-9812-4bc1-8dc3-1549b5adaa23
+    PaymentMethodBlockchain:
+      type: object
+      required:
+      - type
+      - chain
+      properties:
+        type:
+          type: string
+          enum:
+          - blockchain
+        chain:
+          $ref: '#/components/schemas/Chain'
+        address:
+          type: string
+          example: '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+    PaymentIntentFees:
+      type: object
+      required:
+      - type
+      - amount
+      - currency
+      properties:
+        type:
+          type: string
+          enum:
+          - blockchainLeaseFee
+          - totalPaymentFees
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          description: Currency code.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+    Timeline:
+      type: object
+      required:
+      - status
+      - time
+      properties:
+        status:
+          type: string
+          enum:
+          - created
+          - pending
+          - complete
+          - expired
+          - failed
+          - refunded
+        context:
+          type: string
+          enum:
+          - underpaid
+          - paid
+          - overpaid
+        reason:
+          type: string
+          enum:
+          - requested_by_merchant
+          - fee_collection_failed
+        time:
+          description: ISO-8601 UTC date/time format.
+          type: string
+          format: date-time
+    PaymentIntent:
+      type: object
+      required:
+      - amount
+      - settlementCurrency
+      - paymentMethods
+      properties:
+        id:
+          type: string
+          description: Unique system generated identifier for the entity.
+          format: uuid
+          example: b8627ae8-732b-4d25-b947-1df8f4007a29
+        amount:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        amountPaid:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        amountRefunded:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        settlementCurrency:
+          description: Desired currency for the payments to settle in.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodBlockchain'
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentIntentFees'
+        paymentIds:
+          description: List of associated payments.
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: 69808f36-3e5e-4f37-bf82-ca79e4d70fc1
+        refundIds:
+          description: List of associated refunds.
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: 425dca6d-ac79-43b6-b0f9-43fdc51de91b
+        timeline:
+          description: State management timeline.
+          type: array
+          items:
+            $ref: '#/components/schemas/Timeline'
+        expiresOn:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+    ContinuousPaymentIntent:
+      type: object
+      required:
+      - currency
+      - settlementCurrency
+      - paymentMethods
+      - type
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        currency:
+          description: Desired currency of the payment.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        amountPaid:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        amountRefunded:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        settlementCurrency:
+          description: Desired currency for the payments to settle in.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodBlockchain'
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentIntentFees'
+        timeline:
+          description: State management timeline.
+          type: array
+          items:
+            $ref: '#/components/schemas/Timeline'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        type:
+          type: string
+          enum:
+          - continuous
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+    PaymentIntentCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - amount
+      - settlementCurrency
+      - paymentMethods
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        amount:
+          $ref: '#/components/schemas/CryptoPaymentsMoney'
+        settlementCurrency:
+          description: Desired currency for the payments to settle in.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodBlockchain'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+    ContinuousPaymentIntentCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - currency
+      - settlementCurrency
+      - paymentMethods
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        currency:
+          description: Desired currency for the payment
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        settlementCurrency:
+          description: Desired currency for the payments to settle in.
+          type: string
+          enum:
+          - USD
+          - BTC
+          - ETH
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodBlockchain'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        type:
+          type: string
+          enum:
+          - continuous
+    CryptoRefundDestination:
+      type: object
+      description: The destination of a crypto refund.
+      required:
+      - address
+      - chain
+      properties:
+        address:
+          type: string
+          description: The blockchain address.
+          example: '0x8381470ED67C3802402dbbFa0058E8871F017A6F'
+        addressTag:
+          $ref: '#/components/schemas/AddressTag'
+        chain:
+          $ref: '#/components/schemas/Chain'
+    CryptoRefundCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - destination
+      - amount
+      - toAmount
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        destination:
+          $ref: '#/components/schemas/CryptoRefundDestination'
+        amount:
+          description: The source amount of the refund, it can be in either the original
+            payment currency or the settlement currency.
+          required:
+          - currency
+          properties:
+            currency:
+              description: Currency code.
+              type: string
+              enum:
+              - USD
+              - ETH
+              - BTC
+        toAmount:
+          description: The destination amount of the refund, it must be in the original
+            payment currency.
+          required:
+          - amount
+          - currency
+          properties:
+            amount:
+              description: Magnitude of the amount, in units of the currency, with
+                a `.`.
+              type: string
+              example: '3.14'
+            currency:
+              description: Currency code.
+              type: string
+              enum:
+              - USD
+              - ETH
+              - BTC
+    ExternalFiatAccountStatus:
+      description: Status of the account. A `pending` status indicates that the linking
+        is in-progress; `complete` indicates the account was linked successfully;
+        `failed` indicates it failed.
+      type: string
+      enum:
+      - pending
+      - complete
+      - failed
+    SimpleBillingDetails:
+      type: object
+      description: Billing details of the card holder.
+      required:
+      - country
+      - district
+      properties:
+        country:
+          type: string
+          description: Country portion of the address. Formatted as a two-letter country
+            code specified in ISO 3166-1 alpha-2.
+          maxLength: 2
+          example: US
+        district:
+          type: string
+          description: State / County / Province / Region portion of the address.
+            US and Canada use the two-letter code for the subdivision.
+          maxLength: 16
+          example: MA
+    Fingerprint:
+      type: string
+      description: A UUID that uniquely identifies the account number. If the same
+        account is used more than once, each card object will have a different id,
+        but the fingerprint will stay the same.
+      example: eb170539-9e1c-4e92-bf4f-1d09534fdca2
+    CardVerificationResponse:
+      type: object
+      description: Indicates the status of the card for verification purposes.
+      required:
+      - avs
+      - cvv
+      properties:
+        avs:
+          $ref: '#/components/schemas/AvsResults'
+        cvv:
+          $ref: '#/components/schemas/CvvResults'
+    SimpleCard:
+      type: object
+      required:
+      - id
+      - status
+      - fingerprint
+      - billingDetails
+      - expMonth
+      - expYear
+      - network
+      - verification
+      - createDate
+      - updateDate
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        status:
+          $ref: '#/components/schemas/ExternalFiatAccountStatus'
+        billingDetails:
+          $ref: '#/components/schemas/SimpleBillingDetails'
+        expMonth:
+          type: integer
+          description: Two digit number representing the card's expiration month.
+          example: 1
+        expYear:
+          type: integer
+          description: Four digit number representing the card's expiration year.
+          example: 2020
+        network:
+          type: string
+          description: The network of the card.
+          enum:
+          - VISA
+          - MASTERCARD
+          - AMEX
+          - UNKNOWN
+        bin:
+          type: string
+          description: The bank identification number (BIN), the first 6 digits of
+            the card.
+          example: '401230'
+        issuerCountry:
+          type: string
+          description: The country code of the issuer bank. Follows the ISO 3166-1
+            alpha-2 standard.
+          example: US
+        fundingType:
+          description: The funding type of the card. Possible values are `credit`,
+            `debit`, `prepaid`, and `unknown`.
+          type: string
+          enum:
+          - credit
+          - debit
+          - prepaid
+          - unknown
+        fingerprint:
+          $ref: '#/components/schemas/Fingerprint'
+        verification:
+          $ref: '#/components/schemas/CardVerificationResponse'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    BillingDetails:
+      type: object
+      required:
+      - name
+      - city
+      - country
+      - line1
+      - postalCode
+      properties:
+        name:
+          type: string
+          description: Full name of the card or bank account holder.
+          maxLength: 1024
+          example: Satoshi Nakamoto
+        city:
+          type: string
+          description: City portion of the address.
+          maxLength: 1024
+          example: Boston
+        country:
+          type: string
+          description: Country portion of the address. Formatted as a two-letter country
+            code specified in ISO 3166-1 alpha-2.
+          maxLength: 2
+          example: US
+        line1:
+          type: string
+          description: Line one of the street address.
+          maxLength: 1024
+          example: 100 Money Street
+        line2:
+          type: string
+          description: Line two of the street address.
+          maxLength: 1024
+          example: Suite 1
+        district:
+          description: State / County / Province / Region portion of the address.
+            If the country is US or Canada, then district is required and should use
+            the two-letter code for the subdivision.
+          type: string
+          maxLength: 16
+          example: MA
+        postalCode:
+          type: string
+          description: Postal / ZIP code of the address.
+          maxLength: 16
+          example: '01234'
+    CardExpMonth:
+      type: integer
+      description: Two digit number representing the card's expiration month.
+      minimum: 1
+      maximum: 12
+      example: 1
+    CardExpYear:
+      type: integer
+      description: Four digit number representing the card's expiration year.
+      minimum: 1
+      maximum: 9999
+      example: 2020
+    MetadataCardAndAch:
+      type: object
+      required:
+      - email
+      - sessionId
+      - ipAddress
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        sessionId:
+          $ref: '#/components/schemas/SessionId'
+        ipAddress:
+          $ref: '#/components/schemas/IpAddress'
+    CardCreationRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - expMonth
+      - expYear
+      - encryptedData
+      - billingDetails
+      - metadata
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        keyId:
+          $ref: '#/components/schemas/IdKey'
+        encryptedData:
+          type: string
+          format: byte
+          description: 'PGP encrypted base64 encoded string. Contains Number and CVV.
+
+            * **Number**: Card number. No spaces or other separators. REQUIRED
+
+            * **CVV (Card Verification Number)**: Three or four digit security code.
+            REQUIRED''
+
+            '
+          example: LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgp3Y0JNQTBYV1NGbEZScFZoQVFmL2J2bVVkNG5LZ3dkbExKVTlEdEFEK0p5c0VOTUxuOUlRUWVGWnZJUWEKMGgzQklpRFNRU0RMZmI0NEs2SXZMeTZRbm54bmFLcWx0MjNUSmtPd2hGWFIrdnNSMU5IbnVHN0lUNWJECmZzeVdleXlNK1JLNUVHV0thZ3NmQ2tWamh2NGloY29xUnlTTGtJbWVmRzVaR0tMRkJTTTBsTFNPWFRURQpiMy91eU1zMVJNb3ZiclNvbXkxa3BybzUveWxabWVtV2ZsU1pWQlhNcTc1dGc1YjVSRVIraXM5ckc0cS8KMXl0M0FOYXA3UDhKekFhZVlyTnVNZGhGZFhvK0NFMC9CQnN3L0NIZXdhTDk4SmRVUEV0NjA5WFRHTG9kCjZtamY0YUtMQ01xd0RFMkNVb3dPdE8vMzVIMitnVDZKS3FoMmtjQUQyaXFlb3luNWcralRHaFNyd3NKWgpIdEphQWVZZXpGQUVOaFo3Q01IOGNsdnhZVWNORnJuNXlMRXVGTkwwZkczZy95S3loclhxQ0o3UFo5b3UKMFVxQjkzQURKWDlJZjRBeVQ2bU9MZm9wUytpT2lLall4bG1NLzhlVWc3OGp1OVJ5T1BXelhyTzdLWTNHClFSWm8KPXc1dEYKLS0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo
+        billingDetails:
+          $ref: '#/components/schemas/BillingDetails'
+        expMonth:
+          $ref: '#/components/schemas/CardExpMonth'
+        expYear:
+          $ref: '#/components/schemas/CardExpYear'
+        metadata:
+          $ref: '#/components/schemas/MetadataCardAndAch'
+    VerificationErrorCode:
+      type: string
+      description: Indicates the failure reason of the card verification. Only present
+        on cards with failed verification. Possible values are [verification_failed,
+        verification_fraud_detected, verification_denied, verification_not_supported_by_issuer,
+        verification_stopped_by_issuer, card_failed, card_invalid, card_address_mismatch,
+        card_zip_mismatch, card_cvv_invalid, card_expired, card_limit_violated, card_not_honored,
+        card_cvv_required, credit_card_not_allowed, card_account_ineligible, card_network_unsupported]'
+      nullable: true
+      enum:
+      - verification_failed
+      - verification_fraud_detected
+      - verification_denied
+      - verification_not_supported_by_issuer
+      - verification_stopped_by_issuer
+      - card_failed
+      - card_invalid
+      - card_address_mismatch
+      - card_zip_mismatch
+      - card_cvv_invalid
+      - card_expired
+      - card_limit_violated
+      - card_not_honored
+      - card_cvv_required
+      - credit_card_not_allowed
+      - card_account_ineligible
+      - card_network_unsupported
+    Card:
+      type: object
+      required:
+      - id
+      - status
+      - billingDetails
+      - expMonth
+      - expYear
+      - network
+      - last4
+      - fingerprint
+      - verification
+      - metadata
+      - createDate
+      - updateDate
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        status:
+          $ref: '#/components/schemas/ExternalFiatAccountStatus'
+        billingDetails:
+          $ref: '#/components/schemas/BillingDetails'
+        expMonth:
+          $ref: '#/components/schemas/CardExpMonth'
+        expYear:
+          $ref: '#/components/schemas/CardExpYear'
+        network:
+          type: string
+          description: The network of the card.
+          enum:
+          - VISA
+          - MASTERCARD
+          - AMEX
+          - UNKNOWN
+        last4:
+          type: string
+          description: The last 4 digits of the card.
+          example: '0123'
+        bin:
+          type: string
+          description: The bank identification number (BIN), the first 6 digits of
+            the card.
+          example: '401230'
+        issuerCountry:
+          type: string
+          description: The country code of the issuer bank. Follows the ISO 3166-1
+            alpha-2 standard.
+          example: US
+        fundingType:
+          description: The funding type of the card. Possible values are `credit`,
+            `debit`, `prepaid`, and `unknown`.
+          type: string
+          enum:
+          - credit
+          - debit
+          - prepaid
+          - unknown
+        fingerprint:
+          $ref: '#/components/schemas/Fingerprint'
+        errorCode:
+          $ref: '#/components/schemas/VerificationErrorCode'
+        verification:
+          $ref: '#/components/schemas/CardVerificationResponse'
+        riskEvaluation:
+          $ref: '#/components/schemas/RiskEvaluation'
+        metadata:
+          $ref: '#/components/schemas/MetadataPhoneEmail'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    UpdateBillingDetails:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First name of the card or bank account holder.
+          maxLength: 1024
+          example: Satoshi
+        lastName:
+          type: string
+          description: Last name of the card or bank account holder.
+          maxLength: 1024
+          example: Nakamoto
+        line1:
+          type: string
+          description: Line one of the street address.
+          maxLength: 1024
+          example: 100 Money Street
+        line2:
+          type: string
+          description: Line two of the street address.
+          maxLength: 1024
+          example: Suite 1
+        city:
+          type: string
+          description: City portion of the address.
+          maxLength: 1024
+          example: Boston
+        district:
+          description: State / County / Province / Region portion of the address.
+            If the country is US or Canada, then district is required and should use
+            the two-letter code for the subdivision.
+          type: string
+          maxLength: 16
+          example: MA
+        postalCode:
+          type: string
+          description: Postal / ZIP code of the address.
+          maxLength: 16
+          example: '01234'
+        country:
+          type: string
+          description: Country portion of the address. Formatted as a two-letter country
+            code specified in ISO 3166-1 alpha-2.
+          maxLength: 2
+          example: US
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/Email'
+    CardUpdate:
+      type: object
+      required:
+      - keyId
+      - encryptedData
+      properties:
+        keyId:
+          $ref: '#/components/schemas/IdKey'
+        encryptedData:
+          type: string
+          format: byte
+          description: 'PGP encrypted base64 encoded string. Contains CVV.
+
+            * **CVV (Card Verification Number)**: Three or four digit security code.
+            REQUIRED''
+
+            '
+          example: UHVibGljS2V5QmFzZTY0RW5jb2RlZA==
+        expMonth:
+          $ref: '#/components/schemas/CardExpMonth'
+        expYear:
+          $ref: '#/components/schemas/CardExpYear'
+        billingDetails:
+          $ref: '#/components/schemas/UpdateBillingDetails'
+    ApplePayTokenEcHeader:
+      type: object
+      required:
+      - ephemeralPublicKey
+      - publicKeyHash
+      - transactionId
+      properties:
+        applicationData:
+          description: Optional. Hash of the applicationData property of the original
+            PKPaymentRequest object. If the value of that property is null, this key
+            is omitted.
+          type: string
+          example: ''
+        ephemeralPublicKey:
+          description: Ephemeral public key bytes.
+          type: string
+          example: MFkwEwYHKoZIzj.../zlsw==
+        publicKeyHash:
+          description: "Hash of the X.509 encoded public key bytes of the merchant\u2019\
+            s certificate."
+          type: string
+          example: tqYV+tmG9aMh+l/K6cicUnPqkb1gUiLjSTM9gEz6Nl0=
+        transactionId:
+          description: Transaction identifier, generated on the device.
+          type: string
+          example: 3cee89679130a4b2617c76118a1c62fd400cd45b49dc0916d5b951b560cd17b4
+    ApplePayTokenRsaHeader:
+      type: object
+      required:
+      - wrappedKey
+      - publicKeyHash
+      - transactionId
+      properties:
+        applicationData:
+          description: Optional. Hash of the applicationData property of the original
+            PKPaymentRequest object. If the value of that property is null, this key
+            is omitted.
+          type: string
+        wrappedKey:
+          description: The symmetric key wrapped using your RSA public key.
+          type: string
+        publicKeyHash:
+          description: "Hash of the X.509 encoded public key bytes of the merchant\u2019\
+            s certificate."
+          type: string
+        transactionId:
+          description: Transaction identifier, generated on the device.
+          type: string
+    ApplePayToken:
+      type: object
+      required:
+      - version
+      - data
+      - signature
+      - header
+      properties:
+        version:
+          description: ApplePay token version information.
+          type: string
+          enum:
+          - EC_v1
+          - RSA_v1
+        data:
+          description: Encrypted payment data. Base64 encoded as a string.
+          type: string
+          example: t7GeajLB9skXB6QSWfEpPA4WPhDqB7ekdd+...T6Ms7PhiNZpuGEE2QE=
+        signature:
+          description: Signature of the payment and header data. The signature includes
+            the signing certificate, its intermediate CA certificate, and information
+            about the signing algorithm.
+          type: string
+          example: MIAGCSqGSIb3DQEHAqCAMIACAQEx.../WIDkHWiFuSm5a3NVox7DlyIf0AAAAAAAA=
+        header:
+          description: Additional version-dependent information used to decrypt and
+            verify the payment.
+          oneOf:
+          - $ref: '#/components/schemas/ApplePayTokenEcHeader'
+          - $ref: '#/components/schemas/ApplePayTokenRsaHeader'
+    GooglePayToken:
+      type: object
+      required:
+      - signature
+      - protocolVersion
+      - signedMessage
+      properties:
+        signature:
+          description: Verifies the message came from Google. The signature is created
+            using ECDSA.
+          type: string
+        protocolVersion:
+          description: Identifies which encryption/signing scheme created this message.
+            In this way, the protocol can evolve over time if needed. If it is not
+            set, assume ECv0.
+          type: string
+        signedMessage:
+          description: A serialized JSON string containing the encryptedMessage, ephemeralPublicKey,
+            and tag. To simplify the signature verification process, this value is
+            serialized.
+          type: string
+    PaymentTokenRequest:
+      type: object
+      required:
+      - idempotencyKey
+      - type
+      - tokenData
+      properties:
+        idempotencyKey:
+          $ref: '#/components/schemas/IdempotencyKey'
+        type:
+          description: Type of the digital wallet token.
+          type: string
+          enum:
+          - applepay
+          - googlepay
+        tokenData:
+          description: The token data
+          oneOf:
+          - $ref: '#/components/schemas/ApplePayToken'
+          - $ref: '#/components/schemas/GooglePayToken'
+    TokenizedCardDetails:
+      type: object
+      required:
+      - expMonth
+      - expYear
+      - last4
+      - bin
+      properties:
+        expMonth:
+          description: The card's expiration month.
+          type: integer
+          example: 1
+        expYear:
+          description: Four digit number representing the card's expiration year.
+          type: integer
+          example: 2020
+        network:
+          description: The network of the card.
+          type: string
+          enum:
+          - VISA
+          - MASTERCARD
+          - AMEX
+          - UNKNOWN
+        last4:
+          description: The last 4 digits of the card.
+          type: string
+          example: '0123'
+        bin:
+          description: The bank identification number (BIN), the first 6 digits of
+            the card.
+          type: string
+          example: '401230'
+        fundingType:
+          description: The funding type of the card.
+          type: string
+          enum:
+          - credit
+          - debit
+          - prepaid
+          - unknown
+        issuerCountry:
+          description: The country code of the issuer bank. Follows the ISO 3166-1
+            alpha-2 standard.
+          type: string
+          example: US
+    PaymentToken:
+      type: object
+      required:
+      - id
+      - type
+      - expiresOn
+      - cardDetails
+      - createDate
+      - updateDate
+      properties:
+        id:
+          description: Unique system generated identifier for the digital wallet token.
+          type: string
+          format: uuid
+          example: gc988ed5-c189-4f70-a074-e5beb7eb8e32
+        type:
+          description: Type of the digital wallet token.
+          type: string
+          enum:
+          - applepay
+          - googlepay
+        expiresOn:
+          description: Datetime when the digital token expires. ISO-8601.
+          type: string
+          format: date-time
+          example: '2022-01-18T19:20:00Z'
+        cardDetails:
+          $ref: '#/components/schemas/TokenizedCardDetails'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    Settlement:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        merchantWalletId:
+          $ref: '#/components/schemas/MerchantWalletId'
+        walletId:
+          description: If this settlement was used for a marketplace payment, the
+            wallet involved in the settlement. Not included for standard merchant
+            settlements.
+          type: string
+          example: '12345'
+        totalDebits:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        totalCredits:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        paymentFees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        chargebackFees:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    IdPayment:
+      type: string
+      description: Unique system generated identifier for the payment that is associated
+        to the chargeback item.
+      format: uuid
+      example: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+    ChargebackStatus:
+      type: string
+      enum:
+      - active
+      - resolved
+      - pending
+      - won
+      - lost
+      - canceled
+      - closed
+      description: "Enumerated status of the chargeback. `active` means you\u2019\
+        ve received a dispute and you need to submit evidence if you want to defend\
+        \ against it. 'resolved' means the disputed payment had been refunded previously.\
+        \ Your account has not been debited. `pending` means we have acknowledged\
+        \ your evidence and forwarded it to the card issuer. `won` means you have\
+        \ won the dispute and your account has been credited. `lost` means the issuing\
+        \ bank has rejected your evidence and you have lost the dispute. There are\
+        \ no further financial implications. `canceled` means the issuing bank has\
+        \ canceled the dispute and your account has been credited. `closed` means\
+        \ the time to respond to this dispute has run out. No evidence can be submitted\
+        \ at this point."
+    ChargebackCategories:
+      type: string
+      description: Enumerated category of the chargeback status codes based on the
+        chargeback status code.
+      enum:
+      - Canceled Recurring Payment
+      - Customer Dispute
+      - Fraudulent
+      - General
+      - Processing Error
+      - Not Defined
+    IdSettlement:
+      type: string
+      description: Unique system generated identifier for the settlement related to
+        the chargeback history.
+      format: uuid
+      nullable: true
+      example: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+    BasicChargebackHistory:
+      type: object
+      required:
+      - type
+      - chargebackAmount
+      - description
+      properties:
+        type:
+          type: string
+          description: "Enumerated type of the chargeback history event. `1st Chargeback`\
+            \ represents the first stage of the dispute procedure initiated by the\
+            \ cardholder\u2019s issuing bank.\n  `2nd Chargeback` represents the second\
+            \ stage of the dispute procedure initiated by the cardholder\u2019s issuing\
+            \ bank (This stage is MasterCard only).\n  `Chargeback Reversal` represents\
+            \ when 1st Chargeback or 2nd Chargeback is withdrawn by the issuer.\n\
+            \  `Representment` represents the stage when merchants decided to dispute\
+            \ 1st Chargeback or 2nd Chargeback.\n  `Chargeback Settlement` can imply\
+            \ one of the two: 1) If merchant or marketplace is taking the lost of\
+            \ the chargeback, money will be debit from the wallet during this stage.\n\
+            \  2) If merchant of marketplace successfully dispute the chargeback,\
+            \ money will be credit back to the wallet during this stage.\n"
+          enum:
+          - 1st Chargeback
+          - 2nd Chargeback
+          - Chargeback Reversal
+          - Representment
+          - Chargeback Settlement
+        chargebackAmount:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        fee:
+          $ref: '#/components/schemas/FiatMoneyUsd'
+        description:
+          type: string
+          description: The reason the chargeback was created.
+          example: The cardholder claims an unauthorized transaction occurred.
+        settlementId:
+          $ref: '#/components/schemas/IdSettlement'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+    BasicChargeback:
+      type: object
+      required:
+      - id
+      - paymentId
+      - merchantId
+      - status
+      - history
+      - reasonCode
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        paymentId:
+          $ref: '#/components/schemas/IdPayment'
+        merchantId:
+          $ref: '#/components/schemas/IdMerchant'
+        reasonCode:
+          description: Reason code given by the card network for the chargeback item.
+          type: string
+          example: '10.4'
+        status:
+          $ref: '#/components/schemas/ChargebackStatus'
+        category:
+          $ref: '#/components/schemas/ChargebackCategories'
+        history:
+          type: array
+          description: 'The chargeback item''s history list will be sorted by create
+            date descending: more recent chargeback statuses will be at the beginning
+            of the list.
+
+            '
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/BasicChargebackHistory'
+    MockChargebackCreationRequest:
+      type: object
+      required:
+      - paymentId
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+          description: The id of the payment to be charged back.  Each payment can
+            only be charged back once.
+          example: fc988ed5-c129-4f70-a064-e5beb7eb8e32
+    MockChargeback:
+      type: object
+      properties: {}
+    FiatOptionalAmountMoney:
+      type: object
+      title: OptionalAmountMoney
+      required:
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          $ref: '#/components/schemas/FiatCurrency'
+    ExchangeRateRequest:
+      type: object
+      required:
+      - from
+      - to
+      properties:
+        from:
+          allOf:
+          - $ref: '#/components/schemas/FiatOptionalAmountMoney'
+          description: Amount (Optional) and currency to convert from. If an amount
+            is provided here, then the amount in the "to" field must be null.
+        to:
+          allOf:
+          - $ref: '#/components/schemas/FiatOptionalAmountMoney'
+          description: Amount (Optional) and currency to convert to. If an amount
+            is provided here, then the amount in the "from" field must be null.
+    ExchangeRateResponse:
+      type: object
+      required:
+      - id
+      - rate
+      - from
+      - to
+      - timestamp
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        rate:
+          description: Exchange rate
+          type: number
+          format: float
+        from:
+          $ref: '#/components/schemas/FiatOptionalAmountMoney'
+        to:
+          $ref: '#/components/schemas/FiatOptionalAmountMoney'
+        timestamp:
+          $ref: '#/components/schemas/UtcTimestamp'
+    Money:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: string
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          example: '3.14'
+        currency:
+          type: string
+          description: Currency code for the amount.
+          enum:
+          - USD
+          - EUR
+          - BTC
+          - ETH
+    Balances:
+      type: object
+      description: Available and unsettled balances of the merchant.
+      required:
+      - available
+      - unsettled
+      properties:
+        available:
+          type: array
+          description: List of currency balances (one for each currency) that are
+            currently available to spend.
+          items:
+            $ref: '#/components/schemas/Money'
+        unsettled:
+          type: array
+          description: List of currency balances (one for each currency) that have
+            been captured but are currently in the process of settling and will become
+            available to spend at some point in the future.
+          items:
+            $ref: '#/components/schemas/Money'
+    SuccessUrl:
+      type: string
+      description: The URL returned to you through client-side callback when the payment
+        is completed.
+      example: https://www.example.com/success
+    CheckoutSessionStatus:
+      description: 'Status of the checkout session. Active: the checkout session is
+        still in-progress. Completed: the payments of a checkout session is successful
+        and the checkout session is completed. Expired: indicates that it expired
+        and is no longer accepting any new payments.'
+      type: string
+      enum:
+      - active
+      - completed
+      - expired
+    CheckoutSessionMoney:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          description: Magnitude of the amount, in units of the currency, with a `.`.
+          type: string
+          example: '3.14'
+        currency:
+          description: A currency associated with a balance or address.
+          type: string
+          enum:
+          - USD
+          - ETH
+          - BTC
+    CheckoutSession:
+      type: object
+      required:
+      - id
+      - type
+      - clientToken
+      - status
+      - expiresOn
+      - createDate
+      - updateDate
+      - amount
+      - amountPaid
+      - paymentIds
+      - paymentIntentIds
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          type: string
+          description: The type of this response
+          enum:
+          - checkout_session
+        successUrl:
+          $ref: '#/components/schemas/SuccessUrl'
+        clientToken:
+          type: string
+          description: The access token for the SDK to access checkout session resources
+          example: ck_test_19NoQz3jDq3mKgJFEuMkWs4dCk6Eiq1GZShWMF_jY_vL3dOAoT3EiTTgEprqaVcGbzB3pszRZhyU_v0mebyKiQ
+        status:
+          $ref: '#/components/schemas/CheckoutSessionStatus'
+        expiresOn:
+          $ref: '#/components/schemas/UtcTimestamp'
+        createDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        updateDate:
+          $ref: '#/components/schemas/UtcTimestamp'
+        amount:
+          $ref: '#/components/schemas/CheckoutSessionMoney'
+        amountPaid:
+          $ref: '#/components/schemas/CheckoutSessionMoney'
+        paymentIds:
+          description: IDs of all the associated payments.
+          type: array
+          readOnly: true
+          items:
+            type: string
+            format: uuid
+            example: 69808f36-3e5e-4f37-bf82-ca79e4d70fc1
+        paymentIntentIds:
+          description: IDs of all the associated payment intents.
+          type: array
+          readOnly: true
+          items:
+            type: string
+            format: uuid
+            example: 69808f36-3e5e-4f37-bf82-ca79e4d70fc1
+    CheckoutSessionCreationRequest:
+      type: object
+      required:
+      - amount
+      properties:
+        successUrl:
+          $ref: '#/components/schemas/SuccessUrl'
+        amount:
+          $ref: '#/components/schemas/CheckoutSessionMoney'
+  responses:
+    NotAuthorized:
+      description: The request has not been applied because it lacks valid authentication
+        credentials.
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/json:
+          schema:
+            type: object
+            title: NotAuthorized
+            required:
+            - code
+            - message
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Something went wrong.
+            example:
+              code: 401
+              message: Malformed authorization.
+          examples:
+            response:
+              value:
+                code: 401
+                message: Malformed authorization.
+    BadRequest:
+      description: The request cannot be processed due to a client error.
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/json:
+          schema:
+            type: object
+            title: BadRequest
+            required:
+            - code
+            - message
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Something went wrong.
+            example:
+              code: 400
+              message: Bad request.
+          examples:
+            response:
+              value:
+                code: 400
+                message: Bad request.
+    NotFound:
+      description: The specified resource was not found.
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/json:
+          schema:
+            type: object
+            title: NotFound
+            required:
+            - code
+            - message
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Something went wrong.
+            example:
+              code: 404
+              message: Not found.
+          examples:
+            response:
+              value:
+                code: 404
+                message: Not found.
+    Forbidden:
+      description: The request provides authentication, but the authenticated user
+        does not possess sufficient permissions for accessing this resource.
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Forbidden
+            required:
+            - code
+            - message
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Something went wrong.
+            example:
+              code: 3
+              message: Forbidden
+          examples:
+            response:
+              value:
+                code: 3
+                message: Forbidden
+    Conflict:
+      description: The request has not been applied because it comes in conflict with
+        another request (such as re-using an idempotencyKey for a different request).
+      headers:
+        X-Request-Id:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/json:
+          schema:
+            type: object
+            title: Conflict
+            required:
+            - code
+            - message
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Something went wrong.
+            example:
+              code: 409
+              message: Conflicts with another request.
+          examples:
+            response:
+              value:
+                code: 409
+                message: Conflicts with another request.

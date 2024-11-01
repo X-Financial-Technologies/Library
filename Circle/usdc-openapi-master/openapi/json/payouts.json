@@ -1,0 +1,1561 @@
+{
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "https://api-sandbox.circle.com"
+    }
+  ],
+  "info": {
+    "version": "2.13.0",
+    "title": "Payouts API",
+    "description": "The Circle Payouts API allows you to programmatically make fast, global payouts to your customers, vendors, and suppliers. Make payouts on supported blockchains."
+  },
+  "tags": [
+    {
+      "name": "Payouts",
+      "description": "Create and get information on address book payouts."
+    },
+    {
+      "name": "Crypto Address Book",
+      "description": "Manage blockchain addresses with metadata."
+    },
+    {
+      "name": "Crypto Exchange Rates",
+      "description": "Pull estimated exchange rate for crypto currencies."
+    }
+  ],
+  "paths": {
+    "/v1/payouts": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a payout",
+        "description": "\nCreate a crypto payout.  \n\nThe following table includes the supported pairs of amount.currency and toAmount.currency for address book payouts:\n\n| amount.currency  | toAmount.currency |\n| ---------------- | ------------      |\n| USD              | USD               |\n| USD              | BTC               |\n| USD              | ETH               |\n| USD              | MTC               |\n| EUR              | EUR               |\n| BTC              | USD               |\n| BTC              | BTC               |\n| ETH              | USD               |\n| ETH              | ETH               |\n",
+        "operationId": "createPayout",
+        "tags": [
+          "Payouts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CryptoPayoutCreationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a payout.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CreatePayoutResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CryptoPayout"
+                    }
+                  }
+                },
+                "examples": {
+                  "Crypto Payout": {
+                    "value": {
+                      "data": {
+                        "id": "b8627ae8-732b-4d25-b947-1df8f4007a29",
+                        "sourceWalletId": "53535335",
+                        "destination": {
+                          "type": "address_book",
+                          "id": "b8627ae8-732b-4d25-b947-1df8f4007a29"
+                        },
+                        "amount": {
+                          "amount": "3.14",
+                          "currency": "USD"
+                        },
+                        "toAmount": {
+                          "amount": "3.14",
+                          "currency": "ETH"
+                        },
+                        "fees": {
+                          "amount": "3.14",
+                          "currency": "USD"
+                        },
+                        "networkFees": {
+                          "amount": "0.14",
+                          "currency": "USD"
+                        },
+                        "status": "pending",
+                        "errorCode": "transaction_denied",
+                        "riskEvaluation": {
+                          "decision": "denied",
+                          "reason": "4000"
+                        },
+                        "createDate": "2020-04-10T02:13:30.000Z",
+                        "updateDate": "2020-04-10T02:13:30.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "source",
+            "description": "Identifier for the source wallet. Filters the fetched payout results to only be from a specific source wallet. If not provided, payouts from all wallets will be returned.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1000565227"
+            }
+          },
+          {
+            "name": "destination",
+            "description": "Universally unique identifier (UUID v4) for the destination. Filters the fetched payout results made to a specific destination. If not provided, payouts to all destinations will be returned.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "54c1cbab-c419-450f-ad23-906fa03af7f0"
+            }
+          },
+          {
+            "name": "type",
+            "description": "Destination type. Filters the results to fetch all payouts made to a specified destination type. This query parameter can be passed multiple times to fetch results matching multiple destination types. The address_book destination type cannot be combined with other types.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/components/schemas/PayoutDestinationType"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "description": "Queries items with the specified status. Matches any status if unspecified.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/components/schemas/PayoutStatus"
+              }
+            }
+          },
+          {
+            "name": "sourceCurrency",
+            "description": "Queries items with the specified source currency `amount.currency`. Matches any source currency if unspecified.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "USD",
+                "EUR",
+                "BTC",
+                "ETH",
+                "MTC",
+                "FLW",
+                "MAN"
+              ]
+            }
+          },
+          {
+            "name": "destinationCurrency",
+            "description": "Queries items with the specified destination currency `toAmount.currency`. Matches any destination currency if unspecified.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "USD",
+                "EUR",
+                "BTC",
+                "ETH",
+                "MTC",
+                "FLW",
+                "MAN"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Chain"
+          },
+          {
+            "$ref": "#/components/parameters/From"
+          },
+          {
+            "$ref": "#/components/parameters/To"
+          },
+          {
+            "$ref": "#/components/parameters/PageBefore"
+          },
+          {
+            "$ref": "#/components/parameters/PageAfter"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          }
+        ],
+        "summary": "List all payouts",
+        "operationId": "listPayouts",
+        "tags": [
+          "Payouts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a list of payouts.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ListPayoutsResponse",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CryptoPayout"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Crypto Payout": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "b8627ae8-732b-4d25-b947-1df8f4007a29",
+                          "sourceWalletId": "53535335",
+                          "destination": {
+                            "type": "address_book",
+                            "id": "b8627ae8-732b-4d25-b947-1df8f4007a29"
+                          },
+                          "amount": {
+                            "amount": "3.14",
+                            "currency": "USD"
+                          },
+                          "toAmount": {
+                            "amount": "3.14",
+                            "currency": "ETH"
+                          },
+                          "fees": {
+                            "amount": "3.14",
+                            "currency": "USD"
+                          },
+                          "networkFees": {
+                            "amount": "0.14",
+                            "currency": "USD"
+                          },
+                          "status": "pending",
+                          "errorCode": "transaction_denied",
+                          "riskEvaluation": {
+                            "decision": "denied",
+                            "reason": "4000"
+                          },
+                          "createDate": "2020-04-10T02:13:30.000Z",
+                          "updateDate": "2020-04-10T02:13:30.000Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          }
+        }
+      }
+    },
+    "/v1/payouts/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get a payout",
+        "operationId": "getPayout",
+        "tags": [
+          "Payouts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a payout.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetPayoutResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CryptoPayout"
+                    }
+                  }
+                },
+                "examples": {
+                  "Crypto Payout": {
+                    "value": {
+                      "data": {
+                        "id": "b8627ae8-732b-4d25-b947-1df8f4007a29",
+                        "sourceWalletId": "53535335",
+                        "destination": {
+                          "type": "address_book",
+                          "id": "b8627ae8-732b-4d25-b947-1df8f4007a29"
+                        },
+                        "amount": {
+                          "amount": "3.14",
+                          "currency": "USD"
+                        },
+                        "toAmount": {
+                          "amount": "3.14",
+                          "currency": "ETH"
+                        },
+                        "fees": {
+                          "amount": "3.14",
+                          "currency": "USD"
+                        },
+                        "networkFees": {
+                          "amount": "0.14",
+                          "currency": "USD"
+                        },
+                        "status": "pending",
+                        "errorCode": "transaction_denied",
+                        "riskEvaluation": {
+                          "decision": "denied",
+                          "reason": "4000"
+                        },
+                        "createDate": "2020-04-10T02:13:30.000Z",
+                        "updateDate": "2020-04-10T02:13:30.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/addressBook/recipients": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a recipient",
+        "operationId": "createAddressBookRecipient",
+        "tags": [
+          "Crypto Address Book"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressBookRecipientRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created an address book recipient.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CreateAddressBookRecipientResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AddressBookRecipient"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": {
+                        "id": "8755d0ea-14f9-4259-b092-de23c14b6568",
+                        "chain": "ETH",
+                        "address": "0x45bfcf1a6289a0b77b4d3f7d12005a05949fd8c3",
+                        "metadata": {
+                          "nickname": "sample nickname",
+                          "email": "satoshi@circle.com",
+                          "bns": "sample.circle"
+                        },
+                        "status": "pending",
+                        "createDate": "2022-07-21T20:13:35.578678Z",
+                        "updateDate": "2022-07-21T20:19:24.859052Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List all recipients",
+        "operationId": "listAddressBookRecipients",
+        "tags": [
+          "Crypto Address Book"
+        ],
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Filters results to fetch only address book recipients with the provided address.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain",
+            "description": "Filters results to fetch only address book recipients with the provided chain.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "description": "Filters results to fetch only address book recipients that have the provided email in their metadata.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "description": "Filters results to fetch only address book recipients that have the provided status.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "inactive",
+                "active",
+                "denied"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/From"
+          },
+          {
+            "$ref": "#/components/parameters/To"
+          },
+          {
+            "$ref": "#/components/parameters/PageBefore"
+          },
+          {
+            "$ref": "#/components/parameters/PageAfter"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a list of address book recipients.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ListAddressBookRecipientsResponse",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AddressBookRecipient"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "b8627ae8-732b-4d25-b947-1df8f4007a29",
+                          "chain": "ALGO",
+                          "address": "0x8381470ED67C3802402dbbFa0058E8871F017A6F",
+                          "addressTag": "123456789",
+                          "metadata": {
+                            "nickname": "sample nickname",
+                            "email": "satoshi@circle.com",
+                            "bns": "sample.circle"
+                          },
+                          "status": "pending",
+                          "createDate": "2020-04-10T02:13:30.000Z",
+                          "updateDate": "2020-04-10T02:13:30.000Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          }
+        }
+      }
+    },
+    "/v1/addressBook/recipients/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get a recipient",
+        "operationId": "getAddressBookRecipient",
+        "tags": [
+          "Crypto Address Book"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved an address book recipient.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetAddressBookRecipientResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AddressBookRecipient"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": {
+                        "id": "b8627ae8-732b-4d25-b947-1df8f4007a29",
+                        "chain": "ALGO",
+                        "address": "0x8381470ED67C3802402dbbFa0058E8871F017A6F",
+                        "addressTag": "123456789",
+                        "metadata": {
+                          "nickname": "sample nickname",
+                          "email": "satoshi@circle.com",
+                          "bns": "sample.circle"
+                        },
+                        "status": "pending",
+                        "createDate": "2020-04-10T02:13:30.000Z",
+                        "updateDate": "2020-04-10T02:13:30.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Modify a recipient",
+        "operationId": "modifyAddressBookRecipient",
+        "tags": [
+          "Crypto Address Book"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressBookRecipientModifyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the address book recipient.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ModifyAddressBookRecipientResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AddressBookRecipient"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": {
+                        "id": "8755d0ea-14f9-4259-b092-de23c14b6568",
+                        "chain": "ETH",
+                        "address": "0x45bfcf1a6289a0b77b4d3f7d12005a05949fd8c3",
+                        "metadata": {
+                          "nickname": "sample nickname",
+                          "email": "satoshi@circle.com",
+                          "bns": "sample.circle"
+                        },
+                        "status": "pending",
+                        "createDate": "2022-07-21T20:13:35.578678Z",
+                        "updateDate": "2022-07-21T20:19:24.859052Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdPath"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete a recipient",
+        "operationId": "deleteAddressBookRecipient",
+        "tags": [
+          "Crypto Address Book"
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "description": "Successfully removed the address book recipient."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/exchange/rates/{trading-pair}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get a exchange rate",
+        "description": "Fetch the current rates for the specified trading pair. The trading pair is defined by a base currency followed by a quote currency. The response contains buy and sell rates denominated in the quote currency. **Exchange rate is an estimate only and is subject to change by the time you submit the actual request.**",
+        "operationId": "getExchangeRates",
+        "tags": [
+          "Crypto Exchange Rates"
+        ],
+        "parameters": [
+          {
+            "name": "trading-pair",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BTC-USD",
+                "ETH-USD",
+                "FLOW-USD"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved rates.",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/XRequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetExchangeRatesResponse",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Rate"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": {
+                        "buy": "46317.59000",
+                        "sell": "45400.41000",
+                        "createDate": "2020-04-10T02:13:30.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/NotAuthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "PayoutDestinationType": {
+        "type": "string",
+        "description": "The destination type.",
+        "enum": [
+          "address_book"
+        ]
+      },
+      "PayoutStatus": {
+        "type": "string",
+        "description": "Status of the payout. Status `pending` indicates that the payout is in process; `complete` indicates it finished successfully; `failed` indicates it failed.",
+        "enum": [
+          "pending",
+          "complete",
+          "failed"
+        ]
+      },
+      "Id": {
+        "type": "string",
+        "description": "Unique system generated identifier for the entity.",
+        "format": "uuid",
+        "example": "b8627ae8-732b-4d25-b947-1df8f4007a29"
+      },
+      "CryptoPayoutDestinationType": {
+        "type": "string",
+        "description": "The destination type.",
+        "enum": [
+          "address_book"
+        ]
+      },
+      "CryptoPayoutDestination": {
+        "type": "object",
+        "description": "The destination.",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CryptoPayoutDestinationType"
+          },
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "PayoutMoney": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Magnitude of the amount, in units of the currency, with a `.`.",
+            "example": "3.14"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code for the amount.",
+            "enum": [
+              "USD",
+              "EUR",
+              "BTC",
+              "ETH",
+              "MTC",
+              "FLW",
+              "MAN"
+            ]
+          }
+        }
+      },
+      "PayoutErrorCode": {
+        "type": "string",
+        "nullable": true,
+        "description": "Indicates the failure reason of a payout. Only present for payouts in failed state. Possible values are [`insufficient_funds`, `transaction_denied`, `transaction_failed`, `transaction_returned`, `bank_transaction_error`, `fiat_account_limit_exceeded`, `invalid_bank_account_number`, `invalid_ach_rtn`, `invalid_wire_rtn`, `vendor_inactive`]'",
+        "enum": [
+          "insufficient_funds",
+          "transaction_denied",
+          "transaction_failed",
+          "transaction_returned",
+          "bank_transaction_error",
+          "fiat_account_limit_exceeded",
+          "invalid_bank_account_number",
+          "invalid_ach_rtn",
+          "invalid_wire_rtn",
+          "vendor_inactive"
+        ]
+      },
+      "RiskEvaluation": {
+        "type": "object",
+        "description": "Results of risk evaluation. Only present if the payment is denied by Circle's risk service.",
+        "nullable": true,
+        "properties": {
+          "decision": {
+            "description": "Enumerated decision of the account.",
+            "type": "string",
+            "enum": [
+              "approved",
+              "denied",
+              "review"
+            ]
+          },
+          "reason": {
+            "description": "Risk reason for the definitive decision outcome.",
+            "type": "string",
+            "nullable": true,
+            "example": "3000"
+          }
+        }
+      },
+      "UtcTimestamp": {
+        "type": "string",
+        "description": "ISO-8601 UTC date/time format.",
+        "example": "2020-04-10T02:13:30.000Z"
+      },
+      "CryptoPayout": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "sourceWalletId": {
+            "type": "string",
+            "description": "The identifier of the source wallet used to fund a payout.",
+            "example": "53535335"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/CryptoPayoutDestination"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/PayoutMoney"
+          },
+          "toAmount": {
+            "$ref": "#/components/schemas/PayoutMoney"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/PayoutMoney"
+          },
+          "networkFees": {
+            "$ref": "#/components/schemas/PayoutMoney"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PayoutStatus"
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/PayoutErrorCode"
+          },
+          "riskEvaluation": {
+            "$ref": "#/components/schemas/RiskEvaluation"
+          },
+          "createDate": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          },
+          "updateDate": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          }
+        }
+      },
+      "IdempotencyKey": {
+        "type": "string",
+        "description": "Universally unique identifier (UUID v4) idempotency key. This key is utilized to ensure exactly-once execution of mutating requests.",
+        "format": "uuid",
+        "example": "ba943ff1-ca16-49b2-ba55-1057e70ca5c7"
+      },
+      "IdentityAddress": {
+        "type": "object",
+        "required": [
+          "line1",
+          "city",
+          "district",
+          "postalCode",
+          "country"
+        ],
+        "properties": {
+          "line1": {
+            "type": "string",
+            "description": "Line one of the street address.",
+            "maxLength": 1024,
+            "example": "100 Money Street"
+          },
+          "line2": {
+            "type": "string",
+            "description": "Line two of the street address.",
+            "maxLength": 1024,
+            "example": "Suite 1"
+          },
+          "city": {
+            "type": "string",
+            "description": "City portion of the address.",
+            "maxLength": 1024,
+            "example": "Boston"
+          },
+          "district": {
+            "description": "State / County / Province / Region portion of the address. If the country is US or Canada, then district is required and should use the two-letter code for the subdivision.",
+            "type": "string",
+            "maxLength": 16,
+            "example": "MA"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal / ZIP code of the address.",
+            "maxLength": 16,
+            "example": "01234"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country portion of the address. Formatted as a two-letter country code specified in ISO 3166-1 alpha-2.",
+            "maxLength": 2,
+            "example": "US"
+          }
+        }
+      },
+      "Identity": {
+        "type": "object",
+        "description": "The identity of the originator. Identities are required when:\n  * `destination.type: \"blockchain\"`\n  * `destination.chain: \"ETH\"`\n  * `amount.amount` >= $3,000 in value\n",
+        "required": [
+          "type",
+          "name",
+          "addresses"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of identity for the originator.\n* `individual` - A uniquely distinguishable individual.\n* `business` - Any entity other than a natural person that can establish a permanent customer relationship with an affected entity or otherwise own property. This can include companies, foundations, anstalt, partnerships, associations and other relevantly similar entities.\n",
+            "enum": [
+              "individual",
+              "business"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the identity.",
+            "example": "Satoshi Nakamoto",
+            "maxLength": 1024
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdentityAddress"
+            }
+          }
+        }
+      },
+      "TransferSourceWalletLocation": {
+        "description": "A source wallet location.",
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "wallet"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The id of the wallet.",
+            "example": "12345"
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Identity"
+            }
+          }
+        }
+      },
+      "Money": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Magnitude of the amount, in units of the currency, with a `.`.",
+            "example": "3.14"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code for the amount.",
+            "enum": [
+              "USD",
+              "EUR",
+              "BTC",
+              "ETH"
+            ]
+          }
+        }
+      },
+      "ToAmount": {
+        "type": "object",
+        "required": [
+          "currency"
+        ],
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "Currency code for the amount.",
+            "enum": [
+              "USD",
+              "EUR",
+              "BTC",
+              "ETH",
+              "MTC"
+            ]
+          }
+        }
+      },
+      "CryptoPayoutCreationRequest": {
+        "type": "object",
+        "required": [
+          "idempotencyKey",
+          "destination",
+          "amount"
+        ],
+        "properties": {
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/IdempotencyKey"
+          },
+          "source": {
+            "$ref": "#/components/schemas/TransferSourceWalletLocation"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/CryptoPayoutDestination"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "toAmount": {
+            "$ref": "#/components/schemas/ToAmount"
+          }
+        }
+      },
+      "Chain": {
+        "type": "string",
+        "description": "A blockchain that a given currency is available on.",
+        "enum": [
+          "ALGO",
+          "ARB",
+          "AVAX",
+          "BASE",
+          "BTC",
+          "CELO",
+          "ETH",
+          "FLOW",
+          "HBAR",
+          "NEAR",
+          "NOBLE",
+          "OP",
+          "PAH",
+          "POLY",
+          "SOL",
+          "TRX",
+          "XLM"
+        ]
+      },
+      "Address": {
+        "type": "string",
+        "description": "An alphanumeric string representing a blockchain address. Will be in different formats for different chains. It is important to preserve the exact formatting and capitalization of the address.",
+        "example": "0x8381470ED67C3802402dbbFa0058E8871F017A6F"
+      },
+      "AddressTag": {
+        "type": "string",
+        "description": "The secondary identifier for a blockchain address. An example of this is the memo field on the Stellar network, which can be text, id, or hash format.",
+        "nullable": true,
+        "example": "123456789"
+      },
+      "Email": {
+        "type": "string",
+        "description": "Email of the user.",
+        "maxLength": 1024,
+        "example": "satoshi@circle.com"
+      },
+      "AddressBookRecipientMetadata": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "Nickname related to the address.",
+            "example": "sample nickname"
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "bns": {
+            "type": "string",
+            "description": "Blockchain Name Service (e.g. ENS) domain for the address.",
+            "example": "sample.circle"
+          }
+        }
+      },
+      "AddressBookRecipient": {
+        "type": "object",
+        "required": [
+          "chain",
+          "address",
+          "metadata"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/Chain"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "addressTag": {
+            "$ref": "#/components/schemas/AddressTag"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AddressBookRecipientMetadata"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the address book recipient.",
+            "enum": [
+              "pending",
+              "inactive",
+              "active",
+              "denied"
+            ]
+          },
+          "createDate": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          },
+          "updateDate": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          }
+        }
+      },
+      "AddressBookRecipientRequest": {
+        "type": "object",
+        "required": [
+          "idempotencyKey",
+          "chain",
+          "address",
+          "metadata"
+        ],
+        "properties": {
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/IdempotencyKey"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/Chain"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "addressTag": {
+            "$ref": "#/components/schemas/AddressTag"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AddressBookRecipientMetadata"
+          }
+        }
+      },
+      "AddressBookRecipientModifyRequest": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/AddressBookRecipientMetadata"
+          }
+        }
+      },
+      "Rate": {
+        "type": "object",
+        "required": [
+          "buy",
+          "sell",
+          "createDate"
+        ],
+        "properties": {
+          "buy": {
+            "type": "string",
+            "description": "The buy rate denominated in the quote currency of the trading pair.",
+            "example": "46317.59000"
+          },
+          "sell": {
+            "type": "string",
+            "description": "The sell rate denominated in the quote currency of the trading pair.",
+            "example": "45400.41000"
+          },
+          "createDate": {
+            "$ref": "#/components/schemas/UtcTimestamp"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Chain": {
+        "name": "chain",
+        "description": "Queries items with the specified chain. Matches any chain if unspecified",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "ALGO",
+            "ARB",
+            "AVAX",
+            "BASE",
+            "BTC",
+            "CELO",
+            "ETH",
+            "FLOW",
+            "HBAR",
+            "NEAR",
+            "NOBLE",
+            "OP",
+            "PAH",
+            "POLY",
+            "SOL",
+            "TRX",
+            "XLM"
+          ]
+        }
+      },
+      "From": {
+        "name": "from",
+        "description": "Queries items created since the specified date-time (inclusive).",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020-04-10T02:13:30.000Z"
+        }
+      },
+      "To": {
+        "name": "to",
+        "description": "Queries items created before the specified date-time (inclusive).",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020-04-10T02:13:30.000Z"
+        }
+      },
+      "PageBefore": {
+        "name": "pageBefore",
+        "description": "A collection ID value used for pagination.\n\nIt marks the exclusive end of a page. When provided, the collection resource will return the next `n` items before\nthe id, with `n` being specified by `pageSize`.\n\nThe items will be returned in the natural order of the collection.\n\nThe resource will return the first page if neither `pageAfter` nor `pageBefore` are specified.\n\nSHOULD NOT be used in conjuction with pageAfter.\n",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "PageAfter": {
+        "name": "pageAfter",
+        "description": "A collection ID value used for pagination.\n\nIt marks the exclusive begin of a page. When provided, the collection resource will return the next `n` items after\nthe id, with `n` being specified by `pageSize`.\n\nThe items will be returned in the natural order of the collection.\n\nThe resource will return the first page if neither `pageAfter` nor `pageBefore` are specified.\n\nSHOULD NOT be used in conjuction with pageBefore.\n",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "PageSize": {
+        "name": "pageSize",
+        "description": "Limits the number of items to be returned.\n\nSome collections have a strict upper bound that will disregard this value. In case the specified value is higher\nthan the allowed limit, the collection limit will be used.\n\nIf avoided, the collection will determine the page size itself.\n",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "example": 5
+        }
+      },
+      "IdPath": {
+        "name": "id",
+        "description": "Universally unique identifier (UUID v4) of a resource.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "b3d9d2d5-4c12-4946-a09d-953e82fae2b0"
+        }
+      }
+    },
+    "headers": {
+      "XRequestId": {
+        "description": "Universally unique identifier (UUID v4) for the request. Helpful for identifying a request when communicating with Circle support.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "2adba88e-9d63-44bc-b975-9b6ae3440dde"
+        }
+      }
+    },
+    "responses": {
+      "NotAuthorized": {
+        "description": "The request has not been applied because it lacks valid authentication credentials.",
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/XRequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "title": "NotAuthorized",
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong."
+                }
+              },
+              "example": {
+                "code": 401,
+                "message": "Malformed authorization."
+              }
+            },
+            "examples": {
+              "response": {
+                "value": {
+                  "code": 401,
+                  "message": "Malformed authorization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "The request cannot be processed due to a client error.",
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/XRequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "title": "BadRequest",
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong."
+                }
+              },
+              "example": {
+                "code": 400,
+                "message": "Bad request."
+              }
+            },
+            "examples": {
+              "response": {
+                "value": {
+                  "code": 400,
+                  "message": "Bad request."
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found.",
+        "headers": {
+          "X-Request-Id": {
+            "$ref": "#/components/headers/XRequestId"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "title": "NotFound",
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong."
+                }
+              },
+              "example": {
+                "code": 404,
+                "message": "Not found."
+              }
+            },
+            "examples": {
+              "response": {
+                "value": {
+                  "code": 404,
+                  "message": "Not found."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
