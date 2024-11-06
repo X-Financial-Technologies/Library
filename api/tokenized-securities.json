@@ -1,0 +1,4393 @@
+{
+  "info": {
+    "description": "<h2>Overview</h2>\n            <p>XFT API for enterprise usage. To authenticate, click on \"Authenticate\" on the left sidebar and follow the instructions.</p>\n            <h2>Terms</h2>\n            <p>IMPORTANT: Each user that purchases dShares must agree to our <a href=\"https://XFT.com/terms\">terms</a> and have undergone KYC and AML.</p>\n            <p>When using this API to allow your users to purchase dShares, please ensure that the user understands their rights and restrictions before purchasing. Present the terms linked <a href=\"https://XFT.com/terms\">here</a> to your users and have them accept before purchasing dShares.</p>\n            <h2 id=\"app-types\">App Types</h2>\n            <p>There are four types of apps that can be created:</p>\n            <h3>XFT Managed Wallet</h3>\n            <p>Partner uses a XFT Managed Wallet to purchase dShares.</p>\n            <h3>Customer Managed Wallet</h3>\n            <p>Partner uses an existing owned wallet to purchase dShares.</p>\n            <h3>Non-custodial Managed KYC</h3>\n            <p>Customers use their own wallet to purchase dShares, XFT manages KYC verification.</p>\n            <h3>Non-custodial Partner KYC</h3>\n            <p>Customers use their own wallet to purchase dShares, Partners manage KYC verification (subject to approval)</p>\n            <h2><a href=\"#tag--Stocks\">Stocks</a></h2>\n            <p>Get information about available stocks, such as current and historical stock prices, aggregated summary information, and news articles from these endpoints.</p>\n            <h2>Managed Accounts Solution</h2>\n            <p>Our managed accounts solution offers a more traditional way to integrate with us as a trading platform without the need for in-depth blockchain knowledge or expertise. We handle the details of all the blockchain transactions so that your organization can focus more on delivering for your own users. <strong>This endpoint can only be reached with a XFT Managed Wallet App</strong></p>\n            <h3><a href=\"#tag--Managed-Accounts\">Managed Accounts</a></h2>\n            <p>Find a list of account portfolio items (cash and stock assets) through the \"Get Portfolio\" endpoint, or get a list of your organization's accounts with the \"Get Acccounts\" endpoint.</p>\n            <h3><a href=\"#tag--Managed-Stock-Orders\">Managed Stock Orders</a></h3>\n            <p>Get, place, or cancel orders with these endpoints directly without needing to worry about token contracts or deciphering unfamiliar Web3 errors.</p>\n        ",
+    "contact": {
+      "email": "hello@XFT.com"
+    },
+    "license": {
+      "name": "Contact us"
+    },
+    "termsOfService": "https://XFT.com/terms",
+    "title": "XFT API [Enterprise]",
+    "version": "v20240829-a6945c1"
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "in": "header",
+        "name": "Authorization",
+        "bearerFormat": "api_key",
+        "description": "The provided API key should be set here"
+      }
+    },
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "HTTP Status Code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "error": {
+            "type": "string",
+            "default": null,
+            "description": "Error description and traceback",
+            "nullable": true
+          }
+        },
+        "required": [
+          "message",
+          "status"
+        ],
+        "description": "API response for errors (HTTP status code >= 400)"
+      },
+      "PaginationMetadataSchema": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "first_page": {
+            "type": "integer"
+          },
+          "last_page": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "previous_page": {
+            "type": "integer"
+          },
+          "next_page": {
+            "type": "integer"
+          }
+        }
+      },
+      "HealthCheck": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of server"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "BrokerageOrderStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING_SUBMIT",
+          "PENDING_CANCEL",
+          "PENDING_ESCROW",
+          "PENDING_FILL",
+          "ESCROWED",
+          "SUBMITTED",
+          "CANCELLED",
+          "FILLED",
+          "REJECTED",
+          "REQUIRING_CONTACT",
+          "ERROR"
+        ]
+      },
+      "OrderSide": {
+        "type": "string",
+        "enum": [
+          "BUY",
+          "SELL"
+        ]
+      },
+      "OrderType": {
+        "type": "string",
+        "enum": [
+          "MARKET",
+          "LIMIT"
+        ]
+      },
+      "OrderTif": {
+        "type": "string",
+        "enum": [
+          "DAY",
+          "GTC",
+          "IOC",
+          "FOK"
+        ]
+      },
+      "Web3Order_sBlG": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier"
+          },
+          "brokerage_order_status": {
+            "description": "Status of the order",
+            "$ref": "#/components/schemas/BrokerageOrderStatus"
+          },
+          "chain_id": {
+            "type": "integer",
+            "description": "Blockchain that transaction is ran on"
+          },
+          "order_id": {
+            "type": "string",
+            "description": "Unique identifier of Order from Smart Contracts. NOTE: order_id is returned as {requester address}_{index}"
+          },
+          "order_transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash for the order"
+          },
+          "cancel_transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash for cancellation of order",
+            "nullable": true
+          },
+          "order_contract_address": {
+            "type": "string",
+            "description": "Smart Contract address that order came from"
+          },
+          "order_side": {
+            "description": "Indicates if order is a buy or sell",
+            "$ref": "#/components/schemas/OrderSide"
+          },
+          "order_type": {
+            "description": "Indicates what type of order",
+            "$ref": "#/components/schemas/OrderType"
+          },
+          "order_tif": {
+            "description": "Indicates how long order is valid",
+            "$ref": "#/components/schemas/OrderTif"
+          },
+          "asset_token_quantity": {
+            "type": "number",
+            "description": "Total amount of asset token involved (in wei)"
+          },
+          "payment_token_quantity": {
+            "type": "number",
+            "description": "Total amount of payment token involved (in wei)"
+          },
+          "fees": {
+            "type": "array",
+            "description": "List of fees associated with order",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "nullable": true
+              }
+            },
+            "nullable": true
+          },
+          "network_fee_in_usd": {
+            "type": "number",
+            "description": "Total amount of network fee taken in USD",
+            "nullable": true
+          }
+        },
+        "required": [
+          "asset_token_quantity",
+          "brokerage_order_status",
+          "chain_id",
+          "id",
+          "order_contract_address",
+          "order_id",
+          "order_side",
+          "order_tif",
+          "order_transaction_hash",
+          "order_type",
+          "payment_token_quantity"
+        ]
+      },
+      "StockInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "Identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of Stock"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol of Stock"
+          },
+          "composite_figi": {
+            "type": "string",
+            "description": "Refer to https://www.openfigi.com/about/figi"
+          },
+          "cusip": {
+            "type": "string",
+            "description": "Refer to https://www.cusip.com/identifiers.html",
+            "nullable": true
+          },
+          "cik": {
+            "type": "string",
+            "description": "Refer to https://www.sec.gov/edgar/searchedgar/cik",
+            "nullable": true
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Name of Stock for application display"
+          }
+        },
+        "required": [
+          "composite_figi",
+          "display_name",
+          "id",
+          "name",
+          "symbol"
+        ],
+        "description": "This is an object representing the details of a stock"
+      },
+      "Web3OrderFulfillment_J5Ym": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier"
+          },
+          "transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash for this action"
+          },
+          "transaction_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time when transaction occurred"
+          },
+          "asset_token_filled": {
+            "type": "number",
+            "description": "Amount of asset token filled (in wei)"
+          },
+          "asset_token_spent": {
+            "type": "number",
+            "description": "Amount of asset token spent (in wei)"
+          },
+          "payment_token_filled": {
+            "type": "number",
+            "description": "Amount of payment token filled (in wei)"
+          },
+          "payment_token_spent": {
+            "type": "number",
+            "description": "Amount of payment token spent (in wei)"
+          },
+          "payment_token_fee": {
+            "type": "number",
+            "description": "Fee amount of payment token spent (in wei)",
+            "nullable": true
+          }
+        },
+        "required": [
+          "asset_token_filled",
+          "asset_token_spent",
+          "id",
+          "payment_token_filled",
+          "payment_token_spent",
+          "transaction_dt",
+          "transaction_hash"
+        ]
+      },
+      "OrderSchema": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/Web3Order_sBlG"
+          },
+          "stock": {
+            "$ref": "#/components/schemas/StockInfo"
+          },
+          "fulfillments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Web3OrderFulfillment_J5Ym"
+            }
+          }
+        },
+        "required": [
+          "order",
+          "stock"
+        ]
+      },
+      "StockDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "Unique identifier for the stock"
+          },
+          "name": {
+            "type": "string",
+            "description": "Stock Name"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Ticker symbol of the stock"
+          },
+          "composite_figi": {
+            "type": "string",
+            "default": null,
+            "description": "Refer to [this link](https://www.openfigi.com/about/figi)",
+            "nullable": true
+          },
+          "cusip": {
+            "type": "string",
+            "default": null,
+            "description": "Refer to [this link](https://www.cusip.com/identifiers.html)",
+            "nullable": true
+          },
+          "cik": {
+            "type": "string",
+            "default": null,
+            "description": "Refer to [this link](https://www.sec.gov/edgar/searchedgar/cik.html)",
+            "nullable": true
+          },
+          "display_name": {
+            "type": "string",
+            "default": null,
+            "description": "Name of Stock for application display",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "default": null,
+            "description": "Description of the company and what they do/offer.",
+            "nullable": true
+          },
+          "logo_url": {
+            "type": "string",
+            "default": null,
+            "description": "The URL of the logo of the stock. The preferred format is svg.",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "symbol"
+        ],
+        "description": "This is an object representing the details of a stock"
+      },
+      "StockQuote": {
+        "type": "object",
+        "properties": {
+          "stock_id": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "price": {
+            "type": "number",
+            "description": "The ask price."
+          },
+          "change": {
+            "type": "number",
+            "description": "The change in price from the previous close."
+          },
+          "change_percent": {
+            "type": "number",
+            "description": "The percentage change in price from the previous close."
+          },
+          "previous_close": {
+            "type": "number",
+            "description": "The close price for the symbol for the previous trading day."
+          },
+          "close": {
+            "type": "number",
+            "description": "The close price for the symbol in the given time period."
+          },
+          "high": {
+            "type": "number",
+            "description": "The highest price for the symbol in the given time period"
+          },
+          "low": {
+            "type": "number",
+            "description": "The lowest price for the symbol in the given time period."
+          },
+          "open": {
+            "type": "number",
+            "description": "The open price for the symbol in the given time period."
+          },
+          "volume": {
+            "type": "number",
+            "description": "The trading volume of the symbol in the given time period."
+          }
+        },
+        "required": [
+          "change",
+          "change_percent",
+          "close",
+          "high",
+          "low",
+          "open",
+          "previous_close",
+          "price",
+          "stock_id",
+          "volume"
+        ]
+      },
+      "MarketHours": {
+        "type": "object",
+        "properties": {
+          "is_market_open": {
+            "type": "boolean",
+            "description": "Whether or not the market is open."
+          },
+          "current_session_open_dt": {
+            "type": "string",
+            "format": "date-time",
+            "default": null,
+            "description": "Time at which the current session opened or null if the market is currently closed",
+            "nullable": true
+          },
+          "current_session_close_dt": {
+            "type": "string",
+            "format": "date-time",
+            "default": null,
+            "description": "Time at which the current session closes or null if the market is currently closed",
+            "nullable": true
+          },
+          "next_session_open_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the next session opens."
+          },
+          "next_session_close_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the next session closes."
+          }
+        },
+        "required": [
+          "is_market_open",
+          "next_session_close_dt",
+          "next_session_open_dt"
+        ]
+      },
+      "StockTickTimespan": {
+        "type": "string",
+        "enum": [
+          "DAY",
+          "WEEK",
+          "MONTH",
+          "YEAR"
+        ]
+      },
+      "StockTickData": {
+        "type": "object",
+        "properties": {
+          "open": {
+            "type": "number",
+            "description": "Open price of the stock in the given time period."
+          },
+          "close": {
+            "type": "number",
+            "description": "Close price of the stock in the given time period."
+          },
+          "high": {
+            "type": "number",
+            "description": "Highest price of the stock in the given time period."
+          },
+          "low": {
+            "type": "number",
+            "description": "Lowest price of the stock in the given time period."
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "The Unix seconds timestamp for the start of the aggregate window."
+          }
+        },
+        "required": [
+          "close",
+          "high",
+          "low",
+          "open",
+          "timestamp"
+        ],
+        "description": "A stock tick datum, each object represents a single tick in the candle stick chart"
+      },
+      "StockNewsArticleInfo": {
+        "type": "object",
+        "properties": {
+          "article_url": {
+            "type": "string",
+            "description": "URL of the news article"
+          },
+          "amp_url": {
+            "type": "string",
+            "default": null,
+            "description": "The mobile friendly Accelerated Mobile Page (AMP) URL of the news article if available",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the news article"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "URL of the image for the news article"
+          },
+          "published_utc": {
+            "type": "string",
+            "description": "The UTC date and time the article was published"
+          },
+          "publisher": {
+            "type": "string",
+            "description": "The publisher of the news article"
+          }
+        },
+        "required": [
+          "article_url",
+          "description",
+          "image_url",
+          "published_utc",
+          "publisher"
+        ],
+        "description": "This is an object representing a news article relating to a stock ticker symbol which includes a summary of the article and a link to the original source."
+      },
+      "StockMarketDetails": {
+        "type": "object",
+        "properties": {
+          "ticker_symbol": {
+            "type": "string",
+            "description": "The ticker symbol of the stock"
+          },
+          "market_cap": {
+            "type": "integer",
+            "default": null,
+            "description": "The most recent close price of the ticker multiplied by weighted outstanding shares",
+            "nullable": true
+          },
+          "weighted_shares_outstanding": {
+            "type": "integer",
+            "default": null,
+            "description": "The shares outstanding calculated assuming all shares of other share classes are converted to this share class",
+            "nullable": true
+          }
+        },
+        "required": [
+          "ticker_symbol"
+        ],
+        "description": "This is an object representing the market cap and outstanding shares of a stock"
+      },
+      "StockDividendDetail": {
+        "type": "object",
+        "properties": {
+          "cash_amount": {
+            "type": "number",
+            "description": "The cash amount of the dividend per share owned."
+          },
+          "currency": {
+            "type": "string",
+            "default": null,
+            "description": "The currency in which the dividend is paid.",
+            "nullable": true
+          },
+          "declaration_date": {
+            "type": "string",
+            "default": null,
+            "description": "The date that the dividend was announced.",
+            "nullable": true
+          },
+          "dividend_type": {
+            "type": "string",
+            "description": "The type of dividend. Dividends that have been paid and/or are expected to be paid \n                    on consistent schedules are denoted as CD. Special Cash dividends that have been paid that are \n                    infrequent or unusual, and/or can not be expected to occur in the future are denoted as SC.\n                    Long-Term and Short-Term capital gain distributions are denoted as LT and ST, respectively.\n                "
+          },
+          "ex_dividend_date": {
+            "type": "string",
+            "description": "The date that the stock first trades without the dividend, determined by the exchange."
+          },
+          "frequency": {
+            "type": "integer",
+            "description": "The frequency of the dividend. The following values are possible:<br>\n                    1 - Annual <br>\n                    2 - Semi-Annual <br>\n                    4 - Quarterly <br>\n                    12 - Monthly <br>\n                    52 - Weekly <br>\n                    365 - Daily\n                "
+          },
+          "pay_date": {
+            "type": "string",
+            "default": null,
+            "description": "The date that the dividend is paid out.",
+            "nullable": true
+          },
+          "record_date": {
+            "type": "string",
+            "default": null,
+            "description": "The date that the stock must be held to receive the dividend, set by the company.",
+            "nullable": true
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker symbol of the dividend."
+          }
+        },
+        "required": [
+          "cash_amount",
+          "dividend_type",
+          "ex_dividend_date",
+          "frequency",
+          "ticker"
+        ],
+        "description": "StockDividendDetail contains data for a historical dividend for a stock, including the ticker\n            symbol, declaration date, ex-dividend date, record date, pay date, frequency, and amount. Note that this\n            data applies only to actual stocks, and the yield received for holding a dShare may differ from this.\n        "
+      },
+      "StockSplitStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "IN_PROGRESS",
+          "COMPLETE"
+        ]
+      },
+      "StockSplit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "Unique identifier for the stock split",
+            "example": "1"
+          },
+          "stock_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "Reference to the id of the stock for this split",
+            "example": "8"
+          },
+          "split_from": {
+            "type": "number",
+            "description": "The number of shares before the split. In a 10-for-1 split, this would be 1.",
+            "example": "1"
+          },
+          "split_to": {
+            "type": "number",
+            "description": "The number of shares after the split. In a 10-for-1 split, this would be 10.",
+            "example": "10"
+          },
+          "record_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Record date (Eastern Time Zone) of the split, for company to determine where to send \n                their new shares. Mainly for record keeping by brokerages, who forward the shares to eventual owners. \n                Typically is first in the process.\n                ",
+            "example": "2024-06-06"
+          },
+          "payable_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Payable date (Eastern Time Zone) of the split. Date when company will send out the \n                new shares. Mainly for record keeping by brokerages, who forward the shares to eventual owners. \n                Typically is second in the process.",
+            "example": "2024-06-07"
+          },
+          "ex_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Ex-date of the split (Eastern Time Zone). First day the stock trades at post-split \n                prices. Typically is last in the process, and the main important date for investors.",
+            "example": "2024-06-10"
+          },
+          "status": {
+            "description": "The status of XFT's processing of the split. Stocks for which a split is \n                `IN_PROGRESS` will not be available for trading.",
+            "$ref": "#/components/schemas/StockSplitStatus"
+          }
+        },
+        "required": [
+          "ex_date",
+          "id",
+          "payable_date",
+          "record_date",
+          "split_from",
+          "split_to",
+          "status",
+          "stock_id"
+        ],
+        "description": "StockSplit contains data for a stock split, including the stock id, the number of shares before\n            and after the split, the record date, payable date, ex-date, and the status of the split.\n        "
+      },
+      "StockToken_MeaA": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "ERC-20 token address"
+          },
+          "chain_id": {
+            "type": "integer",
+            "description": "Blockchain that transaction is ran on"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of ERC-20 token"
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "Indicates if token is active"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "ERC-20 token symbol"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "description": "Indicates if token is the primary one for this blockchain"
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "ERC-20 token decimals"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "URL of image associated with the stock token",
+            "nullable": true
+          }
+        },
+        "required": [
+          "address",
+          "chain_id",
+          "decimals",
+          "is_active",
+          "is_primary",
+          "symbol",
+          "version"
+        ]
+      },
+      "StockAndTokenSchema": {
+        "type": "object",
+        "properties": {
+          "stock": {
+            "$ref": "#/components/schemas/StockDetails"
+          },
+          "token": {
+            "$ref": "#/components/schemas/StockToken_MeaA"
+          }
+        },
+        "required": [
+          "stock",
+          "token"
+        ]
+      },
+      "WalletBalance": {
+        "type": "object",
+        "properties": {
+          "token_symbol": {
+            "type": "string",
+            "description": "The symbol of the dshare token (e.g. AAPL.d)"
+          },
+          "token_address": {
+            "type": "string",
+            "description": "The contract address of the dshare token"
+          },
+          "token_decimals": {
+            "type": "integer",
+            "description": "The number of decimal places of the dshare token"
+          },
+          "quantity_in_eth": {
+            "type": "number",
+            "description": "The quantity of the dshare token in ETH <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#what-is-ether' target='_blank'>(what is ETH?)</a>"
+          },
+          "quantity_in_wei": {
+            "type": "number",
+            "description": "The quantity of the dshare token in wei <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#denominations' target='_blank'>(what is wei?)</a>"
+          },
+          "current_market_value": {
+            "type": "number",
+            "description": "The current market value of the dshare token"
+          },
+          "current_market_value_currency": {
+            "type": "string",
+            "description": "The currency of the current market value (e.g. USD)"
+          },
+          "chain_id": {
+            "type": "integer",
+            "description": "The chain id of the dshare token"
+          }
+        },
+        "required": [
+          "chain_id",
+          "current_market_value",
+          "current_market_value_currency",
+          "quantity_in_eth",
+          "quantity_in_wei",
+          "token_address",
+          "token_decimals",
+          "token_symbol"
+        ]
+      },
+      "EntityWalletBalances": {
+        "type": "object",
+        "properties": {
+          "wallet": {
+            "type": "string",
+            "description": "The address of the wallet"
+          },
+          "balances": {
+            "type": "array",
+            "description": "An array of balances for the wallet",
+            "items": {
+              "$ref": "#/components/schemas/WalletBalance"
+            }
+          }
+        },
+        "required": [
+          "balances",
+          "wallet"
+        ]
+      },
+      "StockOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of order. This is the primary identifier for the `/orders` endpoint"
+          },
+          "created": {
+            "type": "integer",
+            "description": "Time at which the stock order was created. Measured in seconds since the Unix epoch."
+          },
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account that placed the order"
+          },
+          "order_status": {
+            "description": "Status of order",
+            "$ref": "#/components/schemas/BrokerageOrderStatus"
+          },
+          "order_side": {
+            "description": "Side of order (BUY or SELL)",
+            "$ref": "#/components/schemas/OrderSide"
+          },
+          "order_type": {
+            "description": "Type of order (MARKET or LIMIT) more info on order types [here](https://www.investopedia.com/investing/basics-trading-stock-know-your-orders/)",
+            "$ref": "#/components/schemas/OrderType"
+          },
+          "asset_quantity": {
+            "type": "number",
+            "description": "Quantity of asset"
+          },
+          "payment_amount": {
+            "type": "number",
+            "description": "Cash paid for stock assets bought for buy orders, or cash received for stock assets sold for sell orders, excluding fees"
+          },
+          "payment_currency": {
+            "type": "string",
+            "description": "Currency of payment (I.E. USD)"
+          },
+          "fee_amount": {
+            "type": "number",
+            "description": "Cash amount paid for fees for the order"
+          },
+          "total_payment_amount": {
+            "type": "number",
+            "description": "Total cash exchanged for stock assets including fees. <p>For buy orders, this is `payment_amount` + `fee_amount`. <br/>For sell orders, this is `payment_amount` - `fee_amount`."
+          }
+        },
+        "required": [
+          "account_id",
+          "asset_quantity",
+          "created",
+          "fee_amount",
+          "id",
+          "order_side",
+          "order_status",
+          "order_type",
+          "payment_amount",
+          "payment_currency",
+          "total_payment_amount"
+        ],
+        "description": "The StockOrder object represents the stock order detailing stock asset quantities, payment amounts, fees, and order details"
+      },
+      "StockOrderFulfillment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of order fulfillment"
+          },
+          "created": {
+            "type": "integer",
+            "description": "Time at which the order fulfillment was created. Measured in seconds since the Unix epoch."
+          },
+          "asset_quantity": {
+            "type": "number",
+            "description": "Quantity of asset"
+          },
+          "payment_amount": {
+            "type": "number",
+            "description": "Quantity of payment"
+          },
+          "payment_currency": {
+            "type": "string",
+            "description": "Currency of payment (I.E. USD)"
+          }
+        },
+        "required": [
+          "asset_quantity",
+          "created",
+          "id",
+          "payment_amount",
+          "payment_currency"
+        ],
+        "description": "The StockOrderFulfillment object represents the full or partial fulfillment of a stock order detailing stock asset quantities and payment amounts that were fulfilled"
+      },
+      "ManagedStockOrder": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/StockOrder"
+          },
+          "fulfillments": {
+            "type": "array",
+            "description": "Fulfillment details. Note that fulfillment for an order can have multiple fulfillments or only be partially filled depending on market conditions. Details on order fills [here](https://www.investopedia.com/terms/f/fill.asp)",
+            "items": {
+              "$ref": "#/components/schemas/StockOrderFulfillment"
+            }
+          },
+          "stock": {
+            "$ref": "#/components/schemas/StockInfo"
+          }
+        },
+        "required": [
+          "fulfillments",
+          "order",
+          "stock"
+        ],
+        "description": "This is an object representing the details of a stock order covering stock details, order specifics, and fulfillment data"
+      },
+      "CreateMarketStockOrderBuyInput": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account placing the order"
+          },
+          "stock_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1"
+          },
+          "payment_amount": {
+            "type": "number",
+            "description": "Amount of USD to pay or receive for the order. Must be a positive number with a precision of up to 2 decimal places."
+          },
+          "include_fees": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether to include fees in the `payment_amount` input field."
+          }
+        },
+        "required": [
+          "account_id",
+          "payment_amount",
+          "stock_id"
+        ],
+        "description": "Input parameters for placing a market order buy."
+      },
+      "Web3SponsoredOrderStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "SUBMITTED",
+          "ERROR",
+          "CANCELLED"
+        ]
+      },
+      "StockOrderRequest": {
+        "type": "object",
+        "properties": {
+          "confirmation_code": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Confirmation code of order request. This is the primary identifier for the `/order_requests` endpoint"
+          },
+          "created": {
+            "type": "integer",
+            "description": "Time at which the order request was created. Measured in seconds since the Unix epoch."
+          },
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account placing the order"
+          },
+          "status": {
+            "description": "Status of order request",
+            "$ref": "#/components/schemas/Web3SponsoredOrderStatus"
+          },
+          "stock_order": {
+            "default": null,
+            "description": "Details of stock order. Will be null if not yet created",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StockOrder"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "account_id",
+          "confirmation_code",
+          "created",
+          "status"
+        ],
+        "description": "This object represents a request to place a stock order. When the order has been created, the `stock_order_id` field will be populated and can be used to retrieve the order details via the `/orders` endpoint."
+      },
+      "StockOrderPreview": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account placing the order"
+          },
+          "order_side": {
+            "description": "Side of order (BUY or SELL)",
+            "$ref": "#/components/schemas/OrderSide"
+          },
+          "order_type": {
+            "description": "Type of order (MARKET or LIMIT) more info on order types [here](https://www.investopedia.com/investing/basics-trading-stock-know-your-orders/)",
+            "$ref": "#/components/schemas/OrderType"
+          },
+          "asset_quantity": {
+            "type": "number",
+            "description": "Quantity of asset"
+          },
+          "payment_amount": {
+            "type": "number",
+            "description": "Cash paid for stock assets bought for buy orders, or cash received for stock assets sold for sell orders, excluding fees"
+          },
+          "payment_currency": {
+            "type": "string",
+            "description": "Currency of payment (I.E. USD)"
+          },
+          "fee_amount": {
+            "type": "number",
+            "description": "Cash amount paid for fees for the order"
+          },
+          "total_payment_amount": {
+            "type": "number",
+            "description": "Total cash exchanged for stock assets including fees. <p>For buy orders, this is `payment_amount` + `fee_amount`. <br/>For sell orders, this is `payment_amount` - `fee_amount`."
+          }
+        },
+        "required": [
+          "account_id",
+          "asset_quantity",
+          "fee_amount",
+          "order_side",
+          "order_type",
+          "payment_amount",
+          "payment_currency",
+          "total_payment_amount"
+        ],
+        "description": "A preview of the StockOrder object that would be created when placing an order. Includes requested order details and a fee estimate."
+      },
+      "ManagedStockOrderPreview": {
+        "type": "object",
+        "properties": {
+          "order_preview": {
+            "$ref": "#/components/schemas/StockOrderPreview"
+          },
+          "stock": {
+            "$ref": "#/components/schemas/StockInfo"
+          }
+        },
+        "required": [
+          "order_preview",
+          "stock"
+        ],
+        "description": "A preview of the ManagedStockOrder object that would be created when placing an order. Includes requested order details and a fee estimate in `order_preview` and stock details in `stock`."
+      },
+      "CreateLimitStockOrderInput": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account placing the order"
+          },
+          "stock_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1"
+          },
+          "asset_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Quantity of stock to trade. Must be a positive integer."
+          },
+          "limit_price": {
+            "type": "number",
+            "description": "Price at which to execute the order. Must be a positive number with a precision of up to 2 decimal places."
+          }
+        },
+        "required": [
+          "account_id",
+          "asset_quantity",
+          "limit_price",
+          "stock_id"
+        ],
+        "description": "Input parameters for placing a limit order."
+      },
+      "CreateMarketStockOrderSellInput": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account placing the order"
+          },
+          "stock_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1"
+          },
+          "asset_quantity": {
+            "type": "number",
+            "description": "Quantity of stock to trade. Must be a positive number with a precision of up to 9 decimal places."
+          }
+        },
+        "required": [
+          "account_id",
+          "asset_quantity",
+          "stock_id"
+        ],
+        "description": "Input parameters for placing a market order sell."
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Status message for API request"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code of API request"
+          }
+        },
+        "required": [
+          "message",
+          "status"
+        ],
+        "description": "API response containing a short description for HTTP status code < 400"
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account"
+          },
+          "created": {
+            "type": "integer",
+            "description": "Time at which the account was created. Measured in seconds since the Unix epoch."
+          }
+        },
+        "required": [
+          "created",
+          "id"
+        ],
+        "description": "Account associated with your organization. Contact us if you require more than one."
+      },
+      "CashBalance": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Total Amount of Cash"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Type of Currency (e.g. USD)"
+          }
+        },
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "description": "The CashBalance object represents the balance of cash currently in the account."
+      },
+      "StockBalance": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Total Amount of Stock"
+          },
+          "stock": {
+            "$ref": "#/components/schemas/StockInfo"
+          },
+          "market_value": {
+            "type": "number",
+            "description": "Total Market Value of Stock"
+          }
+        },
+        "required": [
+          "amount",
+          "market_value",
+          "stock"
+        ],
+        "description": "The StockBalance object represents the balance and details of a stock asset"
+      },
+      "Portfolio": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "ID of account"
+          },
+          "cash": {
+            "description": "Cash Balance details",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CashBalance"
+              }
+            ]
+          },
+          "assets": {
+            "type": "array",
+            "description": "Stock Balance details for all owned stocks",
+            "items": {
+              "$ref": "#/components/schemas/StockBalance"
+            }
+          }
+        },
+        "required": [
+          "account_id",
+          "assets",
+          "cash"
+        ],
+        "description": "This is an object representing the balance of cash and stock assets in your account."
+      },
+      "InterestPayment": {
+        "type": "object",
+        "properties": {
+          "payment_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of interest payment. In US Eastern time zone"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of interest paid"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Type of currency (e.g. USD)"
+          }
+        },
+        "required": [
+          "amount",
+          "currency",
+          "payment_date"
+        ],
+        "description": "An object representing interest payment details."
+      },
+      "WalletTokenBalance": {
+        "type": "object",
+        "properties": {
+          "token_symbol": {
+            "type": "string",
+            "description": "The symbol of the dshare token (e.g. AAPL.d)"
+          },
+          "token_address": {
+            "type": "string",
+            "format": "eth_address",
+            "pattern": "0x[a-fA-F0-9]{40}",
+            "description": "The contract address of the dshare token"
+          },
+          "token_decimals": {
+            "type": "integer",
+            "description": "The number of decimal places of the dshare token"
+          },
+          "quantity_in_eth": {
+            "type": "number",
+            "description": "The quantity of the dshare token in ETH <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#what-is-ether' target='_blank'>(what is ETH?)</a>"
+          },
+          "quantity_in_wei": {
+            "type": "number",
+            "description": "The quantity of the dshare token in wei <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#denominations' target='_blank'>(what is wei?)</a>"
+          },
+          "stock_id": {
+            "type": "integer",
+            "description": "The stock id of the dshare token"
+          },
+          "chain_id": {
+            "type": "integer",
+            "description": "The chain id of the dshare token"
+          }
+        },
+        "required": [
+          "chain_id",
+          "quantity_in_eth",
+          "quantity_in_wei",
+          "stock_id",
+          "token_address",
+          "token_decimals",
+          "token_symbol"
+        ]
+      },
+      "WalletKycStatus": {
+        "type": "string",
+        "enum": [
+          "PASS",
+          "FAIL",
+          "PENDING",
+          "INCOMPLETE"
+        ]
+      },
+      "WalletKycStatusCheck": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Indicates the status of the KYC check",
+            "$ref": "#/components/schemas/WalletKycStatus"
+          },
+          "attempted_dt": {
+            "type": "string",
+            "format": "date-time",
+            "default": null,
+            "description": "Time at which the KYC check was attempted",
+            "nullable": true
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "description": "This object represents the KYC status of a given wallet address"
+      },
+      "PartnerKycStatus": {
+        "type": "string",
+        "enum": [
+          "PASS",
+          "FAIL",
+          "PENDING"
+        ]
+      },
+      "PartnerKycCheck": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "First name of the user",
+            "example": "John",
+            "nullable": true
+          },
+          "middle_name": {
+            "type": "string",
+            "default": null,
+            "description": "Middle name of the user",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Last name of the user",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "default": null,
+            "description": "Email of the user",
+            "example": "johndoe@website.com",
+            "nullable": true
+          },
+          "country_code": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2,
+            "description": "ISO 3166-1 alpha 2 country code.",
+            "example": "US"
+          },
+          "tax_id_number": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "ID number of the official tax document of the country the user belongs to",
+            "example": "123456789",
+            "nullable": true
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "default": null,
+            "description": "Birth date of the user",
+            "example": "YYYY-MM-DD",
+            "nullable": true
+          },
+          "address_street_1": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "Street name of residence address.",
+            "example": "123 Main St.",
+            "nullable": true
+          },
+          "address_street_2": {
+            "type": "string",
+            "default": null,
+            "description": "Extension of residence address, usually apartment or suite number.",
+            "example": "Apt. 123",
+            "nullable": true
+          },
+          "address_city": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "City of residence address. Not all international addresses use this attribute.",
+            "example": "San Francisco",
+            "nullable": true
+          },
+          "address_subdivision": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "State or subdivision of residence address. In the US, this should be the unabbreviated name. Not all international addresses use this attribute.",
+            "example": "California",
+            "nullable": true
+          },
+          "address_postal_code": {
+            "type": "string",
+            "default": null,
+            "minLength": 1,
+            "description": "ZIP or postal code of residence address. Not all international addresses use this attribute.",
+            "example": "94111",
+            "nullable": true
+          }
+        },
+        "required": [
+          "country_code",
+          "last_name"
+        ],
+        "description": "Object consisting of the user data for creating a partner KYC check"
+      },
+      "PartnerWalletKycCheck": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "bigint",
+            "description": "Unique identifier of the KYC check"
+          },
+          "status": {
+            "description": "Indicates the status of the KYC check",
+            "$ref": "#/components/schemas/PartnerKycStatus"
+          },
+          "data": {
+            "description": "Data collected from the KYC check",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PartnerKycCheck"
+              }
+            ]
+          },
+          "submitted_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the KYC check was submitted"
+          },
+          "updated_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the KYC check was updated"
+          }
+        },
+        "required": [
+          "data",
+          "id",
+          "status",
+          "submitted_dt",
+          "updated_dt"
+        ],
+        "description": "This object represents a Partner managed KYC check of a given wallet address"
+      },
+      "PartnerKycCheckInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Data for the partner KYC check",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PartnerKycCheck"
+              }
+            ]
+          },
+          "provider_name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Name of the KYC provider that provided the KYC check"
+          }
+        },
+        "required": [
+          "data",
+          "provider_name"
+        ]
+      },
+      "KycDocumentType": {
+        "type": "string",
+        "enum": [
+          "GOVERNMENT_ID",
+          "SELFIE",
+          "RESIDENCY",
+          "UNKNOWN"
+        ]
+      },
+      "WalletKycCheckDocument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the document"
+          },
+          "document_type": {
+            "description": "Type of the document",
+            "$ref": "#/components/schemas/KycDocumentType"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Filename of the document"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to access the document. Expires in 1 hour"
+          }
+        },
+        "required": [
+          "document_type",
+          "filename",
+          "id",
+          "url"
+        ],
+        "description": "This object represents the document uploaded for a wallet KYC check"
+      },
+      "CreateUserKycDocumentFileInput": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "description": "File to be uploaded. Must be a valid image or PDF file (jpg, jpeg, png, pdf) less\n                        than 5MB in size.",
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "description": "This object represents the file input required for uploading a user KYC document"
+      },
+      "ManagedKycStatus": {
+        "type": "string",
+        "enum": [
+          "PASS",
+          "FAIL",
+          "PENDING",
+          "EXPIRED"
+        ]
+      },
+      "ManagedWalletKycCheck": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Indicates the status of the KYC check",
+            "$ref": "#/components/schemas/ManagedKycStatus"
+          },
+          "attempted_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the KYC check was attempted"
+          },
+          "updated_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the KYC check was updated"
+          },
+          "expiration_dt": {
+            "type": "string",
+            "format": "date-time",
+            "default": null,
+            "description": "Time at which the KYC check will be expired",
+            "nullable": true
+          }
+        },
+        "required": [
+          "attempted_dt",
+          "status",
+          "updated_dt"
+        ],
+        "description": "This object represents the status of the KYC checks of a given wallet address"
+      },
+      "CreateManagedKycInput": {
+        "type": "object",
+        "properties": {
+          "signature": {
+            "type": "string",
+            "format": "hex_string",
+            "pattern": "0x[a-fA-F0-9]+",
+            "description": "Signature returned from signing the wallet with the message-based nonce"
+          },
+          "nonce": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Single-use identifier"
+          }
+        },
+        "required": [
+          "nonce",
+          "signature"
+        ],
+        "description": "This object represents the input required for creating a managed KYC check"
+      },
+      "ManagedKyc": {
+        "type": "object",
+        "properties": {
+          "embed_url": {
+            "type": "string",
+            "description": "URI to continue the KYC flow"
+          },
+          "expiration_dt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the KYC check will be expired"
+          }
+        },
+        "required": [
+          "embed_url",
+          "expiration_dt"
+        ],
+        "description": "This object contains necessary information to continue the managed KYC flow after wallet signature has been completed."
+      },
+      "WalletKycNonceResponse": {
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Single-use identifier"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message for the wallet to sign"
+          }
+        },
+        "required": [
+          "message",
+          "nonce"
+        ],
+        "description": "This object represents the message-based nonce used to sign a wallet for KYC"
+      },
+      "WalletOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier"
+          },
+          "brokerage_order_status": {
+            "description": "Status of the order",
+            "$ref": "#/components/schemas/BrokerageOrderStatus"
+          },
+          "chain_id": {
+            "type": "integer",
+            "description": "Blockchain that transaction is ran on"
+          },
+          "order_id": {
+            "type": "string",
+            "description": "Unique identifier of Order from Smart Contracts. NOTE: order_id is returned as {requester address}_{index}"
+          },
+          "order_transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash for the order"
+          },
+          "cancel_transaction_hash": {
+            "type": "string",
+            "default": null,
+            "description": "Transaction hash for cancellation of order",
+            "nullable": true
+          },
+          "order_contract_address": {
+            "type": "string",
+            "description": "Smart Contract address that order came from"
+          },
+          "order_side": {
+            "$ref": "#/components/schemas/OrderSide"
+          },
+          "order_type": {
+            "$ref": "#/components/schemas/OrderType"
+          },
+          "order_tif": {
+            "$ref": "#/components/schemas/OrderTif"
+          },
+          "asset_token_quantity": {
+            "type": "number",
+            "description": "Total amount of asset token involved (in wei)"
+          },
+          "payment_token_quantity": {
+            "type": "number",
+            "description": "Total amount of payment token involved (in wei)"
+          },
+          "fees": {
+            "type": "array",
+            "default": null,
+            "description": "List of fees associated with order",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "nullable": true
+              }
+            },
+            "nullable": true
+          },
+          "network_fee_in_usd": {
+            "type": "number",
+            "default": null,
+            "description": "Total amount of network fee taken in USD",
+            "nullable": true
+          }
+        },
+        "required": [
+          "asset_token_quantity",
+          "brokerage_order_status",
+          "chain_id",
+          "id",
+          "order_contract_address",
+          "order_id",
+          "order_side",
+          "order_tif",
+          "order_transaction_hash",
+          "order_type",
+          "payment_token_quantity"
+        ],
+        "description": "WalletOrder object represents the details of an Order."
+      },
+      "WalletOrderFulfillment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier"
+          },
+          "transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash for this action"
+          },
+          "transaction_dt": {
+            "type": "string",
+            "description": "Time when transaction occurred"
+          },
+          "asset_token_filled": {
+            "type": "number",
+            "description": "Amount of asset token filled (in wei)"
+          },
+          "asset_token_spent": {
+            "type": "number",
+            "description": "Amount of asset token spent (in wei)"
+          },
+          "payment_token_filled": {
+            "type": "number",
+            "description": "Amount of payment token filled (in wei)"
+          },
+          "payment_token_spent": {
+            "type": "number",
+            "description": "Amount of payment token spent (in wei)"
+          },
+          "payment_token_fee": {
+            "type": "number",
+            "default": null,
+            "description": "Fee amount of payment token spent (in wei)",
+            "nullable": true
+          }
+        },
+        "required": [
+          "asset_token_filled",
+          "asset_token_spent",
+          "id",
+          "payment_token_filled",
+          "payment_token_spent",
+          "transaction_dt",
+          "transaction_hash"
+        ],
+        "description": "WalletOrderFulfillment object represents the details of any fulfillments made for an Order."
+      },
+      "WalletOrderInfo": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/WalletOrder"
+          },
+          "stock": {
+            "$ref": "#/components/schemas/StockInfo"
+          },
+          "fulfillments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletOrderFulfillment"
+            }
+          }
+        },
+        "required": [
+          "fulfillments",
+          "order",
+          "stock"
+        ],
+        "description": "WalletOrderInfo object contains WalletOrder, StockInfo, and WalletOrderFulfillment."
+      },
+      "OrderStructure": {
+        "type": "object",
+        "properties": {
+          "tif": {
+            "type": "integer"
+          },
+          "sell": {
+            "type": "boolean"
+          },
+          "price": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "orderType": {
+            "type": "integer"
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "assetToken": {
+            "type": "string"
+          },
+          "paymentToken": {
+            "type": "string"
+          },
+          "assetTokenQuantity": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "paymentTokenQuantity": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "requestTimestamp": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "assetToken",
+          "assetTokenQuantity",
+          "orderType",
+          "paymentToken",
+          "paymentTokenQuantity",
+          "price",
+          "recipient",
+          "requestTimestamp",
+          "sell",
+          "tif"
+        ]
+      },
+      "OrderFeeEstimateInput": {
+        "type": "object",
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "description": "Chain where the order is placed"
+          },
+          "contract_address": {
+            "type": "string",
+            "format": "hex_string",
+            "pattern": "0x[a-fA-F0-9]+",
+            "description": "Order contract address"
+          },
+          "order_data": {
+            "description": "Order structure",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OrderStructure"
+              }
+            ]
+          }
+        },
+        "required": [
+          "chain_id",
+          "contract_address",
+          "order_data"
+        ]
+      },
+      "DsharesFee": {
+        "type": "string",
+        "enum": [
+          "SPONSORED_NETWORK",
+          "NETWORK",
+          "TRADING",
+          "ORDER",
+          "PARTNER_ORDER"
+        ]
+      },
+      "DshareOrderFee": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Type of fee",
+            "$ref": "#/components/schemas/DsharesFee"
+          },
+          "fee_in_wei": {
+            "type": "string",
+            "format": "bigint",
+            "description": "The quantity of the fee paid via payment token in wei <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#denominations' target='_blank'>(what is wei?)</a>"
+          },
+          "fee_in_eth": {
+            "type": "number",
+            "description": "The quantity of the fee paid via payment token in ETH <a href='https://ethereum.org/en/developers/docs/intro-to-ether/#what-is-ether' target='_blank'>(what is ETH?)</a>"
+          }
+        },
+        "required": [
+          "fee_in_eth",
+          "fee_in_wei",
+          "type"
+        ]
+      },
+      "FeeQuote": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "requester": {
+            "type": "string",
+            "format": "hex_string",
+            "pattern": "0x[a-fA-F0-9]+"
+          },
+          "fee": {
+            "type": "string",
+            "format": "bigint"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "deadline": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deadline",
+          "fee",
+          "orderId",
+          "requester",
+          "timestamp"
+        ]
+      },
+      "DshareOrderFeeEstimate": {
+        "type": "object",
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "description": "Chain where the order is placed"
+          },
+          "payment_token": {
+            "type": "string",
+            "format": "hex_string",
+            "pattern": "0x[a-fA-F0-9]+",
+            "description": "Address of payment token used for fees"
+          },
+          "fees": {
+            "type": "array",
+            "description": "Breakdown of fees",
+            "items": {
+              "$ref": "#/components/schemas/DshareOrderFee"
+            }
+          },
+          "fee_quote": {
+            "description": "FeeQuote structure to pass into contracts",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FeeQuote"
+              }
+            ]
+          },
+          "fee_quote_signature": {
+            "type": "string",
+            "format": "hex_string",
+            "pattern": "0x[a-fA-F0-9]+",
+            "description": "Signed FeeQuote structure to pass into contracts"
+          }
+        },
+        "required": [
+          "chain_id",
+          "fee_quote",
+          "fee_quote_signature",
+          "fees",
+          "payment_token"
+        ]
+      }
+    },
+    "responses": {
+      "DEFAULT_ERROR": {
+        "description": "Default error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "UNPROCESSABLE_ENTITY": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "headers": {
+      "PAGINATION": {
+        "description": "Pagination metadata",
+        "schema": {
+          "$ref": "#/components/schemas/PaginationMetadataSchema"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/_health/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheck"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Health Status",
+        "tags": [
+          "XFT API [Enterprise]"
+        ],
+        "operationId": "getHealth"
+      }
+    },
+    "/api/v1/orders/": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_status",
+            "description": "Filter by the order status",
+            "schema": {
+              "default": null,
+              "nullable": true,
+              "$ref": "#/components/schemas/BrokerageOrderStatus"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 25
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderSchema"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "XFT API [Enterprise]"
+        ],
+        "description": "Returns all orders",
+        "operationId": "getOrders",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/orders/search": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "chain_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "order_transaction_hash",
+            "description": "Transaction hash to search for",
+            "schema": {
+              "type": "string",
+              "format": "hex_string",
+              "pattern": "0x[a-fA-F0-9]+"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderSchema"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "XFT API [Enterprise]"
+        ],
+        "description": "Searches for an order(s)",
+        "operationId": "getOrdersSearch",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/stocks/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockDetails"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "required": false
+          }
+        ],
+        "summary": "Get Stocks",
+        "description": "Returns a list of stocks available for trading",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStocks",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/stocks/quote": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stock_ids",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "bigint"
+              }
+            },
+            "required": true,
+            "explode": true,
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockQuote"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock Quotes",
+        "description": "Returns a list of stock quotes for a specified list of stocks.",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStocksQuote",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/stocks/market_hours": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketHours"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Market Hours",
+        "description": "Returns an object containing the market hours for the current day and next open trading day.",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStocksMarketHours",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/stocks/{stock_id}/price_chart_data/": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "timespan",
+            "description": "Timespan of the stock tick data ex: DAY, WEEK, MONTH",
+            "schema": {
+              "$ref": "#/components/schemas/StockTickTimespan"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockTickData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock Tick Data",
+        "description": "Returns a list of stock tick data for a specified stock. Each index in the array represents a single tick in the chart.",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStockPriceChart",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "stock_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bigint"
+          }
+        }
+      ]
+    },
+    "/api/v1/stocks/{stock_id}/news_articles": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of news articles to return, default is 10 max is 25",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 25
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockNewsArticleInfo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock News Articles",
+        "description": "Get the most recent news articles relating to a stock, including a summary of the article and a link to the original source",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStockNewsArticles",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "stock_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bigint"
+          }
+        }
+      ]
+    },
+    "/api/v1/stocks/{stock_id}/market_details/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockMarketDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock Market Details Data",
+        "description": "Returns market cap and weighted shares for a specific stock",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStocksInfo",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "stock_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bigint"
+          }
+        }
+      ]
+    },
+    "/api/v1/stocks/{stock_id}/dividends": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockDividendDetail"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock Dividend Details",
+        "description": "Returns a list of StockDividendDetails for a specified stock. Note that this data applies only to actual\nstocks. Yield received for holding a dShare may differ from this.",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStockDividends",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "stock_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bigint"
+          }
+        }
+      ]
+    },
+    "/api/v1/stocks/splits": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stock_id",
+            "description": "Filter by a stock id",
+            "schema": {
+              "type": "string",
+              "format": "bigint",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Filter by a stock split status",
+            "schema": {
+              "default": null,
+              "nullable": true,
+              "$ref": "#/components/schemas/StockSplitStatus"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockSplit"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Stock Splits",
+        "description": "Returns a list of stock splits. The splits are ordered by the date they were created, with the most recent\nsplit first. Filters can be applied to the results by specifying a stock_id or a stock split status.\n\nIn an example 10-for-1 stock split, trading will be halted for the stock at the end of the `payable_date`, as\nthe split transitions from `PENDING` to `IN_PROGRESS`. This usually occurs over a weekend to minimize trading\ndisruptions. Each share of stock owned by a shareholder will then be converted into 10 shares, and the split\nbecomes `COMPLETE` as trading resumes on the `ex_date` with new split-adjusted prices.",
+        "tags": [
+          "Stocks"
+        ],
+        "operationId": "getStockSplits",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tokens/{chain_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockAndTokenSchema"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "required": false
+          }
+        ],
+        "summary": "Get list of Stock Tokens",
+        "description": "Returns list of Stocks with its associated StockToken on a specific chain",
+        "tags": [
+          "XFT API [Enterprise]"
+        ],
+        "operationId": "getTokenByChainId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "chain_id",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    "/api/v1/entity/balance": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntityWalletBalances"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "XFT API [Enterprise]"
+        ],
+        "description": "Returns Balances for Entity Wallets",
+        "operationId": "getTokenBalancesByWallet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_status",
+            "description": "Filter by the order status",
+            "schema": {
+              "default": null,
+              "nullable": true,
+              "$ref": "#/components/schemas/BrokerageOrderStatus"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 25
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManagedStockOrder"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Orders",
+        "description": "Returns all orders",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getOrders",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/{order_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedStockOrder"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Order by ID",
+        "description": "Returns an order by ID",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getOrderById",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "order_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ]
+    },
+    "/api/v1/managed/orders/buy/market": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOrderRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketStockOrderBuyInput"
+              }
+            }
+          }
+        },
+        "summary": "Buy - Market Order",
+        "description": "Places a market order buy for a stock. This is the most common type of buy order, executing as soon as possible\n(within US market hours). Minimum order value is $1, excluding fees. Stock prices may be subject to change upon\nexecution of the order.\n\nMore details on market orders [here](https://www.investopedia.com/terms/m/marketorder.asp)\n\nUse the `confirmation_code` returned by this endpoint in the `/order_requests` endpoint to grab the `order_id` when available.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "createMarketOrderBuy",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/buy/market/preview": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "account_id",
+            "description": "ID of account placing the order",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "stock_id",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "payment_amount",
+            "description": "Amount of USD to pay or receive for the order. Must be a positive number with a precision of up to 2 decimal places.",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "include_fees",
+            "description": "Whether to include fees in the `payment_amount` input field.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedStockOrderPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Buy - Market Order (Preview)",
+        "description": "Preview for a market order buy that would be created with the `/managed/orders/buy/market` endpoint. Useful for\nestimating the total cost of the order, including fees.\n\nMore details on market orders [here](https://www.investopedia.com/terms/m/marketorder.asp)",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getMarketOrderBuyPreview",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/buy/limit": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOrderRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLimitStockOrderInput"
+              }
+            }
+          }
+        },
+        "summary": "Buy - Limit Order",
+        "description": "Places a limit order buy for a stock. Targets a specific price to execute the order, but fulfillment is not\nguaranteed. Only available for whole number stock quantities. Note that fees are not included in the limit\nprice and will be added to the total payment for the order.\n\nMore details on limit orders [here](https://www.investopedia.com/terms/l/limitorder.asp)\n\nUse the `confirmation_code` returned by this endpoint in the `/order_requests` endpoint to grab the `order_id` when available.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "createLimitOrderBuy",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/buy/limit/preview": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "account_id",
+            "description": "ID of account placing the order",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "stock_id",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "asset_quantity",
+            "description": "Quantity of stock to trade. Must be a positive integer.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit_price",
+            "description": "Price at which to execute the order. Must be a positive number with a precision of up to 2 decimal places.",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedStockOrderPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Buy - Limit Order (Preview)",
+        "description": "Preview for a limit order buy that would be created with the `/managed/orders/buy/limit` endpoint. Useful for\nestimating the total cost of the order, including fees.\n\nMore details on limit orders [here](https://www.investopedia.com/terms/l/limitorder.asp)",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getLimitOrderBuyPreview",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/sell/market": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOrderRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketStockOrderSellInput"
+              }
+            }
+          }
+        },
+        "summary": "Sell - Market Order",
+        "description": "Places a market order sell for a stock. This is the most common type of sell order, executing as soon as\npossible (within US market hours). Minimum order value is $1, excluding fees. Stock prices may be subject to\nchange upon execution of the order.\n\nMore details on market orders [here](https://www.investopedia.com/terms/m/marketorder.asp)\n\nUse the `confirmation_code` returned by this endpoint in the `/order_requests` endpoint to grab the `order_id` when available.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "createMarketOrderSell",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/sell/market/preview": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "account_id",
+            "description": "ID of account placing the order",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "stock_id",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "asset_quantity",
+            "description": "Quantity of stock to trade. Must be a positive number with a precision of up to 9 decimal places.",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedStockOrderPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Sell - Market Order (Preview)",
+        "description": "Preview for a market order sell that would be created with the `/managed/orders/sell/market` endpoint. Useful\nfor estimating the total payment to be received for the order, including fees.\n\nMore details on market orders [here](https://www.investopedia.com/terms/m/marketorder.asp)",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getMarketOrderSellPreview",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/sell/limit": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOrderRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLimitStockOrderInput"
+              }
+            }
+          }
+        },
+        "summary": "Sell - Limit Order",
+        "description": "Places a limit order sell for a stock. Targets a specific price to execute the order, but fulfillment is not\nguaranteed. Only available for whole number stock quantities. Note that fees are not included in the limit\nprice and will be deducted from the total payment received for the order.\n\nMore details on limit orders [here](https://www.investopedia.com/terms/l/limitorder.asp)\n\nUse the `confirmation_code` returned by this endpoint in the `/order_requests` endpoint to grab the `order_id` when available.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "createLimitOrderSell",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/sell/limit/preview": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "account_id",
+            "description": "ID of account placing the order",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "stock_id",
+            "description": "ID of stock, as returned by the `/stocks` endpoint, e.g. 1",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "asset_quantity",
+            "description": "Quantity of stock to trade. Must be a positive integer.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit_price",
+            "description": "Price at which to execute the order. Must be a positive number with a precision of up to 2 decimal places.",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedStockOrderPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Sell - Limit Order (Preview)",
+        "description": "Preview for a limit order sell that would be created with the `/managed/orders/sell/limit` endpoint. Useful for\nestimating the total payment to be received for the order, including fees.\n\nMore details on limit orders [here](https://www.investopedia.com/terms/l/limitorder.asp)",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getLimitOrderPreview",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/orders/{order_id}/cancel": {
+      "put": {
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Cancel Order",
+        "description": "Cancels an order with given order ID (note: once you submit a cancellation request it cannot be undone).\nBe advised that orders with a status of `PENDING_FILL`, `PENDING_ESCROW`, `FILLED`, `REJECTED`, or `CANCELLED` cannot be cancelled.\nYou can check the status of the order by calling the GET `/managed/orders/<order_id>` endpoint.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "putOrderCancel",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "order_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ]
+    },
+    "/api/v1/managed/order_requests/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockOrderRequest"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 25
+            },
+            "required": false
+          }
+        ],
+        "summary": "Get Order Requests",
+        "description": "Returns all order requests",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getOrderRequests",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/order_requests/{order_request_confirmation_code}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOrderRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Order Request by Confirmation Code",
+        "description": "Returns an order request by confirmation code.",
+        "tags": [
+          "Managed Stock Orders"
+        ],
+        "operationId": "getOrderById",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "order_request_confirmation_code",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ]
+    },
+    "/api/v1/managed/accounts/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Accounts",
+        "description": "Returns a list of managed accounts",
+        "tags": [
+          "Managed Accounts"
+        ],
+        "operationId": "getAccounts",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/portfolio/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Portfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Portfolio",
+        "description": "Portfolio will have details on stock asset and cash balances.",
+        "tags": [
+          "Managed Accounts"
+        ],
+        "operationId": "getTokenBalancesByWallet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/managed/portfolio/interest_payments": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "account_id",
+            "description": "ID of account",
+            "schema": {
+              "type": "string",
+              "format": "bigint"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "description": "Start date, inclusive. In US Eastern time zone, YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "description": "End date, exclusive. In US Eastern time zone, YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InterestPayment"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Interest Payments",
+        "description": "Returns information about interest payments on the cash balance made to the account.",
+        "tags": [
+          "Managed Accounts"
+        ],
+        "operationId": "getInterestPayments",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/web3/wallet/{wallet_address}/balances/": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stock_page",
+            "description": "The page number.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "stock_page_size",
+            "description": "The number of active stock tokens to return per chain, maximum number is 10.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletTokenBalance"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Token Balances for Wallet",
+        "description": "Get Token balances for a wallet address paginated with Stock Page and Stock Page Size.",
+        "tags": [
+          "Partner KYC",
+          "Managed KYC"
+        ],
+        "operationId": "getTokenBalancesByWallet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/balances/search": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stock_ids",
+            "description": "The stock ids of the dshare tokens to filter by (up to 10)",
+            "schema": {
+              "type": "array",
+              "maxItems": 10,
+              "items": {
+                "type": "string",
+                "format": "bigint"
+              }
+            },
+            "required": true,
+            "explode": true,
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletTokenBalance"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Token Balances for Wallet By Stock IDs",
+        "description": "Get Token balances for a wallet address for a list of stock IDs.",
+        "tags": [
+          "Partner KYC",
+          "Managed KYC"
+        ],
+        "operationId": "getTokenBalancesForStockIdsByWallet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/status": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletKycStatusCheck"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get KYC Check Status by Wallet Address",
+        "description": "Retrieves the KYC check status for a specified wallet address.",
+        "tags": [
+          "Partner KYC"
+        ],
+        "operationId": "getWalletKycStatusCheck",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PartnerWalletKycCheck"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Partner KYC Checks by Wallet Address",
+        "description": "Retrieves all submitted KYC checks for a specified wallet address. Results are sorted by the most recent KYC\ncheck to the least recent.",
+        "tags": [
+          "Partner KYC"
+        ],
+        "operationId": "getWalletKycCheck",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerWalletKycCheck"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartnerKycCheckInput"
+              }
+            }
+          }
+        },
+        "summary": "Create Partner KYC Check by wallet address",
+        "description": "Creates a new User KYC check for a specified wallet address from the data submitted via a partner KYC.",
+        "tags": [
+          "Partner KYC"
+        ],
+        "operationId": "createWalletKycCheck",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/{kyc_check_id}/documents": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletKycCheckDocument"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get KYC Documents by Wallet Address",
+        "description": "Retrieves all KYC documents for a specified partner KYC check.",
+        "tags": [
+          "Partner KYC"
+        ],
+        "operationId": "getWalletKycDocuments",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "document_type",
+            "description": "Type of KYC document to be uploaded",
+            "schema": {
+              "$ref": "#/components/schemas/KycDocumentType"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletKycCheckDocument"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserKycDocumentFileInput"
+              }
+            }
+          }
+        },
+        "summary": "Upload KYC Document for Partner KYC Check",
+        "description": "Uploads KYC document for a specified partner KYC check.",
+        "tags": [
+          "Partner KYC"
+        ],
+        "operationId": "createWalletKycDocuments",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        },
+        {
+          "in": "path",
+          "name": "kyc_check_id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bigint"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/managed/status": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletKycStatusCheck"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get KYC Check Status by Wallet Address",
+        "description": "Retrieves the KYC check status for a specified wallet address.",
+        "tags": [
+          "Managed KYC"
+        ],
+        "operationId": "getWalletKycStatusCheckManaged",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/managed": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManagedWalletKycCheck"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get KYC Checks by Wallet Address",
+        "description": "Retrieves all KYC checks for a specified wallet address. Results are sorted by the most recent KYC check to the\nleast recent.",
+        "tags": [
+          "Managed KYC"
+        ],
+        "operationId": "getWalletKycChecksManaged",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedKyc"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateManagedKycInput"
+              }
+            }
+          }
+        },
+        "summary": "Request KYC for wallet",
+        "description": "Requires Verify Wallet Identity for KYC to be called beforehand to set the nonce used in this call.\nReturns a URL to forward the user to proceed with KYC check.",
+        "tags": [
+          "Managed KYC"
+        ],
+        "operationId": "createWalletKycChecksManaged",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/kyc/managed/nonce": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletKycNonceResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Verify Wallet Identity for KYC",
+        "description": "Returns a message for a wallet to sign to validate wallet identity. The nonce returned\nshould be used as part of the input for Request KYC for wallet.",
+        "tags": [
+          "Managed KYC"
+        ],
+        "operationId": "createWalletKycNonceManaged",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/wallet/{wallet_address}/orders/": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_status",
+            "description": "Filter by the order status",
+            "schema": {
+              "default": null,
+              "nullable": true,
+              "$ref": "#/components/schemas/BrokerageOrderStatus"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 25
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletOrderInfo"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Pagination": {
+                "$ref": "#/components/headers/PAGINATION"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Get Orders for a Wallet",
+        "description": "Retrieves all orders for a specified wallet address.",
+        "tags": [
+          "Partner KYC",
+          "Managed KYC"
+        ],
+        "operationId": "getWalletOrders",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "wallet_address",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "eth_address"
+          }
+        }
+      ]
+    },
+    "/api/v1/web3/orders/fee": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DshareOrderFeeEstimate"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderFeeEstimateInput"
+              }
+            }
+          }
+        },
+        "summary": "Estimate order fee",
+        "description": "Returns a fee structure that should be passed to an order contract.",
+        "tags": [
+          "Customer Managed Wallet"
+        ],
+        "operationId": "createEstimateOrderFee",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/web3/orders/search": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_id",
+            "description": "Search by the Order ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "contract_address",
+            "description": "Search by the Contract Address **REQUIRED** if `contract_chain_id` or `contract_order_id` is provided",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "contract_order_id",
+            "description": "Search by the Contract Order ID **REQUIRED** if `contract_address` or `contract_chain_id` is provided",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "contract_chain_id",
+            "description": "Search by the Contract Chain ID **REQUIRED** if `contract_address` or `contract_order_id` is provided",
+            "schema": {
+              "type": "integer",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "chain_id",
+            "description": "Search by the Chain ID **REQUIRED** if `chain_transaction_hash` is provided",
+            "schema": {
+              "type": "integer",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "chain_transaction_hash",
+            "description": "Search by the Chain Transaction Hash **REQUIRED** if `chain_id` is provided",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WalletOrderInfo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "Search orders",
+        "description": "Search orders by providing an Order ID **OR** Contract Address, Contract Order ID, and Contract Chain ID **OR** Chain ID and Chain Transaction Hash.",
+        "tags": [
+          "Partner KYC",
+          "Managed KYC"
+        ],
+        "operationId": "getOrderSearch",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "XFT API [Enterprise]",
+      "description": "XFT API for enterprise usage"
+    }
+  ],
+  "openapi": "3.0.3"
+}

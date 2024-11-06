@@ -1,0 +1,2098 @@
+openapi: 3.0.1
+info:
+  title: Pay By Bank
+  version: 2.0.8
+  description: Pay By Bank - Payment Initiation Service (PIS) API. The solution is designed to enable merchants build better payments experiences, while remaining in control of the end-to-end user experience. Merchants use Pay by Bank to offer a single, consistent and localised payment method across markets that support Open Banking.
+servers:
+  - url: https://api-mock.payments.jpmorgan.com/tsapi/paybybank/v2
+    description: JPM-PROD - Pay By Bank sandbox
+  - url: https://apigatewayqaf.jpmorgan.com/tsapi/paybybank/v2
+    description: TEST
+  - url: https://apigatewaycat.jpmorgan.com/tsapi/paybybank/v2
+    description: UAT/CAT
+  - url: https://apigateway.jpmorgan.com/tsapi/paybybank/v2
+    description: PROD
+tags:
+  - name: Payments
+    description: Pay By Bank - Payments
+  - name: Payouts
+    description: Pay By Bank - PayoutsPayments
+  - name: Connectivity
+    description: Pay By Bank - Connectivity
+paths:
+  /payments:
+    post:
+      summary: Initiate Payments
+      description: Initiates a payment request to setup the money movement.
+      tags:
+        - Payments
+      operationId: createPayment
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: 'Client provided unique Idempotency Key.   **NOTE**:  *Creation of unique keys is up to the client, but usage of V4 UUIDs is suggested,   or another random string to avoid collisions.*'
+          schema:
+            $ref: '#/components/schemas/UniqueResourceIdentifier'
+          examples:
+            PaymentsUKRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+            PaymentsGermanyRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a2
+            PaymentsFranceRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a3
+            PaymentsItalyRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a4
+            PaymentsSpainRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a5
+            PaymentsSwedenRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a6
+            PaymentsNorwayRTP:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a7
+      requestBody:
+        description: Representation of a Payment Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payments'
+            examples:
+              PaymentsUKRTP:
+                summary: Sample Payment Request - RTP UK
+                value:
+                  paymentAmount:
+                    value: '100.00'
+                    currency: GBP
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: GB
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Bala Thandapani
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: '06090887654321'
+                      accountIdType: SORT_CODE
+                  reference: 'subscription - #78004300'
+              PaymentsGermanyRTP:
+                summary: Sample Payment Request - RTP Germany
+                value:
+                  paymentAmount:
+                    value: '150.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: DE
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Joshua Sundar
+                    account:
+                      accountId: DE89370400440532013000
+                      accountIdType: IBAN
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: DE89370400440532013987
+                      accountIdType: IBAN
+                  reference: 'subscription - #99604300'
+              PaymentsFranceRTP:
+                summary: Sample Payment Request - RTP France
+                value:
+                  paymentAmount:
+                    value: '90.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: FR
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Saheed Osupa
+                    account:
+                      accountId: FR1420041010050500013M02606
+                      accountIdType: IBAN
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: FR1420041010050500013M02987
+                      accountIdType: IBAN
+                  reference: 'subscription - #12504300'
+              PaymentsItalyRTP:
+                summary: Sample Payment Request - RTP Italy
+                value:
+                  paymentAmount:
+                    value: '50.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: IT
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Roberto Molli
+                    account:
+                      accountId: IT60X0542811101000000123456
+                      accountIdType: IBAN
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: IT60X0542811101000000123987
+                      accountIdType: IBAN
+                  reference: 'subscription - #78158300'
+              PaymentsSpainRTP:
+                summary: Sample Payment Request - RTP Spain
+                value:
+                  paymentAmount:
+                    value: '85.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: ES
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Abdul Rahman
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: ES9121000418450200051987
+                      accountIdType: IBAN
+                  reference: 'subscription - #79694300'
+              PaymentsSwedenRTP:
+                summary: Sample Payment Request - RTP Sweden
+                value:
+                  paymentAmount:
+                    value: '105.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: SE
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Jenifer Laurence
+                    account:
+                      accountId: SE4550000000058398257466
+                      accountIdType: IBAN
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: SE4550000000058398257987
+                      accountIdType: IBAN
+                  reference: 'subscription - #79694300'
+              PaymentsNorwayRTP:
+                summary: Sample Payment Request - RTP Norway
+                value:
+                  paymentAmount:
+                    value: '105.00'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  market: 'NO'
+                  redirectURL: https://sites.obtest.com/sites/cib
+                  debtor:
+                    name: Mary KOM
+                    account:
+                      accountId: NO9386011117947
+                      accountIdType: IBAN
+                  creditor:
+                    name: Newgen Media LLC
+                    account:
+                      accountId: NO9386011117987
+                      accountIdType: IBAN
+                  reference: 'subscription - #79694300'
+      responses:
+        '202':
+          $ref: '#/components/responses/202-Accepted'
+        '400':
+          $ref: '#/components/responses/400-BadRequest'
+        '401':
+          $ref: '#/components/responses/401-Unauthorized'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+        '409':
+          $ref: '#/components/responses/409-Conflict'
+        '503':
+          $ref: '#/components/responses/503-ServiceUnavailable'
+      callbacks:
+        paymentStatus:
+          '{client-url}/status':
+            post:
+              description: Callback message to notify clients about the payment status
+              requestBody:
+                $ref: '#/components/requestBodies/PaymentsCallback'
+              responses:
+                '204':
+                  description: Callback received successfully
+  /payments/{id}/acknowledge:
+    post:
+      summary: Acknowledge Payments
+      description: Acknowledges the payment request that was previously setup.
+      tags:
+        - Payments
+      operationId: acknowledgePayments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique ID of the payment
+          schema:
+            $ref: '#/components/schemas/UniqueResourceIdentifier'
+          examples:
+            PaymentResponseGermanyRTP:
+              value: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+      responses:
+        '200':
+          $ref: '#/components/responses/200-Acknowledged'
+        '400':
+          $ref: '#/components/responses/400-BadRequest-Non-State-Change'
+        '401':
+          $ref: '#/components/responses/401-Unauthorized'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+        '503':
+          $ref: '#/components/responses/503-ServiceUnavailable'
+  /payments/{id}:
+    get:
+      summary: Retrieve Payments
+      description: Retrieves the details of the payment request by Id.
+      tags:
+        - Payments
+      operationId: retrievePaymentsDetails
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique ID of the payment
+          schema:
+            $ref: '#/components/schemas/UniqueResourceIdentifier'
+          examples:
+            PaymentResponseGermanyRTP:
+              value: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+      responses:
+        '200':
+          $ref: '#/components/responses/200-Successful'
+        '400':
+          $ref: '#/components/responses/400-BadRequest-Non-State-Change'
+        '401':
+          $ref: '#/components/responses/401-Unauthorized'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+        '503':
+          $ref: '#/components/responses/503-ServiceUnavailable'
+  /payouts:
+    post:
+      tags:
+        - Payouts
+      summary: Create Payouts
+      operationId: createPayout
+      description: |
+        Creates a payout for a specific payment transaction as a refund or a withdrawal.
+
+        > The Pay By Bank - Payouts API facilitates businesses to carry out payments to beneficiaries efficiently within the context of Open Banking. By capitalizing on the secure infrastructure of Open Banking, it offers a robust, streamlined, and secure mechanism to process payouts, categorized into two types - Refunds and Withdrawals.
+      requestBody:
+        description: Representation of a Payout Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payout'
+            examples:
+              PayoutRefundRequest:
+                value:
+                  payoutReference: Refund 220-1z008
+                  payoutType: REFUND
+                  payoutReason: PARTIAL_REFUND
+                  payoutAmount:
+                    value: '10.50'
+                    currency: EUR
+                  paymentType: REAL_TIME_PAYMENTS
+                  sourcePaymentId: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+              PayoutWithdrawalRequest:
+                value:
+                  payoutReference: Payout 221-1x009
+                  payoutType: WITHDRAWAL
+                  payoutReason: WITHDRAWAL
+                  payoutAmount:
+                    value: '20.50'
+                    currency: GBP
+                  paymentType: REAL_TIME_PAYMENTS
+                  sourcePaymentId: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          description: "Client provided unique Idempotency Key.\n          \n          \n**NOTE**:  *Creation of unique keys is up to the client, but usage of V4 UUIDs is suggested, \n          \nor another random string to avoid collisions.*"
+          schema:
+            $ref: '#/components/schemas/UniqueResourceIdentifier'
+          examples:
+            PayoutRefundRequest:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+            PayoutWithdrawalRequest:
+              value: 1b036f9c-8c84-4ce6-b1dd-5979472945a2
+          required: true
+      responses:
+        '202':
+          $ref: '#/components/responses/20x-PayoutResponse'
+        '400':
+          $ref: '#/components/responses/400-BadRequest'
+        '401':
+          $ref: '#/components/responses/401-Unauthorized'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+        '409':
+          $ref: '#/components/responses/409-Conflict'
+        '503':
+          $ref: '#/components/responses/503-ServiceUnavailable'
+      callbacks:
+        payoutStatus:
+          '{client-url}/status':
+            post:
+              description: Callback message to notify clients about the payout status
+              requestBody:
+                $ref: '#/components/requestBodies/PayoutsCallback'
+              responses:
+                '204':
+                  description: Callback received successfully
+  /payouts/{id}:
+    get:
+      tags:
+        - Payouts
+      summary: Retrieve Payouts
+      operationId: getPayoutId
+      description: |
+        Retrieves the details of a given payout by Id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique ID of the payout
+          schema:
+            $ref: '#/components/schemas/UniqueResourceIdentifier'
+          examples:
+            PayoutRefundCompleted:
+              value: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+      responses:
+        '200':
+          $ref: '#/components/responses/200-PayoutStatusResponse'
+        '400':
+          $ref: '#/components/responses/400-BadRequest'
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+        '503':
+          $ref: '#/components/responses/503-ServiceUnavailable'
+  /providers:
+    get:
+      summary: List providers for a market
+      responses:
+        '200':
+          $ref: '#/components/responses/200-OK-Providers'
+      operationId: getProviders
+      description: Lists all providers on a specified market.
+      parameters:
+        - name: market
+          in: query
+          description: The ISO 3166-1 alpha-2 market code.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Market'
+          examples:
+            ProviderListDE:
+              value: DE
+      tags:
+        - Connectivity
+components:
+  requestBodies:
+    PaymentsCallback:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentResponse'
+          examples:
+            Sample Callback Request UK RTP:
+              $ref: '#/components/examples/PaymentResponseUKRTP'
+            Sample Callback Request Germany RTP:
+              $ref: '#/components/examples/PaymentResponseGermanyRTP'
+            Sample Callback Request Sweden RTP:
+              $ref: '#/components/examples/PaymentResponseSwedenRTP'
+            Sample Callback Request France RTP:
+              $ref: '#/components/examples/PaymentResponseFranceRTP'
+            Sample Callback Request Italy RTP:
+              $ref: '#/components/examples/PaymentResponseItalyRTP'
+            Sample Callback Request Spain RTP:
+              $ref: '#/components/examples/PaymentResponseSpainRTP'
+            Sample Callback Request Norway RTP:
+              $ref: '#/components/examples/PaymentResponseNorwayRTP'
+      required: true
+      description: 'Representation of Payments Callback '
+    PayoutsCallback:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payout'
+          examples:
+            Sample Callback Request - Refund:
+              $ref: '#/components/examples/PayoutRefundResponse'
+            Sample Callback Request - Withdrawal:
+              $ref: '#/components/examples/PayoutWithdrawalResponse'
+      required: true
+      description: Representation of Payout Callback
+  parameters:
+    PaymentId:
+      in: path
+      description: A unique ID of the payment
+      name: id
+      schema:
+        $ref: '#/components/schemas/UniqueResourceIdentifier'
+      required: true
+    IdempotencyKey:
+      in: header
+      description: "Client provided unique Idempotency Key.\n              \n              \n**NOTE**:  *Creation of unique keys is up to the client, but usage of V4 UUIDs is suggested, \n              \nor another random string to avoid collisions.*"
+      name: Idempotency-Key
+      schema:
+        $ref: '#/components/schemas/UniqueResourceIdentifier'
+      required: true
+    PayoutId:
+      name: id
+      in: path
+      description: A unique ID of the payout
+      required: true
+      schema:
+        $ref: '#/components/schemas/UniqueResourceIdentifier'
+    Market:
+      name: market
+      in: query
+      description: The ISO 3166-1 alpha-2 market code.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Market'
+  schemas:
+    Payments:
+      title: Payments
+      type: object
+      properties:
+        paymentAmount:
+          $ref: '#/components/schemas/PaymentAmount'
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        market:
+          $ref: '#/components/schemas/Market'
+        redirectURL:
+          type: string
+          format: uri-reference
+          description: An optional re-direct URL of the merchant where the end-user will be redirected to once they have successfully authorized the payment with their bank or financial institution.
+        debtor:
+          $ref: '#/components/schemas/Debtor'
+        creditor:
+          $ref: '#/components/schemas/Creditor'
+        reference:
+          $ref: '#/components/schemas/Reference'
+        providerName:
+          $ref: '#/components/schemas/ProviderName'
+      required:
+        - paymentAmount
+        - paymentType
+        - market
+        - creditor
+        - reference
+    PaymentResponseMetadata:
+      title: PaymentResponseMetadata
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PaymentId'
+        status:
+          type: string
+          description: |-
+            The status of the submitted payment request
+
+            **Refer to the table below for the supported statuses**:
+
+              | Status        | Description                                                                         |
+              | --------------|-------------------------------------------------------------------------------------|
+              | **NONE**      | The initial status for a payment. Indicates nothing has happened yet                |
+              | **SENT**      | Payment has been SENT                                                               |
+              | **SETTLED**  | The Payment was seen on recipient's account                                         |
+              | **FAILED**    | Attempt ended with error status. The details can be found in statusMessage field    |
+              | **CANCELLED** | The Payment was unsucessful due to an unexpected error e.g. a user fails to authorize a payment. |
+        statusUpdatedAt:
+          $ref: '#/components/schemas/StatusUpdatedAt'
+        statusMessage:
+          type: string
+          description: |-
+            A textual description of the status.
+
+            ***NOTE: Only applicable when the status is FAILED or CANCELLED***
+          minLength: 1
+          maxLength: 128
+        createdAt:
+          type: string
+          format: date-time
+          description: Indicates when the Payment request was created in the system. Follows ISO date time format.
+        paymentLinkURL:
+          type: string
+          format: uri-reference
+          description: An HTTPS URL to make the payment
+        paymentQRCode:
+          type: string
+          description: An HTTPS URL to download the QR code image to make the payment.
+        acknowledged:
+          type: string
+          description: Indicates if the payment has been acknowledged or not.
+          readOnly: true
+          default: UNKNOWN
+          enum:
+            - ACKNOWLEDGED
+            - NOT_ACKNOWLEDGED
+            - UNKNOWN
+    PaymentResponse:
+      allOf:
+        - $ref: '#/components/schemas/PaymentResponseMetadata'
+        - $ref: '#/components/schemas/Payments'
+    PaymentId:
+      allOf:
+        - type: string
+          description: A unique identifier of the payment
+        - $ref: '#/components/schemas/UniqueResourceIdentifier'
+    StatusUpdatedAt:
+      title: StatusUpdatedAt
+      type: string
+      format: date-time
+      description: The last updated date and time of the status, in ISO 8601 format.
+    Reference:
+      title: Reference
+      type: string
+      description: A free text field that can be used to provide a meaningful reference for a payment transaction
+      minLength: 1
+      maxLength: 35
+    PaymentType:
+      type: string
+      description: |-
+        The type of payment.
+
+          List of supported payment types, their usage and categorization by region:
+
+          Payment Type             | Description
+          -------------------------|-----------------------------------------------------------------------
+          **REAL_TIME_PAYMENTS**   | *Real-time Payments (Instant)* - `FASTER_PAYMENTS`, `SEPA_INSTANT_CREDIT_TRANSFER`
+          **LOW_VALUE_PAYMENTS**    | *Low-value Retail Payments* -  `BACS`, `SEPA_CREDIT_TRANSFER`
+          **HIGH_VALUE_PAYMENTS** | *High Value Business Payments* -  `CHAPS`
+
+          ---
+
+         | | **Real-time Payments (INSTANT)**       | **Low Value Payments** | **High-Value Payments**    |
+         |:-----------------:|:--------------------------------------:|:--------------------------------------:|:----------------------------------:|
+         | **UK**            | Faster Payments                        |           BACS                     | CHAPS |
+         | **SEPA**          | SEPA Instant Credit Transfer           | SEPA Credit Transfer |                       |
+
+         **Real-time payments**: refer to payment solutions that process and settle financial transactions in real-time, typically within seconds, without any waiting period.
+
+
+         **Low-value payments**: pertain to high-volume, low-value transactions mainly conducted by individuals or businesses for day-to-day expenses. These payments are usually processed in batches, not in real-time.
+
+
+         **High Value Payments**: refer to large-sum transactions that are typically exchanged between banks or financial institutions.
+      enum:
+        - REAL_TIME_PAYMENTS
+        - LOW_VALUE_PAYMENTS
+        - HIGH_VALUE_PAYMENTS
+    Creditor:
+      title: Creditor
+      type: object
+      description: The recipient of funds in the context of a payment.
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      required:
+        - name
+        - account
+    Party:
+      title: Party
+      type: object
+      description: Representation of a **Sender** or **Recipient** of funds within the context of a payment.
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        account:
+          $ref: '#/components/schemas/Account'
+    ISOCurrencyCode:
+      title: ISOCurrencyCode
+      description: '**Currency of the money movement**: a 3 alpha character ISO 4217 currency code.'
+      type: string
+      minLength: 3
+      maxLength: 3
+      pattern: ^[A-Z]{3}$
+      example: EUR
+    Value:
+      title: Value
+      type: string
+      minLength: 3
+      maxLength: 18
+      pattern: ^(\d{1,15})\.(\d{2})$
+      example: '10.50'
+      description: The value representation of a monetary amount. The amount value should be more than 0.01 with maximum of two decimal places allowed.
+    AccountId:
+      title: AccountId
+      type: string
+      minLength: 6
+      maxLength: 34
+      description: "Debtor account number as identified by the bank or financial institution.\n\n**Maximum length supported for each instrument and market. Refer to the table below**\n\n  | Market                             | Maximum field length                                          |\n  | -----------------------------------|---------------------------------------------------------------|\n  | United Kingdom |\t14 ( 6 digit Sort Code and 8 digit Account Number - 7 digit A/C numbers should be padded with a leading zero) |\n  | SEPA           |  34 (IBAN)                                                    |"
+    Debtor:
+      title: Debtor
+      type: object
+      description: |-
+        The party that pays for goods and services or sends funds.
+        *The debtor IBAN can be prefilled by the payment initiator:*
+        - If prefilled, the user will not be allowed to change the IBAN afterwards.
+        - The account selection experience will be skipped.
+      allOf:
+        - $ref: '#/components/schemas/Party'
+    Name:
+      title: Name
+      type: string
+      description: Name
+      minLength: 1
+      maxLength: 140
+    AccountIdType:
+      title: AccountIdType
+      type: string
+      description: The account identifier type
+      enum:
+        - SORT_CODE
+        - IBAN
+    Account:
+      title: Account
+      type: object
+      description: Captures account information
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        accountIdType:
+          $ref: '#/components/schemas/AccountIdType'
+      required:
+        - accountId
+        - accountIdType
+    Error:
+      title: Error
+      type: object
+      description: The error object returned by the API.
+      properties:
+        title:
+          type: string
+          description: Short humanly-readable title of the error
+          minLength: 1
+          maxLength: 99
+        httpStatus:
+          type: integer
+          format: int32
+          description: HTTP Status Code
+        traceId:
+          type: string
+          description: JPMC assigned trace identifier
+          minLength: 1
+          maxLength: 99
+        requestId:
+          type: string
+          description: The client originated requestId
+          minLength: 1
+          maxLength: 99
+        context:
+          type: array
+          description: Provides additional context and detail on the validation errors
+          minItems: 1
+          maxItems: 99
+          items:
+            $ref: '#/components/schemas/ErrorContext'
+      required:
+        - title
+    ErrorContext:
+      title: ErrorContext
+      type: object
+      properties:
+        code:
+          type: string
+          description: JPMC Short code that identifies the error - publicly cataloged and documented
+          minLength: 5
+          maxLength: 5
+        message:
+          type: string
+          description: Humanly readable textual description of the error
+          minLength: 1
+          maxLength: 99
+        location:
+          type: string
+          description: The location of the error occurred in the request.
+          enum:
+            - BODY
+            - PATH
+            - QUERY
+            - HEADER
+          minLength: 1
+          maxLength: 99
+        field:
+          type: string
+          description: The field which caused the error. Where the location of error occurred is BODY the field would contain the JSON Path expression
+          minLength: 1
+          maxLength: 99
+      required:
+        - message
+    PayoutDetails:
+      title: PayoutDetails
+      description: Representation of a Payout and associated metadata.
+      allOf:
+        - $ref: '#/components/schemas/PayoutMetadata'
+        - $ref: '#/components/schemas/Payout'
+    PayoutMetadata:
+      title: PayoutMetadata
+      description: Representation of a Payout Metadata
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payout
+          example: 0f7d8749-555e-41fc-a947-98bca7f7310b
+          readOnly: true
+        status:
+          type: string
+          description: "Status of the payout\r\n\r\n\r\n**VALUE**      | DESCRIPTION              | \r\n-----------|--------------------------|\r\n **PENDING**   | Default status           |\r\n **COMPLETED** | Payout was successful    |\r\n **FAILED**    | Payout failed to complete|\r\n\t\r\n\r\n"
+          example: PENDING
+          readOnly: true
+        statusUpdatedAt:
+          $ref: '#/components/schemas/StatusUpdatedAt'
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the payout was initiated, in ISO 8601 format.
+          example: '2023-07-24T14:15:22Z'
+          readOnly: true
+      required:
+        - id
+    Payout:
+      title: Payout
+      description: Representation of a Payout
+      type: object
+      properties:
+        payoutReference:
+          type: string
+          description: External Payout reference set by a merchant, must be between 6-18 characters long.
+          minLength: 6
+          maxLength: 18
+          example: Refund 220-1z008
+        payoutType:
+          type: string
+          description: |-
+            The type of payout being requested.
+
+              | Payout        | Description                                                                                                                             |
+              | --------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+              | **REFUND**      | This represents a repayment of a specific amount to a customer, usually as a result of overpayment or product/service dissatisfaction.|
+              | **WITHDRAWAL**  | A payment from a merchant account to the same payment details previously used to make a payment to the merchant account. This is also known as a closed-loop payout.
+          enum:
+            - REFUND
+            - WITHDRAWAL
+        payoutAmount:
+          $ref: '#/components/schemas/PayoutAmount'
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        sourcePaymentId:
+          allOf:
+            - type: string
+              description: The source payment identifier associated with an earlier initiated payment, which can be used to determine the payee.
+            - $ref: '#/components/schemas/UniqueResourceIdentifier'
+        payoutReason:
+          description: Payout/refund reason
+          type: string
+          enum:
+            - WITHDRAWAL
+            - REFUND
+            - PARTIAL_REFUND
+            - DUPLICATE
+      required:
+        - payoutReference
+        - payoutType
+        - paymentType
+        - payoutAmount
+        - sourcePaymentId
+    PayoutAmount:
+      title: PayoutAmount
+      description: The amount value and currency of a payout.Amount should be more than 0.01 with maximum of two decimal places allowed.
+      type: object
+      properties:
+        value:
+          $ref: '#/components/schemas/Value'
+        currency:
+          $ref: '#/components/schemas/ISOCurrencyCode'
+      required:
+        - value
+        - currency
+    PaymentAmount:
+      title: PaymentAmount
+      type: object
+      description: |-
+        The amount value and currency of a payment amount should be more than 0.01 with maximum of two decimal places allowed.
+
+        **Payment amount limits vary depending upon markets and financial institutions.**
+
+        **Refer to the table below for current limits.**
+
+          | Market                             | Payment limits (per transaction)| Reference|
+          | -----------------------------------|---------------------------------|----------|
+          | United Kingdom (FASTER_PAYMENTS)   | GBP 1,000,000                   | Refer to [Pay UK FPS Transaction Limits](https://www.wearepay.uk/what-we-do/payment-systems/faster-payment-system/transaction-limits/) for confirmation.|
+          | SEPA (SEPA_INSTANT_CREDIT_TRANSFER)| EUR 100,000                     | Refer to [European Payments Council(EPC) SEPA Instant Transaction Limits](https://www.europeanpaymentscouncil.eu/document-library/rulebooks/maximum-amount-instructions-under-2023-sepa-instant-credit-transfer-0) for confirmation.|
+          | SEPA (SEPA_CREDIT_TRANSFER)        | EUR 999,999,999.99              | Refer to [EPC SCT Rulebook](https://www.europeanpaymentscouncil.eu/what-we-do/epc-payment-schemes/sepa-credit-transfer/sepa-credit-transfer-rulebook-and)
+      properties:
+        value:
+          $ref: '#/components/schemas/Value'
+        currency:
+          $ref: '#/components/schemas/ISOCurrencyCode'
+      required:
+        - value
+        - currency
+    UniqueResourceIdentifier:
+      title: Identifier
+      description: An immutable opaque string that uniquely identifies a resource.
+      type: string
+      minLength: 36
+      maxLength: 36
+      pattern: ^[-_.a-zA-Z0-9]{36}$
+      example: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+    ProviderName:
+      title: ProviderName
+      type: string
+      description: "Optional name of a pre-selected Provider (sourced from the providers list). \n              \nProviding this field will skip the bank selection screen for the end-user using the payment link."
+      example: uk-santander-oauth2
+      minLength: 2
+      maxLength: 64
+    Providers:
+      title: Providers
+      description: A representation of a collection of providers.
+      type: object
+      required:
+        - providers
+      properties:
+        providers:
+          description: List of providers
+          type: array
+          items:
+            $ref: '#/components/schemas/Provider'
+          minItems: 0
+          maxItems: 1000
+    Provider:
+      title: Provider
+      description: The provider model represents financial institutions with established connectivity with us.  It specifies accesses to the financial institution, metadata about the financialinstitution, and what financial information can be accessed.
+      type: object
+      required:
+        - accessType
+        - authenticationUserType
+        - capabilities
+        - credentialsType
+        - currency
+        - displayName
+        - fields
+        - financialInstitutionId
+        - financialInstitutionName
+        - financialServices
+        - hasAuthenticationOptions
+        - market
+        - multiFactor
+        - name
+        - popular
+        - status
+        - transactional
+        - type
+      properties:
+        accessType:
+          description: Mechanism used to access the data.
+          type: string
+          enum:
+            - OPEN_BANKING
+            - OTHER
+          readOnly: true
+          example: OPEN_BANKING
+        authenticationFlow:
+          description: For providers with access type `OPEN_BANKING`, indicates what type of authentication flow is used to access the data.
+          type: string
+          enum:
+            - EMBEDDED
+            - REDIRECT
+            - DECOUPLED
+          readOnly: true
+          example: REDIRECT
+        authenticationUserType:
+          description: Indicates if a user authenticates toward the bank as a person or a business.
+          type: string
+          enum:
+            - PERSONAL
+            - BUSINESS
+            - CORPORATE
+          readOnly: true
+          example: PERSONAL
+        capabilities:
+          description: Indicates what this provider is capable of, in terms of financial data it can aggregate and if it can execute payments.
+          type: array
+          uniqueItems: true
+          minItems: 0
+          maxItems: 100
+          items:
+            type: string
+            enum:
+              - UNKNOWN
+              - TRANSFERS
+              - EINVOICES
+              - MORTGAGE_AGGREGATION
+              - CHECKING_ACCOUNTS
+              - SAVINGS_ACCOUNTS
+              - CREDIT_CARDS
+              - LOANS
+              - INVESTMENTS
+              - PAYMENTS
+              - IDENTITY_DATA
+              - CREATE_BENEFICIARIES
+              - LIST_BENEFICIARIES
+              - CREATE_BENEFICIARIES_IN_PAYMENT
+          readOnly: true
+          example:
+            - CHECKING_ACCOUNTS
+        credentialsType:
+          description: When creating a new credential connected to the provider this will be the credentials type.
+          type: string
+          enum:
+            - PASSWORD
+            - MOBILE_BANKID
+            - KEYFOB
+            - THIRD_PARTY_APP
+          readOnly: true
+          example: THIRD_PARTY_APP
+        currency:
+          description: The default currency of the provider.
+          type: string
+          readOnly: true
+          example: SEK
+        displayDescription:
+          description: Short displayable description of the authentication type used.
+          type: string
+          readOnly: true
+          example: Bink authentication app
+        displayName:
+          description: The name displayed in the app and what implementors will most likely use to display the provider.
+          type: string
+          readOnly: true
+          example: Bink
+        fields:
+          description: List of fields which need to be provided when creating a credential connected to the provider.
+          type: array
+          minItems: 0
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/Field'
+          readOnly: true
+          example:
+            - name: password
+              description: PIN
+              sensitive: true
+              masked: true
+        financialInstitutionId:
+          description: A unique identifier to group providers belonging the same financial institution.
+          type: string
+          readOnly: true
+          example: 01234567-1234-1234-1234-123456789123
+        financialInstitutionName:
+          description: A name to group providers belonging the same financial institution.
+          type: string
+          readOnly: true
+          example: Bink
+        financialServices:
+          description: Information about financial services covered with this provider.
+          type: array
+          minItems: 0
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/FinancialService'
+          readOnly: true
+        groupDisplayName:
+          description: The name of the group that several providers of the same bank can be placed in. Usually when a bank has branches and subsidiaries they are grouped under a single name.
+          type: string
+          readOnly: true
+          example: Bink Corp.
+        hasAuthenticationOptions:
+          description: Indicates whether or not this provider has multiple authentication options available.
+          type: boolean
+          default: false
+          readOnly: true
+        healthStatus:
+          $ref: '#/components/schemas/HealthStatusValue'
+        images:
+          $ref: '#/components/schemas/ImageUrls'
+        loginHeaderColour:
+          description: Sets the colour of the header of login screen.
+          type: string
+          readOnly: true
+          example: '#FF0000'
+        market:
+          description: The market of the provider. Each provider is unique per market.
+          type: string
+          readOnly: true
+          example: SE
+        multiFactor:
+          description: Indicates if the provider requires multi-factor authentication.
+          type: boolean
+          default: false
+          readOnly: true
+          example: true
+        name:
+          description: The unique identifier of the provider. This is used when creating new credentials.
+          type: string
+          readOnly: true
+          example: se-bink-thirdpartyapp
+        passwordHelpText:
+          description: Short description of how to authenticate when creating a new credential for connected to the provider.
+          type: string
+          readOnly: true
+          example: Use the same password as you would in your bank's mobile app.
+        pisCapabilities:
+          description: Indicates the Payments capabilities of this provider.
+          type: array
+          uniqueItems: true
+          minItems: 0
+          maxItems: 100
+          items:
+            type: string
+            enum:
+              - UNKNOWN
+              - PIS_SE_BG
+              - PIS_SE_PG
+              - PIS_SE_BANK_TRANSFERS
+              - PIS_FUTURE_DATE
+              - PIS_SEPA_RECURRING_PAYMENTS
+              - PIS_SEPA_ICT_RECURRING_PAYMENTS
+              - SEPA_CREDIT_TRANSFER
+              - SEPA_INSTANT_CREDIT_TRANSFER
+              - FASTER_PAYMENTS
+              - NORWEGIAN_DOMESTIC_CREDIT_TRANSFER
+              - INSTANT_NORWEGIAN_DOMESTIC_CREDIT_TRANSFER_STRAKS
+              - MULTIBANCO
+              - PIS_BULK_PAYMENTS
+              - PAYMENT_CANCELLATION
+              - SWISS_DOMESTIC_CREDIT_TRANSFER
+              - DANISH_DOMESTIC_CREDIT_TRANSFER
+              - INSTANT_DANISH_DOMESTIC_CREDIT_TRANSFER_STRAKS
+              - INSTANT_DANISH_DOMESTIC_CREDIT_TRANSFER_INTRADAG
+              - POLISH_DOMESTIC_CREDIT_TRANSFER
+              - INSTANT_POLISH_DOMESTIC_CREDIT_TRANSFER
+              - VRP_SWEEPING
+              - VRP_COMMERCIAL
+              - PIS_MOBILE_AUTO_SIGN
+          readOnly: true
+          example:
+            - SEPA_CREDIT_TRANSFER
+        popular:
+          description: Indicates if the provider is popular. This is normally set to true for the biggest financial institutions on a market.
+          type: boolean
+          default: false
+          readOnly: true
+          example: false
+        releaseStatus:
+          description: Indicates the Release Status of the provider
+          type: string
+          enum:
+            - BETA
+          readOnly: true
+          example: BETA
+        status:
+          description: Indicates the current status of the provider. It is only possible to perform credentials create or refresh actions on providers which are enabled.
+          type: string
+          enum:
+            - ENABLED
+            - TEMPORARY_DISABLED
+            - DISABLED
+          readOnly: true
+          example: ENABLED
+        transactional:
+          description: Indicates transactions can be aggregated for this provider.
+          type: boolean
+          default: false
+          readOnly: true
+          example: false
+        type:
+          description: Indicates what type of financial institution the provider represents.
+          type: string
+          enum:
+            - BANK
+            - CREDIT_CARD
+            - BROKER
+            - TEST
+            - OTHER
+          readOnly: true
+          example: BANK
+    Field:
+      title: Field
+      type: object
+      properties:
+        additionalInfo:
+          description: A serialized JSON containing additional information that could be useful.
+          type: string
+        checkbox:
+          description: Display boolean value as checkbox.
+          type: boolean
+        description:
+          description: A short description of what the field is used for.
+          type: string
+        group:
+          description: Identifies which fields should be gathered in the group.
+          type: string
+        helpText:
+          description: Text displayed next to the input field.
+          type: string
+        hint:
+          description: Gray text in the input view (Similar to a placeholder).
+          type: string
+        immutable:
+          description: Controls whether or not the field values entered are immutable.
+          type: boolean
+        masked:
+          description: Controls whether or not the field should be shown masked, like a password field.
+          type: boolean
+        maxLength:
+          description: Integer value of the maximum accepted characters of input.
+          type: integer
+          format: int32
+        minLength:
+          description: Integer value of the minimum accepted characters of input.
+          type: integer
+          format: int32
+        name:
+          description: The name of the input field.
+          type: string
+        numeric:
+          description: Controls whether or not the field should only accept numeric values.
+          type: boolean
+        oneOf:
+          description: Identifies if only one field within group should be filled.
+          type: boolean
+        optional:
+          description: Controls whether or not the field should be optional.
+          type: boolean
+        pattern:
+          description: A regex pattern that can be evaluated on the input.
+          type: string
+        patternError:
+          description: An error message that can be displayed if the provided pattern does not validate.
+          type: string
+        selectOptions:
+          description: A list of options where the user should select one.
+          type: array
+          minItems: 0
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        sensitive:
+          description: Controls whether or not the field should be sensitive.
+          type: boolean
+        style:
+          description: Information about style of 2FA screen.
+          type: string
+        type:
+          description: Stores information about field type.
+          type: string
+        value:
+          type: string
+    SelectOption:
+      title: SelectOption
+      type: object
+      properties:
+        iconUrl:
+          description: A URL the client can optionally use to show an icon to represent the option.
+          type: string
+        text:
+          description: The human-readable description of this option to display to the user.
+          type: string
+        value:
+          description: The machine-readable value to send if the user picks this option.
+          type: string
+    ImageUrls:
+      title: ImageUrls
+      description: Image urls of the provider
+      type: object
+      properties:
+        banner:
+          description: A image url for the banner.
+          type: string
+          example: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+        icon:
+          description: A image url for the icon.
+          type: string
+          example: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+    FinancialService:
+      type: object
+      title: FinancialService
+      required:
+        - segment
+        - shortName
+      properties:
+        segment:
+          description: Indicates which segment the financial service belongs to.
+          type: string
+          enum:
+            - BUSINESS
+            - PERSONAL
+          readOnly: true
+          example: PERSONAL
+        shortName:
+          description: Short name of the financial service.
+          type: string
+          readOnly: true
+          example: Personal Banking
+    HealthStatusValue:
+      title: HealthStatusValue
+      type: object
+      properties:
+        providerLogin:
+          $ref: '#/components/schemas/ProviderLogin'
+    ProviderLogin:
+      type: object
+      title: ProviderLogin
+      properties:
+        status:
+          description: |-
+            Indicates the health status of the provider. Use this
+            information for user experience purposes (e.g. displaying a list
+            of providers to the end user, and whether the provider's service
+            is working as expected).
+          type: string
+          enum:
+            - HEALTHY
+            - DEGRADED
+            - PLANNED_MAINTENANCE
+            - DOWN
+          readOnly: true
+    Market:
+      title: Market
+      type: string
+      description: |-
+        ISO 3166-1 alpha-2 country code for the market where the payment is initiated.
+
+        - **Market Coverage**: `DE`, `ES`, `GB`, `IT`
+      minLength: 2
+      maxLength: 2
+      pattern: ^[A-Z]{2}$
+  responses:
+    202-Accepted:
+      description: Accepted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentResponse'
+          examples:
+            PaymentResponseUKRTP:
+              $ref: '#/components/examples/PaymentInitiationResponseUKRTP'
+            PaymentResponseGermanyRTP:
+              $ref: '#/components/examples/PaymentInitiationResponseDERTP'
+            PaymentResponseFranceRTP:
+              $ref: '#/components/examples/PaymentResponseFranceRTP'
+            PaymentResponseItalyRTP:
+              $ref: '#/components/examples/PaymentResponseItalyRTP'
+            PaymentResponseSpainRTP:
+              $ref: '#/components/examples/PaymentInitiationResponseSpainRTP'
+    200-Acknowledged:
+      description: Successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentResponse'
+          examples:
+            PaymentResponseUKRTP:
+              $ref: '#/components/examples/PaymentResponseUKRTP'
+            PaymentResponseGermanyRTP:
+              $ref: '#/components/examples/PaymentResponseGermanyRTP'
+            PaymentResponseFranceRTP:
+              $ref: '#/components/examples/PaymentResponseFranceRTP'
+            PaymentResponseItalyRTP:
+              $ref: '#/components/examples/PaymentResponseItalyRTP'
+            PaymentResponseSpainRTP:
+              $ref: '#/components/examples/PaymentResponseSpainRTP'
+    200-Successful:
+      description: Successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentResponse'
+          examples:
+            PaymentResponseUKRTP:
+              $ref: '#/components/examples/PaymentResponseUKRTP'
+            PaymentResponseUKRTPSettled:
+              $ref: '#/components/examples/PaymentResponseUKRTPSettled'
+            PaymentResponseUKFailed:
+              $ref: '#/components/examples/PaymentResponseUKRTPFailed'
+            PaymentResponseGermanyFailed:
+              $ref: '#/components/examples/PaymentResponseGermanyRTPCancelled'
+            PaymentResponseGermanyRTP:
+              $ref: '#/components/examples/PaymentResponseGermanyRTP'
+            PaymentResponseFranceRTP:
+              $ref: '#/components/examples/PaymentResponseFranceRTP'
+            PaymentResponseItalyRTP:
+              $ref: '#/components/examples/PaymentResponseItalyRTP'
+            PaymentResponseSpainRTP:
+              $ref: '#/components/examples/PaymentResponseSpainRTP'
+            PaymentResponseSwedenRTP:
+              $ref: '#/components/examples/PaymentResponseSwedenRTP'
+            PaymentResponseNorwayRTP:
+              $ref: '#/components/examples/PaymentResponseNorwayRTP'
+    20x-PayoutResponse:
+      description: Payout successfully Initiated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayoutDetails'
+          examples:
+            PayoutRefundResponse:
+              $ref: '#/components/examples/PayoutRefundResponse'
+            PayoutWithdrawalResponse:
+              $ref: '#/components/examples/PayoutWithdrawalResponse'
+    200-PayoutStatusResponse:
+      description: Payout Status Retrieval
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayoutDetails'
+          examples:
+            PayoutRefundResponse:
+              $ref: '#/components/examples/PayoutRefundResponse'
+            PayoutRefundCompleted:
+              $ref: '#/components/examples/PayoutRefundCompleted'
+            PayoutRefundFailed:
+              $ref: '#/components/examples/PayoutRefundFailed'
+            PayoutWithdrawalResponse:
+              $ref: '#/components/examples/PayoutWithdrawalResponse'
+            PayoutWithdrawalCompleted:
+              $ref: '#/components/examples/PayoutWithdrawalCompleted'
+            PayoutWithdrawalFailed:
+              $ref: '#/components/examples/PayoutWithdrawalFailed'
+    400-BadRequest:
+      description: "Bad Request. \n              \n**List of Error codes and Usage explanations.**\n              \n| Error Code      |           Usage                                |\n| --------------  |------------------------------------------------|\n| 10001           | Mandatory field missing                        |\n| 10002           | Minimum length violation                       |\n| 10003           | Maximum length violation                       |\n| 10100           | Minimum value violation                        |\n| 10101           | Maximum value violation                        |\n| 10102           | Range violation                                |\n| 10103           | Bad format                                     |\n| 10104           | Bad value                                      |\n| 10105           | Unexpected field                               |\n| 10106           | Idempotency Check Failure                      |\n| 10199           | Other                                          |\n| 13000           | Uncategorized error                            |"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            InvalidDataError:
+              $ref: '#/components/examples/InvalidDataError'
+            IdempotencyKeyMissingError:
+              $ref: '#/components/examples/IdempotencyKeyMissingError'
+            BadAccountIdFormat:
+              $ref: '#/components/examples/PaymentResponseBadFormat'
+            InvalidCurrencyMarket:
+              $ref: '#/components/examples/PaymentResponseInvalidCurrency'
+            InvalidAccountId:
+              $ref: '#/components/examples/PaymentResponseAccountNotFound'
+    400-BadRequest-Non-State-Change:
+      description: "Bad Request. \n              \n**List of Error codes and Usage explanations.**\n| Error Code      |           Usage                                |\n| --------------  |------------------------------------------------|\n| 10103           | Bad format                                     |"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            BadFormatError:
+              $ref: '#/components/examples/BadFormatError'
+    401-Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            UnauthorizedError:
+              $ref: '#/components/examples/Unauthorized'
+    403-Forbidden:
+      description: "Forbidden. \n| Error Code    | Description                                |\n|---------------|--------------------------------------------|\n|  14000        | Security failure                           |     "
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SecurityFailureError:
+              $ref: '#/components/examples/SecurityFailureError'
+    404-NotFound:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ResourceNotFoundError:
+              $ref: '#/components/examples/ResourceNotFound'
+    409-Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ConflictError:
+              $ref: '#/components/examples/ConflictError'
+    503-ServiceUnavailable:
+      description: "Service Unavailable.\n              \n*List of Error codes and Rule definitions.* \n| Error Code    | Description       |\n|---------------|-------------------|\n|   12000       | System error      |"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ServiceUnavailableError:
+              $ref: '#/components/examples/ServiceUnavailableError'
+    200-OK-Providers:
+      description: List Providers response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Providers'
+          examples:
+            SEMarketProvidersExample:
+              $ref: '#/components/examples/ProviderListSE'
+            ProviderListDE:
+              $ref: '#/components/examples/ProviderListDE'
+            ProviderListGB:
+              $ref: '#/components/examples/ProviderListGB'
+  examples:
+    ConflictError:
+      value:
+        title: Idempotency Check Failure
+        httpStatus: 409
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '10106'
+            message: The request conflicts with the current state of the server. Please ensure your request is unique.
+            location: BODY
+    ResourceNotFound:
+      value:
+        title: Resource Not Found
+        httpStatus: 404
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - message: Invalid resource identifier provided.
+            field: id
+            location: PATH
+    BadFormatError:
+      value:
+        title: Bad Format
+        httpStatus: 400
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '10103'
+            message: The identifier provided is not a valid format.
+            field: id
+            location: PATH
+    Unauthorized:
+      value:
+        title: Unauthorized
+        httpStatus: 401
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - message: Unauthorized
+    InvalidDataError:
+      value:
+        title: Invalid Data
+        httpStatus: 400
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '10001'
+            message: Property amount is mandatory.
+            field: $.paymentAmount.amount
+            location: BODY
+    IdempotencyKeyMissingError:
+      value:
+        title: Invalid Data
+        httpStatus: 400
+        traceId: 0eca2e1a-74b7-44b7-9e66-4a6ec8336eb9
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '10106'
+            message: Idempotency-Key header is missing.
+            location: HEADER
+    SecurityFailureError:
+      value:
+        title: Security Failure
+        httpStatus: 403
+        traceId: 5914f136-4544-4b1c-8004-6c2388ba76b4
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '14000'
+            message: Invalid client profile
+    ServiceUnavailableError:
+      value:
+        title: System Error
+        httpStatus: 503
+        traceId: d3dd646b-1fd0-4389-b6b4-0c3ab486ccc4
+        requestId: d3dd646b-1fd0-4389-b6b4-0c3ab486bvg1
+        context:
+          - code: '12000'
+            message: Service Unavailable. Please try again.
+    PaymentResponseUKRTPFailed:
+      value:
+        id: 030bd614-2cd2-4e58-acff-51a41f713577
+        status: FAILED
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '100.00'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        market: GB
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Bala Thandapani
+          account:
+            accountId: '06080912311871'
+            accountIdType: SORT_CODE
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: '11223387654321'
+            accountIdType: SORT_CODE
+        reference: 'subscription - #78004300'
+    PaymentResponseUKRTP:
+      value:
+        id: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        status: SENT
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '100.00'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        market: GB
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Bala Thandapani
+          account:
+            accountId: '06080912311871'
+            accountIdType: SORT_CODE
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: '11223387654321'
+            accountIdType: SORT_CODE
+        reference: 'subscription - #78004300'
+        acknowledged: ACKNOWLEDGED
+    PaymentResponseUKRTPSettled:
+      value:
+        id: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        status: SETTLED
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '100.00'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        market: GB
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Bala Thandapani
+          account:
+            accountId: '06080912311871'
+            accountIdType: SORT_CODE
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: '11223387654321'
+            accountIdType: SORT_CODE
+        reference: 'subscription - #78004300'
+        acknowledged: ACKNOWLEDGED
+    PaymentInitiationResponseUKRTP:
+      value:
+        id: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '100.00'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        market: GB
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Bala Thandapani
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: '11223387654321'
+            accountIdType: SORT_CODE
+        reference: 'subscription - #78004300'
+    PaymentResponseGermanyRTP:
+      value:
+        id: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: SENT
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '150.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: DE
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Joshua Sundar
+          account:
+            accountId: DE89370400440532013000
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: DE89370400440532013987
+            accountIdType: IBAN
+        reference: 'subscription - #99604300'
+        acknowledged: ACKNOWLEDGED
+    PaymentResponseGermanyRTPCancelled:
+      value:
+        id: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: CANCELLED
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '150.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: DE
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Joshua Sundar
+          account:
+            accountId: DE89370400440532013000
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: DE89370400440532013987
+            accountIdType: IBAN
+        reference: 'subscription - #99604300'
+    PaymentInitiationResponseDERTP:
+      value:
+        id: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '150.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: DE
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=DE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Joshua Sundar
+          account:
+            accountId: DE89370400440532013000
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: DE89370400440532013987
+            accountIdType: IBAN
+        reference: 'subscription - #99604300'
+    PaymentResponseFranceRTP:
+      value:
+        id: 2a55c901-479c-463f-a011-0ad291dfc5df
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '90.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: FR
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=FR&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Saheed Osupa
+          account:
+            accountId: FR1420041010050500013M02606
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: FR1420041010050500013M02987
+            accountIdType: IBAN
+        reference: 'subscription - #12504300'
+    PaymentResponseItalyRTP:
+      value:
+        id: 52ede77e-02e8-4154-9af9-13f62fdc064d
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '50.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: IT
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=IT&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Roberto Molli
+          account:
+            accountId: IT60X0542811101000000123456
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: IT60X0542811101000000123987
+            accountIdType: IBAN
+        reference: 'subscription - #78158300'
+    PaymentInitiationResponseSpainRTP:
+      value:
+        id: c1225715-1014-450f-bdd0-95767f0cfbc2
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '85.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: ES
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=ES&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Abdul Rahman
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: ES9121000418450200051987
+            accountIdType: IBAN
+        reference: 'subscription - #79694300'
+    PaymentResponseSpainRTP:
+      value:
+        id: c1225715-1014-450f-bdd0-95767f0cfbc2
+        status: SENT
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '85.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: ES
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=ES&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Abdul Rahman
+          account:
+            accountId: ES9121000418450200051332
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: ES9121000418450200051987
+            accountIdType: IBAN
+        reference: 'subscription - #79694300'
+        acknowledged: ACKNOWLEDGED
+    PaymentResponseSwedenRTP:
+      value:
+        id: e5c9c1d2-65fb-4f0c-ba21-b71c8885a50b
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '105.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: SE
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=SE&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Jenifer Laurence
+          account:
+            accountId: SE4550000000058398257466
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: SE4550000000058398257987
+            accountIdType: IBAN
+        reference: 'subscription - #79694300'
+    PaymentResponseNorwayRTP:
+      value:
+        id: 6bef35f3-808e-4265-86fe-ac5f2a03fa72
+        status: NONE
+        statusUpdatedAt: '2023-08-20T13:31:25Z'
+        createdAt: '2023-08-20T13:31:25Z'
+        paymentAmount:
+          value: '105.00'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        market: 'NO'
+        redirectURL: https://sites.obtest.com/sites/cib
+        paymentLinkURL: https://paybybank.jpmorgan.com/1.0/pay/direct?client_id=9cd2e1c9527e4e18ad4756393e09cb2c&redirect_uri=https://sites.obtest.com/sites/cib&market=NO&payment_request_id=1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        paymentQRCode: https://paybybank.jpmorgan.com/api-proxy/api/enablement/v2/payments/qr/aHR0cHM6Ly9wYXlieWJhbmsuanBtb3JnYW4uY29tLzEuMC9wYXkvZGlyZWN0P21hcmtldD1HQiZyZWRpcmVjdF91cmk9aHR0cHM6Ly9zaXRlcy5vYnRlc3QuY29tL3NpdGVzL2NpYiZwYXltZW50X3JlcXVlc3RfaWQ9NWM0MjVjMjctMDVhNy00ODE5LWJkYjAtZGI3ZDU4Y2ZjNjYwJmxvY2FsZT1lbl9VUyZjbGllbnRfaWQ9M2QwZGNhN2RhZGE1NGUxOWI1YWYwMjRlZjk3Nzc0Mzg=
+        debtor:
+          name: Mary KOM
+          account:
+            accountId: NO9386011117947
+            accountIdType: IBAN
+        creditor:
+          name: Newgen Media LLC
+          account:
+            accountId: NO9386011117987
+            accountIdType: IBAN
+        reference: 'subscription - #79694300'
+    PaymentResponseBadFormat:
+      value:
+        title: Bad Format
+        httpStatus: 400
+        traceId: b41cb267-51db-4eb1-9bc6-fc93d85d78a7
+        requestId: 442b4c6f-c52d-4e40-8a64-fd7fb9ca0089
+        context:
+          - code: '10103'
+            message: The accountId provided is in a bad format.
+            field: $.creditor.account.accountId
+            location: BODY
+    PaymentResponseInvalidCurrency:
+      value:
+        title: Invalid Data
+        httpStatus: 400
+        traceId: 6b03ac09-0d9e-4c72-909d-fad6a627f0c2
+        requestId: 7215813e-ac80-4ddc-9f67-9fbfc1ac934c
+        context:
+          - code: '10001'
+            message: Destination country and currency combination is invalid.
+            field: $.market
+            location: BODY
+    PaymentResponseAccountNotFound:
+      value:
+        title: Invalid Data
+        httpStatus: 400
+        traceId: b183d4cb-cc4b-437a-9342-09f7696d0c1c
+        requestId: 71ed084e-4d25-492a-a942-4cbeea38e271
+        context:
+          - code: '10001'
+            message: creditor accountId not found
+            field: $.creditor.account.accountId
+            location: BODY
+    PayoutRefundResponse:
+      value:
+        id: 0f7d8749-555e-41fc-a947-98bca7f7310b
+        payoutReference: Refund 220-1z008
+        payoutType: REFUND
+        payoutReason: PARTIAL_REFUND
+        payoutAmount:
+          value: '10.50'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: PENDING
+        createdAt: '2023-07-24T14:15:22Z'
+    PayoutRefundCompleted:
+      value:
+        id: 0f7d8749-555e-41fc-a947-98bca7f7310b
+        payoutReference: Refund 220-1z008
+        payoutType: REFUND
+        payoutReason: PARTIAL_REFUND
+        payoutAmount:
+          value: '10.50'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: COMPLETED
+        statusUpdatedAt: '2023-07-24T14:15:22Z'
+        createdAt: '2023-07-24T14:15:22Z'
+    PayoutRefundFailed:
+      value:
+        id: 030bd614-2cd2-4e58-acff-51a41f713577
+        payoutReference: Refund 220-1z008
+        payoutType: REFUND
+        payoutReason: REFUND
+        payoutAmount:
+          value: '10.50'
+          currency: EUR
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: a14a49b4-b21e-416e-ab8d-c0e57efbd2ea
+        status: FAILED
+        statusUpdatedAt: '2023-07-24T14:15:22Z'
+        createdAt: '2023-07-24T14:15:22Z'
+    PayoutWithdrawalResponse:
+      value:
+        id: 8cee00f7-fdfb-40af-8fde-9fcf6ddaa4c1
+        payoutReference: Payout 221-1x009
+        payoutType: WITHDRAWAL
+        payoutReason: WITHDRAWAL
+        payoutAmount:
+          value: '20.50'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        status: PENDING
+        createdAt: '2023-07-24T20:15:22Z'
+    PayoutWithdrawalCompleted:
+      value:
+        id: 8cee00f7-fdfb-40af-8fde-9fcf6ddaa4c1
+        payoutReference: Payout 221-1x009
+        payoutType: WITHDRAWAL
+        payoutReason: WITHDRAWAL
+        payoutAmount:
+          value: '20.50'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        status: COMPLETED
+        statusUpdatedAt: '2023-07-24T14:15:22Z'
+        createdAt: '2023-07-24T20:15:22Z'
+    PayoutWithdrawalFailed:
+      value:
+        id: 503ff9e5-d4fe-498d-9b57-e7ed07251b95
+        payoutReference: Payout 221-1x009
+        payoutType: WITHDRAWAL
+        payoutReason: WITHDRAWAL
+        payoutAmount:
+          value: '20.50'
+          currency: GBP
+        paymentType: REAL_TIME_PAYMENTS
+        sourcePaymentId: 1b036f9c-8c84-4ce6-b1dd-5979472945a1
+        statusUpdatedAt: '2023-07-24T14:15:22Z'
+        status: FAILED
+        createdAt: '2023-07-24T20:15:22Z'
+    ProviderListSE:
+      value:
+        providers:
+          - accessType: OPEN_BANKING
+            authenticationFlow: REDIRECT
+            authenticationUserType: PERSONAL
+            capabilities:
+              - CHECKING_ACCOUNTS
+            credentialsType: THIRD_PARTY_APP
+            currency: SEK
+            displayDescription: Bink authentication app
+            displayName: Bink
+            fields:
+              - name: password
+                description: PIN
+                sensitive: true
+                masked: true
+            financialInstitutionId: 01234567-1234-1234-1234-123456789123
+            financialInstitutionName: Bink
+            financialServices:
+              - segment: PERSONAL
+                shortName: Personal Banking
+            groupDisplayName: Bink Corp.
+            hasAuthenticationOptions: false
+            healthStatus:
+              providerLogin:
+                status: HEALTHY
+            images:
+              banner: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+              icon: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+            loginHeaderColour: '#FF0000'
+            market: SE
+            multiFactor: true
+            name: se-bink-thirdpartyapp
+            passwordHelpText: Use the same password as you would in your bank's mobile app.
+            pisCapabilities:
+              - SEPA_CREDIT_TRANSFER
+            popular: false
+            releaseStatus: BETA
+            status: ENABLED
+            transactional: false
+            type: BANK
+    ProviderListDE:
+      value:
+        providers:
+          - accessType: OPEN_BANKING
+            authenticationFlow: EMBEDDED
+            authenticationUserType: PERSONAL
+            capabilities:
+              - CHECKING_ACCOUNTS
+              - TRANSFERS
+            pisCapabilities:
+              - PIS_SEPA_RECURRING_PAYMENTS
+              - SEPA_INSTANT_CREDIT_TRANSFER
+              - SEPA_CREDIT_TRANSFER
+            credentialsType: PASSWORD
+            currency: EUR
+            displayDescription: Sparkasse authentication app
+            displayName: Sparkasse Hegau-Bodensee
+            name: de-sparkasse-singen-radolfzell-ob
+            fields:
+              - name: username
+                description: Login name
+                sensitive: false
+                masked: false
+                pattern: ^.{1,16}$
+                patternError: Sparkassen Login name (maximum 15 characters) or 16-digit Legitimations-ID
+            financialInstitutionId: b49e2c88317642a1aee7de35ca2c3553
+            financialInstitutionName: Sparkasse Hegau-Bodensee
+            groupDisplayName: Sparkassen
+            financialServices:
+              - segment: PERSONAL
+                shortName: Personal Banking
+              - segment: BUSINESS
+                shortName: Business Banking
+            hasAuthenticationOptions: false
+            healthStatus:
+              providerLogin:
+                status: HEALTHY
+            images:
+              banner: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+              icon: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+            loginHeaderColour: '#ff0000'
+            market: DE
+            multiFactor: true
+            passwordHelpText: Use the same password as you would in your bank's mobile app.
+            popular: true
+            releaseStatus: BETA
+            status: ENABLED
+            transactional: false
+            type: CREDIT_CARD
+    ProviderListGB:
+      value:
+        providers:
+          - accessType: OPEN_BANKING
+            authenticationUserType: BUSINESS
+            authenticationFlow: REDIRECT
+            capabilities:
+              - CREDIT_CARDS
+              - CHECKING_ACCOUNTS
+              - SAVINGS_ACCOUNTS
+              - IDENTITY_DATA
+              - TRANSFERS
+            pisCapabilities:
+              - FASTER_PAYMENTS
+            credentialsType: THIRD_PARTY_APP
+            currency: GBP
+            displayName: HSBC Kinetic
+            fields: []
+            financialInstitutionId: a2f21124a09643ac97943e48dc3ee8cf
+            financialInstitutionName: HSBC Kinetic
+            groupDisplayName: HSBC
+            images:
+              icon: https://www.jpmorgan.com/content/dam/jpmorgan/images/logos/jpm-logo-brown-062322.svg
+            market: GB
+            multiFactor: false
+            name: uk-hsbc-kinetic-ob
+            passwordHelpText: ''
+            popular: false
+            status: ENABLED
+            transactional: true
+            type: BANK
+            financialServices:
+              - segment: BUSINESS
+                shortName: HSBC Kinetic Online
+            hasAuthenticationOptions: false
+            healthStatus:
+              providerLogin:
+                status: HEALTHY
+x-jpmc-securityDefinitions:
+  JPMC-OAuth2: {}
+x-jpmc-security: {}
+x-jpmc-securitySchemes:
+  MutualTLS:
+    type: x509
+    description: Mutual TLS authentication using client and server certificates.
+    x509: {}

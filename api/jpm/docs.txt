@@ -1,0 +1,1 @@
+https://developer.payments.jpmorgan.com/api/treasury/global-payments/payments#/

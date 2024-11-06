@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -5,26 +6,36 @@ const app = express();
 
 app.use(express.static('.'));
 
-app.get('/api/files', (req, res) => {
-    const directoryPath = './';
-    
-    fs.readdir(directoryPath, (err, files) => {
-        if (err) {
-            return res.status(500).send('Error reading directory');
-        }
-        
-        const fileList = files.filter(file => 
-            file !== 'server.js' && 
-            file !== 'script.js' && 
-            file !== 'index.html' &&
-            file !== 'node_modules'
-        );
-        
-        res.json(fileList);
-    });
+const excludedItems = [
+   'server.js',
+   'script.js', 
+   'index.html',
+   'node_modules',
+   '.git',
+   '.gitignore',
+   'package.json',
+   'package-lock.json'
+];
+
+function getDirectoryContents(dirPath) {
+   const items = fs.readdirSync(dirPath, { withFileTypes: true });
+   return items
+       .filter(item => !excludedItems.includes(item.name))
+       .map(item => ({
+           name: item.name,
+           isDirectory: item.isDirectory(),
+           path: path.join(dirPath, item.name).replace(/\\/g, '/')
+       }));
+}
+
+app.get('/api/files/*', (req, res) => {
+   const requestedPath = req.params[0] || '.';
+   try {
+       const contents = getDirectoryContents(requestedPath);
+       res.json(contents);
+   } catch (err) {
+       res.status(500).json({ error: err.message });
+   }
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(3000);
